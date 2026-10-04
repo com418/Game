@@ -1,0 +1,188 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* =========================
+       HELPER FUNCTIONS
+    ========================= */
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn()
+        && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(
+          /databases/$(database)/documents/admins/$(request.auth.uid)
+        )
+        && get(
+          /databases/$(database)/documents/admins/$(request.auth.uid)
+        ).data.active == true
+        && get(
+          /databases/$(database)/documents/admins/$(request.auth.uid)
+        ).data.role == "admin";
+    }
+
+
+    /* =========================
+       PLAYERS
+    ========================= */
+
+    match /players/{uid} {
+
+      // A player can create their own account.
+      allow create: if isOwner(uid);
+
+      // Players can read themselves.
+      // Admins can read all players.
+      allow read: if isOwner(uid) || isAdmin();
+
+      /*
+       * Players can update their own normal game data.
+       *
+       * IMPORTANT:
+       * Money, XP, level, ban and arrest fields cannot
+       * be changed by the player from the client.
+       *
+       * Those protected values are controlled by
+       * Cloud Functions/server-side code.
+       */
+      allow update: if isOwner(uid)
+
+        && request.resource.data.uid == uid
+
+        // Server-controlled economy
+        && request.resource.data.money == resource.data.money
+        && request.resource.data.level == resource.data.level
+        && request.resource.data.xp == resource.data.xp
+
+        // Moderation fields controlled by server
+        && request.resource.data.banned == resource.data.banned
+        && request.resource.data.arrested == resource.data.arrested
+        && request.resource.data.arrestReason == resource.data.arrestReason
+        && request.resource.data.arrestedAt == resource.data.arrestedAt
+        && request.resource.data.jailUntil == resource.data.jailUntil
+        && request.resource.data.jailLocation == resource.data.jailLocation;
+
+      // Only admins can delete player accounts/documents.
+      allow delete: if isAdmin();
+    }
+
+
+    /* =========================
+       ADMINS
+    ========================= */
+
+    match /admins/{uid} {
+
+      // Admin can read their own admin document.
+      // Existing admins can verify other admins.
+      allow read: if isOwner(uid) || isAdmin();
+
+      // Admin records must NOT be changed from the client.
+      // Use Firebase Console/server-side tools instead.
+      allow create, update, delete: if false;
+    }
+
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    match /chat/{id} {
+
+      // Signed-in players can read chat.
+      allow read: if signedIn();
+
+      // Players can create messages only for themselves.
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() <= 500;
+
+      // Admins can moderate/delete/update messages.
+      allow update, delete: if isAdmin();
+    }
+
+
+    /* =========================
+       LEADERBOARDS
+    ========================= */
+
+    match /leaderboards/{id} {
+
+      // Public leaderboard reading.
+      allow read: if true;
+
+      // No client-side writes.
+      // Server/backend should update leaderboard data.
+      allow create, update, delete: if false;
+    }
+
+
+    /* =========================
+       REPORTS
+    ========================= */
+
+    match /reports/{id} {
+
+      // Players can submit reports for themselves.
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid;
+
+      // Admins can review/manage reports.
+      allow read, update, delete: if isAdmin();
+    }
+
+
+    /* =========================
+       TRANSACTIONS
+    ========================= */
+
+    match /transactions/{id} {
+
+      // Admins can see all transactions.
+      // Players can see their own transactions.
+      allow read: if isAdmin()
+        || (
+          signedIn()
+          && resource.data.uid == request.auth.uid
+        );
+
+      // Nobody can create/edit transactions directly
+      // from the client.
+      // Cloud Functions create them server-side.
+      allow create, update, delete: if false;
+    }
+
+
+    /* =========================
+       ADMIN AUDIT LOGS
+    ========================= */
+
+    match /auditLogs/{id} {
+
+      // Only admins can view audit logs.
+      allow read: if isAdmin();
+
+      // Client cannot create/edit/delete audit logs.
+      // Cloud Functions handle this.
+      allow create, update, delete: if false;
+    }
+
+
+    /* =========================
+       DEFAULT DENY
+    ========================= */
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
