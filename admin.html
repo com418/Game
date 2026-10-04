@@ -9,7 +9,7 @@
   content="width=device-width,initial-scale=1.0"
 >
 
-<title>Naija Life — Admin</title>
+<title>Naija Life — Admin Panel</title>
 
 <style>
 
@@ -30,11 +30,23 @@
   --blue:#4c91ff;
 }
 
-body{
+html,body{
   margin:0;
-  font-family:Arial,sans-serif;
+  padding:0;
+  min-height:100%;
   background:var(--bg);
-  color:white;
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
 }
 
 svg{
@@ -47,9 +59,110 @@ svg{
   stroke-linejoin:round;
 }
 
-.app{
-  min-height:100vh;
+
+/* =====================================================
+   PASSWORD LOCK
+===================================================== */
+
+#passwordScreen{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:
+    radial-gradient(
+      circle at top,
+      #123626 0,
+      #07110d 45%
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
+
+.login-box{
+  width:100%;
+  max-width:390px;
+  background:rgba(12,27,21,.96);
+  border:1px solid #28513e;
+  border-radius:24px;
+  padding:28px;
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.45);
+}
+
+.login-logo{
+  width:58px;
+  height:58px;
+  border-radius:17px;
+  background:#18ad68;
+  display:grid;
+  place-items:center;
+  margin-bottom:20px;
+}
+
+.login-logo svg{
+  width:30px;
+  height:30px;
+  color:white;
+}
+
+.login-box h1{
+  margin:0;
+  font-size:22px;
+}
+
+.login-box p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+
+.password-input{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  background:#06110b;
+  color:white;
+  outline:none;
+}
+
+.password-input:focus{
+  border-color:#22c77d;
+}
+
+.login-button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:0;
+  border-radius:11px;
+  background:#18ad68;
+  color:white;
+  font-weight:bold;
+}
+
+.login-button:active{
+  transform:scale(.99);
+}
+
+.login-error{
+  display:none;
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#391919;
+  color:#ff9a9a;
+  font-size:11px;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
   position:fixed;
@@ -60,6 +173,7 @@ svg{
   background:#081710;
   border-right:1px solid var(--line);
   padding:20px 14px;
+  z-index:100;
 }
 
 .brand{
@@ -84,6 +198,7 @@ svg{
 
 .brand strong{
   display:block;
+  font-size:14px;
 }
 
 .brand span{
@@ -124,21 +239,29 @@ svg{
   color:#6ff0ae;
 }
 
+
+/* =====================================================
+   MAIN
+===================================================== */
+
 .main{
   margin-left:240px;
+  min-height:100vh;
 }
 
 .topbar{
   height:70px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:50;
   background:rgba(7,17,13,.94);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line);
+
   display:flex;
   justify-content:space-between;
   align-items:center;
+
   padding:0 25px;
 }
 
@@ -161,13 +284,26 @@ svg{
 .icon-btn{
   width:39px;
   height:39px;
+
   border:1px solid var(--line);
   border-radius:10px;
+
   background:#0b1c15;
   color:#91a89e;
+
   display:grid;
   place-items:center;
 }
+
+.icon-btn:hover{
+  color:white;
+  border-color:#35634e;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
 
 .content{
   max-width:1450px;
@@ -179,11 +315,15 @@ svg{
   display:flex;
   align-items:center;
   gap:8px;
+
   background:#0d291e;
   border:1px solid #1d4a36;
+
   color:#74e9ae;
+
   border-radius:11px;
   padding:11px;
+
   font-size:12px;
   margin-bottom:18px;
 }
@@ -193,6 +333,11 @@ svg{
   color:#ff9b9b;
   border-color:#552525;
 }
+
+
+/* =====================================================
+   STATS
+===================================================== */
 
 .stats{
   display:grid;
@@ -230,6 +375,11 @@ svg{
   font-weight:bold;
 }
 
+
+/* =====================================================
+   PANEL
+===================================================== */
+
 .panel{
   background:var(--panel);
   border:1px solid var(--line);
@@ -240,6 +390,7 @@ svg{
 .panel-head{
   padding:17px;
   border-bottom:1px solid var(--line);
+
   display:flex;
   justify-content:space-between;
   gap:15px;
@@ -275,20 +426,33 @@ svg{
 .search{
   width:250px;
   padding:10px 12px;
+
   border-radius:10px;
   border:1px solid var(--line);
+
   background:#07150f;
   color:white;
   outline:none;
 }
 
+.search:focus{
+  border-color:#22c77d;
+}
+
 .select{
   padding:10px;
+
   border-radius:10px;
   border:1px solid var(--line);
+
   background:#07150f;
   color:white;
 }
+
+
+/* =====================================================
+   PLAYERS
+===================================================== */
 
 .players{
   padding:9px;
@@ -296,10 +460,19 @@ svg{
 
 .player{
   display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr auto;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1fr
+    auto;
+
   gap:12px;
   align-items:center;
+
   padding:13px;
+
   border-bottom:1px solid #142b22;
 }
 
@@ -317,10 +490,13 @@ svg{
   width:40px;
   height:40px;
   border-radius:11px;
+
   background:#153a2a;
   color:#68e8a6;
+
   display:grid;
   place-items:center;
+
   flex:none;
 }
 
@@ -350,8 +526,11 @@ svg{
   display:inline-flex;
   align-items:center;
   gap:4px;
+
   padding:5px 8px;
+
   border-radius:20px;
+
   font-size:9px;
   font-weight:bold;
 }
@@ -380,12 +559,20 @@ svg{
 .action{
   width:35px;
   height:35px;
+
   border:1px solid var(--line);
   background:#091811;
+
   color:#91a89e;
+
   border-radius:9px;
+
   display:grid;
   place-items:center;
+}
+
+.action:hover{
+  border-color:#3b6c55;
 }
 
 .action.money:hover{
@@ -410,16 +597,25 @@ svg{
   color:#71887d;
 }
 
+
+/* =====================================================
+   MODALS
+===================================================== */
+
 .modal{
   position:fixed;
   inset:0;
+
   background:rgba(0,0,0,.75);
   backdrop-filter:blur(7px);
+
   display:none;
   align-items:center;
   justify-content:center;
+
   padding:18px;
-  z-index:100;
+
+  z-index:1000;
 }
 
 .modal.show{
@@ -429,8 +625,10 @@ svg{
 .modal-box{
   width:100%;
   max-width:410px;
+
   background:#0c2118;
   border:1px solid #285440;
+
   border-radius:18px;
   padding:20px;
 }
@@ -449,10 +647,15 @@ svg{
 .close{
   width:34px;
   height:34px;
+
   border:0;
   border-radius:9px;
+
   background:#142a21;
   color:#9ab0a6;
+
+  display:grid;
+  place-items:center;
 }
 
 .modal p{
@@ -462,29 +665,43 @@ svg{
 
 label{
   display:block;
+
   color:#8fa79c;
   font-size:10px;
+
   margin:12px 0 6px;
 }
 
 .input{
   width:100%;
+
   padding:12px;
+
   border-radius:10px;
   border:1px solid var(--line);
+
   background:#07140e;
   color:white;
+
   outline:none;
+}
+
+.input:focus{
+  border-color:#22c77d;
 }
 
 .primary{
   width:100%;
+
   border:0;
   border-radius:10px;
+
   padding:12px;
   margin-top:15px;
+
   background:#18ad68;
   color:white;
+
   font-weight:bold;
 }
 
@@ -493,12 +710,20 @@ label{
   color:#111;
 }
 
+.danger{
+  background:#c94b4b;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
 @media(max-width:900px){
 
   .sidebar{
     transform:translateX(-100%);
     transition:.2s;
-    z-index:50;
   }
 
   .sidebar.open{
@@ -509,14 +734,20 @@ label{
     margin-left:0;
   }
 
+  #menuBtn{
+    display:grid !important;
+  }
+
   .stats{
     grid-template-columns:repeat(2,1fr);
   }
 
   .player{
     grid-template-columns:1fr;
+
     border:1px solid #163328;
     border-radius:13px;
+
     margin-bottom:8px;
   }
 
@@ -553,29 +784,126 @@ label{
     padding:12px;
   }
 
+  .topbar h1{
+    font-size:17px;
+  }
+
 }
 
 </style>
 </head>
 
+
 <body>
 
-<div class="app">
 
-<aside class="sidebar" id="sidebar">
+<!-- =====================================================
+     PASSWORD SCREEN
+===================================================== -->
+
+<div id="passwordScreen">
+
+  <div class="login-box">
+
+    <div class="login-logo">
+
+      <svg viewBox="0 0 24 24">
+
+        <rect
+          x="5"
+          y="10"
+          width="14"
+          height="11"
+          rx="2"
+        />
+
+        <path
+          d="M8 10V7a4 4 0 0 1 8 0v3"
+        />
+
+      </svg>
+
+    </div>
+
+    <h1>
+      Naija Life Admin
+    </h1>
+
+    <p>
+      This area is restricted to the game administrator.
+      Enter your admin password to continue.
+    </p>
+
+    <input
+      id="adminPassword"
+      class="password-input"
+      type="password"
+      placeholder="Admin password"
+      autocomplete="current-password"
+    >
+
+    <button
+      id="adminLoginBtn"
+      class="login-button"
+    >
+      Enter Admin Panel
+    </button>
+
+    <div
+      id="loginError"
+      class="login-error"
+    >
+      Incorrect password.
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     APP
+===================================================== -->
+
+<div
+  id="adminApp"
+  style="display:none;"
+>
+
+
+<aside
+  class="sidebar"
+  id="sidebar"
+>
 
   <div class="brand">
 
     <div class="logo">
+
       <svg viewBox="0 0 24 24">
-        <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
-        <path d="M8.5 12l2.3 2.3 4.7-5"/>
+
+        <path
+          d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"
+        />
+
+        <path
+          d="M8.5 12l2.3 2.3 4.7-5"
+        />
+
       </svg>
+
     </div>
 
     <div>
-      <strong>Naija Life</strong>
-      <span>ADMIN CENTER</span>
+
+      <strong>
+        Naija Life
+      </strong>
+
+      <span>
+        ADMIN CENTER
+      </span>
+
     </div>
 
   </div>
@@ -589,41 +917,88 @@ label{
   <nav class="nav">
 
     <button class="active">
+
       <svg viewBox="0 0 24 24">
+
         <rect x="3" y="3" width="7" height="7"/>
         <rect x="14" y="3" width="7" height="7"/>
         <rect x="3" y="14" width="7" height="7"/>
         <rect x="14" y="14" width="7" height="7"/>
+
       </svg>
+
       Dashboard
+
     </button>
 
 
-    <button onclick="document.getElementById('playersPanel').scrollIntoView()">
+    <button
+      onclick="
+      document
+      .getElementById('playersPanel')
+      .scrollIntoView()
+      "
+    >
+
       <svg viewBox="0 0 24 24">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+
+        <path
+          d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+        />
+
+        <circle
+          cx="9"
+          cy="7"
+          r="4"
+        />
+
+        <path
+          d="M22 21v-2a4 4 0 0 0-3-3.87"
+        />
+
       </svg>
+
       Players
+
     </button>
 
 
     <button>
+
       <svg viewBox="0 0 24 24">
-        <rect x="3" y="6" width="18" height="12" rx="2"/>
-        <circle cx="12" cy="12" r="3"/>
+
+        <rect
+          x="3"
+          y="6"
+          width="18"
+          height="12"
+          rx="2"
+        />
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+        />
+
       </svg>
+
       Economy
+
     </button>
 
 
     <button>
+
       <svg viewBox="0 0 24 24">
+
         <path d="M3 3v18h18"/>
         <path d="M7 16l4-5 3 3 5-7"/>
+
       </svg>
+
       Analytics
+
     </button>
 
   </nav>
@@ -637,20 +1012,37 @@ label{
   <nav class="nav">
 
     <button>
+
       <svg viewBox="0 0 24 24">
+
         <path d="M3 3v18h18"/>
         <path d="M7 17l4-5 3 3 5-8"/>
+
       </svg>
+
       Reports
+
     </button>
 
 
     <button>
+
       <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19 12a7 7 0 0 0-.2-1.6l2-1.2-2-3.4-2.2 1a7 7 0 0 0-2.8-1.6V3h-4v2.2A7 7 0 0 0 9 6.8l-2.2-1-2 3.4 2 1.2A7 7 0 0 0 6.6 12c0 .6.1 1.1.2 1.6l-2 1.2 2 3.4 2.2-1a7 7 0 0 0 2.8 1.6V21h4v-2.2a7 7 0 0 0 2.8-1.6l2.2 1 2-3.4-2-1.2c.1-.5.2-1 .2-1.6z"/>
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+        />
+
+        <path
+          d="M19 12a7 7 0 0 0-.2-1.6l2-1.2-2-3.4-2.2 1a7 7 0 0 0-2.8-1.6V3h-4v2.2A7 7 0 0 0 9 6.8l-2.2-1-2 3.4 2 1.2A7 7 0 0 0 6.6 12c0 .6.1 1.1.2 1.6l-2 1.2 2 3.4 2.2-1a7 7 0 0 0 2.8 1.6V21h4v-2.2a7 7 0 0 0 2.8-1.6l2.2 1 2-3.4-2-1.2c.1-.5.2-1 .2-1.6z"
+        />
+
       </svg>
+
       Settings
+
     </button>
 
   </nav>
@@ -660,26 +1052,39 @@ label{
 
 <section class="main">
 
+
 <header class="topbar">
 
-  <div style="display:flex;gap:10px;align-items:center;">
+  <div
+    style="
+    display:flex;
+    gap:10px;
+    align-items:center;
+    "
+  >
 
     <button
       class="icon-btn"
       id="menuBtn"
-      style="display:none;">
+      style="display:none;"
+    >
 
       <svg viewBox="0 0 24 24">
+
         <path d="M4 6h16"/>
         <path d="M4 12h16"/>
         <path d="M4 18h16"/>
+
       </svg>
 
     </button>
 
+
     <div>
 
-      <h1>Dashboard</h1>
+      <h1>
+        Dashboard
+      </h1>
 
       <p>
         Manage the Naija Life world
@@ -694,13 +1099,24 @@ label{
 
     <button
       class="icon-btn"
-      id="refreshBtn">
+      id="refreshBtn"
+      title="Refresh"
+    >
 
       <svg viewBox="0 0 24 24">
-        <path d="M20 11a8 8 0 0 0-15-4"/>
+
+        <path
+          d="M20 11a8 8 0 0 0-15-4"
+        />
+
         <path d="M4 4v5h5"/>
-        <path d="M4 13a8 8 0 0 0 15 4"/>
+
+        <path
+          d="M4 13a8 8 0 0 0 15 4"
+        />
+
         <path d="M20 20v-5h-5"/>
+
       </svg>
 
     </button>
@@ -708,12 +1124,24 @@ label{
 
     <button
       class="icon-btn"
-      id="logoutBtn">
+      id="logoutBtn"
+      title="Lock Admin Panel"
+    >
 
       <svg viewBox="0 0 24 24">
-        <path d="M10 17l5-5-5-5"/>
-        <path d="M15 12H3"/>
-        <path d="M21 19V5a2 2 0 0 0-2-2h-6"/>
+
+        <rect
+          x="5"
+          y="10"
+          width="14"
+          height="11"
+          rx="2"
+        />
+
+        <path
+          d="M8 10V7a4 4 0 0 1 8 0v3"
+        />
+
       </svg>
 
     </button>
@@ -726,12 +1154,27 @@ label{
 <main class="content">
 
 
-<div id="status" class="status">
+<div
+  id="status"
+  class="status"
+>
 
   <svg viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M12 8v4"/>
-    <path d="M12 16h.01"/>
+
+    <circle
+      cx="12"
+      cy="12"
+      r="9"
+    />
+
+    <path
+      d="M12 8v4"
+    />
+
+    <path
+      d="M12 16h.01"
+    />
+
   </svg>
 
   Checking administrator access...
@@ -739,161 +1182,240 @@ label{
 </div>
 
 
+<!-- =====================================================
+     STATS
+===================================================== -->
+
 <section class="stats">
 
-  <div class="stat">
 
-    <div class="stat-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-      </svg>
-    </div>
+<div class="stat">
 
-    <div class="stat-label">
-      TOTAL PLAYERS
-    </div>
+  <div class="stat-icon">
 
-    <div class="stat-value"
-         id="totalPlayers">
-      —
-    </div>
+    <svg viewBox="0 0 24 24">
 
-  </div>
+      <path
+        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+      />
 
+      <circle
+        cx="9"
+        cy="7"
+        r="4"
+      />
 
-  <div class="stat">
+      <path
+        d="M22 21v-2a4 4 0 0 0-3-3.87"
+      />
 
-    <div class="stat-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M8 12l2.5 2.5L16 9"/>
-      </svg>
-    </div>
-
-    <div class="stat-label">
-      ACTIVE
-    </div>
-
-    <div class="stat-value"
-         id="activePlayers">
-      —
-    </div>
+    </svg>
 
   </div>
 
+  <div class="stat-label">
+    TOTAL PLAYERS
+  </div>
 
-  <div class="stat">
+  <div
+    class="stat-value"
+    id="totalPlayers"
+  >
+    —
+  </div>
 
-    <div class="stat-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M6 6l12 12"/>
-      </svg>
-    </div>
+</div>
 
-    <div class="stat-label">
-      BANNED
-    </div>
 
-    <div class="stat-value"
-         id="bannedPlayers">
-      —
-    </div>
+<div class="stat">
+
+  <div class="stat-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      />
+
+      <path
+        d="M8 12l2.5 2.5L16 9"
+      />
+
+    </svg>
 
   </div>
 
+  <div class="stat-label">
+    ACTIVE
+  </div>
 
-  <div class="stat">
+  <div
+    class="stat-value"
+    id="activePlayers"
+  >
+    —
+  </div>
 
-    <div class="stat-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M8 12h8"/>
-        <path d="M12 8v8"/>
-      </svg>
-    </div>
+</div>
 
-    <div class="stat-label">
-      ARRESTED
-    </div>
 
-    <div class="stat-value"
-         id="arrestedPlayers">
-      —
-    </div>
+<div class="stat">
+
+  <div class="stat-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      />
+
+      <path d="M6 6l12 12"/>
+
+    </svg>
 
   </div>
+
+  <div class="stat-label">
+    BANNED
+  </div>
+
+  <div
+    class="stat-value"
+    id="bannedPlayers"
+  >
+    —
+  </div>
+
+</div>
+
+
+<div class="stat">
+
+  <div class="stat-icon">
+
+    <svg viewBox="0 0 24 24">
+
+      <path d="M7 3h10"/>
+      <path d="M7 21h10"/>
+      <path d="M8 3v5l4 4-4 4v5"/>
+      <path d="M16 3v5l-4 4 4 4v5"/>
+
+    </svg>
+
+  </div>
+
+  <div class="stat-label">
+    ARRESTED
+  </div>
+
+  <div
+    class="stat-value"
+    id="arrestedPlayers"
+  >
+    —
+  </div>
+
+</div>
+
 
 </section>
 
 
-<section class="panel"
-         id="playersPanel">
+<!-- =====================================================
+     PLAYERS
+===================================================== -->
+
+<section
+  class="panel"
+  id="playersPanel"
+>
+
 
 <div class="panel-head">
 
-  <div class="panel-title">
 
-    <svg viewBox="0 0 24 24">
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-      <circle cx="9" cy="7" r="4"/>
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-    </svg>
+<div class="panel-title">
 
-    <div>
+  <svg viewBox="0 0 24 24">
 
-      <h2>Player Management</h2>
+    <path
+      d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+    />
 
-      <p>
-        Arrest, release and manage players
-      </p>
+    <circle
+      cx="9"
+      cy="7"
+      r="4"
+    />
 
-    </div>
+    <path
+      d="M22 21v-2a4 4 0 0 0-3-3.87"
+    />
 
-  </div>
-
-
-  <div class="controls">
-
-    <input
-      id="search"
-      class="search"
-      placeholder="Search players..."
-    >
+  </svg>
 
 
-    <select
-      id="filter"
-      class="select">
+  <div>
 
-      <option value="all">
-        All
-      </option>
+    <h2>
+      Player Management
+    </h2>
 
-      <option value="active">
-        Active
-      </option>
-
-      <option value="arrested">
-        Arrested
-      </option>
-
-      <option value="banned">
-        Banned
-      </option>
-
-    </select>
+    <p>
+      Arrest, release, ban and manage players
+    </p>
 
   </div>
 
 </div>
 
 
+<div class="controls">
+
+  <input
+    id="search"
+    class="search"
+    placeholder="Search players..."
+  >
+
+
+  <select
+    id="filter"
+    class="select"
+  >
+
+    <option value="all">
+      All
+    </option>
+
+    <option value="active">
+      Active
+    </option>
+
+    <option value="arrested">
+      Arrested
+    </option>
+
+    <option value="banned">
+      Banned
+    </option>
+
+  </select>
+
+</div>
+
+
+</div>
+
+
 <div
   id="players"
-  class="players">
+  class="players"
+>
 
   <div class="empty">
     Loading players...
@@ -901,7 +1423,9 @@ label{
 
 </div>
 
+
 </section>
+
 
 </main>
 
@@ -910,27 +1434,33 @@ label{
 </div>
 
 
-<!-- ARREST MODAL -->
+<!-- =====================================================
+     ARREST MODAL
+===================================================== -->
 
 <div
   class="modal"
-  id="arrestModal">
+  id="arrestModal"
+>
 
 <div class="modal-box">
 
   <div class="modal-head">
 
     <h2>
-      Arrest Player
+      👮🏾 Arrest Player
     </h2>
 
     <button
       class="close"
-      id="closeArrest">
+      id="closeArrest"
+    >
 
       <svg viewBox="0 0 24 24">
+
         <path d="M6 6l12 12"/>
         <path d="M18 6L6 18"/>
+
       </svg>
 
     </button>
@@ -971,10 +1501,84 @@ label{
 
   <button
     class="primary warning"
-    id="confirmArrest">
-
+    id="confirmArrest"
+  >
     Arrest Player
+  </button>
 
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MONEY MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="moneyModal"
+>
+
+<div class="modal-box">
+
+  <div class="modal-head">
+
+    <h2>
+      💰 Adjust Money
+    </h2>
+
+    <button
+      class="close"
+      id="closeMoney"
+    >
+
+      <svg viewBox="0 0 24 24">
+
+        <path d="M6 6l12 12"/>
+        <path d="M18 6L6 18"/>
+
+      </svg>
+
+    </button>
+
+  </div>
+
+
+  <p id="moneyPlayerName">
+    Player
+  </p>
+
+
+  <label>
+    AMOUNT
+  </label>
+
+  <input
+    class="input"
+    id="moneyAmount"
+    type="number"
+    placeholder="Example: 5000"
+  >
+
+
+  <label>
+    REASON
+  </label>
+
+  <input
+    class="input"
+    id="moneyReason"
+    maxlength="200"
+    placeholder="Admin adjustment"
+  >
+
+
+  <button
+    class="primary"
+    id="confirmMoney"
+  >
+    Apply Money
   </button>
 
 </div>
@@ -984,17 +1588,23 @@ label{
 
 <script type="module">
 
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 import {
   initializeApp
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 
 import {
   getAuth,
-  onAuthStateChanged,
-  signOut
-} from
+  onAuthStateChanged
+}
+from
 "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
@@ -1004,39 +1614,41 @@ import {
   getDocs,
   doc,
   getDoc
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
 import {
   getFunctions,
   httpsCallable
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
 
 
-const firebaseConfig={
+const firebaseConfig = {
 
-apiKey:
-"AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
+  apiKey:
+  "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
 
-authDomain:
-"game-97f37.firebaseapp.com",
+  authDomain:
+  "game-97f37.firebaseapp.com",
 
-projectId:
-"game-97f37",
+  projectId:
+  "game-97f37",
 
-storageBucket:
-"game-97f37.firebasestorage.app",
+  storageBucket:
+  "game-97f37.firebasestorage.app",
 
-messagingSenderId:
-"584626250832",
+  messagingSenderId:
+  "584626250832",
 
-appId:
-"1:584626250832:web:57f076e095174ccd74dd55",
+  appId:
+  "1:584626250832:web:57f076e095174ccd74dd55",
 
-databaseURL:
-"https://game-97f37-default-rtdb.firebaseio.com"
+  databaseURL:
+  "https://game-97f37-default-rtdb.firebaseio.com"
 
 };
 
@@ -1054,116 +1666,337 @@ const functions =
 getFunctions(app);
 
 
-const playersEl =
-document.getElementById("players");
+/* =====================================================
+   ADMIN PASSWORD
+===================================================== */
 
-const search =
-document.getElementById("search");
+/*
+   CHANGE THIS PASSWORD.
+   
+   Example:
+   const ADMIN_PASSWORD = "MaroAdmin2026!";
+*/
 
-const filter =
-document.getElementById("filter");
-
-const totalPlayers =
-document.getElementById("totalPlayers");
-
-const activePlayers =
-document.getElementById("activePlayers");
-
-const bannedPlayers =
-document.getElementById("bannedPlayers");
-
-const arrestedPlayers =
-document.getElementById("arrestedPlayers");
-
-const status =
-document.getElementById("status");
-
-const arrestModal =
-document.getElementById("arrestModal");
-
-const arrestPlayerName =
-document.getElementById("arrestPlayerName");
-
-const jailMinutes =
-document.getElementById("jailMinutes");
-
-const arrestReason =
-document.getElementById("arrestReason");
-
-const confirmArrest =
-document.getElementById("confirmArrest");
-
-let players=[];
-
-let selectedPlayer=null;
+const ADMIN_PASSWORD =
+"CHANGE_THIS_PASSWORD";
 
 
 /* =====================================================
-   AUTH
+   ELEMENTS
 ===================================================== */
 
+const passwordScreen =
+document.getElementById(
+  "passwordScreen"
+);
+
+const adminApp =
+document.getElementById(
+  "adminApp"
+);
+
+const adminPassword =
+document.getElementById(
+  "adminPassword"
+);
+
+const adminLoginBtn =
+document.getElementById(
+  "adminLoginBtn"
+);
+
+const loginError =
+document.getElementById(
+  "loginError"
+);
+
+const status =
+document.getElementById(
+  "status"
+);
+
+const playersEl =
+document.getElementById(
+  "players"
+);
+
+const search =
+document.getElementById(
+  "search"
+);
+
+const filter =
+document.getElementById(
+  "filter"
+);
+
+const totalPlayers =
+document.getElementById(
+  "totalPlayers"
+);
+
+const activePlayers =
+document.getElementById(
+  "activePlayers"
+);
+
+const bannedPlayers =
+document.getElementById(
+  "bannedPlayers"
+);
+
+const arrestedPlayers =
+document.getElementById(
+  "arrestedPlayers"
+);
+
+const arrestModal =
+document.getElementById(
+  "arrestModal"
+);
+
+const arrestPlayerName =
+document.getElementById(
+  "arrestPlayerName"
+);
+
+const jailMinutes =
+document.getElementById(
+  "jailMinutes"
+);
+
+const arrestReason =
+document.getElementById(
+  "arrestReason"
+);
+
+const confirmArrest =
+document.getElementById(
+  "confirmArrest"
+);
+
+const moneyModal =
+document.getElementById(
+  "moneyModal"
+);
+
+const moneyPlayerName =
+document.getElementById(
+  "moneyPlayerName"
+);
+
+const moneyAmount =
+document.getElementById(
+  "moneyAmount"
+);
+
+const moneyReason =
+document.getElementById(
+  "moneyReason"
+);
+
+const confirmMoney =
+document.getElementById(
+  "confirmMoney"
+);
+
+
+let players = [];
+
+let selectedPlayer = null;
+
+let selectedMoneyPlayer = null;
+
+
+/* =====================================================
+   PASSWORD LOGIN
+===================================================== */
+
+function unlockAdmin(){
+
+  passwordScreen.style.display =
+    "none";
+
+  adminApp.style.display =
+    "block";
+
+}
+
+
+function lockAdmin(){
+
+  passwordScreen.style.display =
+    "flex";
+
+  adminApp.style.display =
+    "none";
+
+  adminPassword.value =
+    "";
+
+  loginError.style.display =
+    "none";
+
+}
+
+
+adminLoginBtn.addEventListener(
+  "click",
+  () => {
+
+    const password =
+      adminPassword.value;
+
+    if(
+      password ===
+      ADMIN_PASSWORD
+    ){
+
+      unlockAdmin();
+
+      return;
+    }
+
+    loginError.textContent =
+      "Incorrect admin password.";
+
+    loginError.style.display =
+      "block";
+
+  }
+);
+
+
+adminPassword.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+      "Enter"
+    ){
+
+      adminLoginBtn.click();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   FIREBASE ADMIN AUTH CHECK
+===================================================== */
+
+/*
+   Firebase Auth must still have the administrator
+   signed in because Cloud Functions need an
+   authenticated admin session.
+*/
+
 onAuthStateChanged(
-auth,
-async user=>{
+  auth,
+  async user => {
 
-if(!user){
+    if(!user){
 
-status.classList.add("error");
+      status.classList.add(
+        "error"
+      );
 
-status.innerHTML=
-"Login required.";
+      status.innerHTML = `
 
-return;
+        <svg viewBox="0 0 24 24">
+          <circle
+            cx="12"
+            cy="12"
+            r="9"
+          />
+          <path d="M12 8v4"/>
+          <path d="M12 16h.01"/>
+        </svg>
 
-}
+        Firebase administrator session is not signed in.
+
+      `;
+
+      return;
+    }
 
 
-try{
+    try{
 
-const adminSnap=
-await getDoc(
-doc(db,"admins",user.uid)
+      const adminSnap =
+        await getDoc(
+          doc(
+            db,
+            "admins",
+            user.uid
+          )
+        );
+
+
+      if(
+        !adminSnap.exists() ||
+        adminSnap.data().active !== true ||
+        adminSnap.data().role !== "admin"
+      ){
+
+        status.classList.add(
+          "error"
+        );
+
+        status.textContent =
+          "This Firebase account is not an active administrator.";
+
+        return;
+      }
+
+
+      status.classList.remove(
+        "error"
+      );
+
+
+      status.innerHTML = `
+
+        <svg viewBox="0 0 24 24">
+
+          <circle
+            cx="12"
+            cy="12"
+            r="9"
+          />
+
+          <path
+            d="M8 12l2.5 2.5L16 9"
+          />
+
+        </svg>
+
+        Administrator access ready
+
+      `;
+
+
+      await loadPlayers();
+
+
+    }catch(error){
+
+      console.error(error);
+
+      status.classList.add(
+        "error"
+      );
+
+      status.textContent =
+        error.message;
+
+    }
+
+  }
 );
-
-
-if(
-!adminSnap.exists() ||
-adminSnap.data().active!==true ||
-adminSnap.data().role!=="admin"
-){
-
-throw new Error(
-"Administrator access denied."
-);
-
-}
-
-
-status.innerHTML=`
-
-<svg viewBox="0 0 24 24">
-<circle cx="12" cy="12" r="9"/>
-<path d="M8 12l2.5 2.5L16 9"/>
-</svg>
-
-Administrator access granted
-
-`;
-
-
-await loadPlayers();
-
-
-}catch(error){
-
-status.classList.add("error");
-
-status.textContent=
-error.message;
-
-}
-
-});
 
 
 /* =====================================================
@@ -1172,27 +2005,58 @@ error.message;
 
 async function loadPlayers(){
 
-const snap=
-await getDocs(
-collection(db,"players")
-);
+  try{
 
-players=[];
-
-
-snap.forEach(item=>{
-
-players.push({
-id:item.id,
-...item.data()
-});
-
-});
+    playersEl.innerHTML = `
+      <div class="empty">
+        Loading players...
+      </div>
+    `;
 
 
-updateStats();
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "players"
+        )
+      );
 
-render();
+
+    players = [];
+
+
+    snap.forEach(
+      item => {
+
+        players.push({
+
+          id:item.id,
+
+          ...item.data()
+
+        });
+
+      }
+    );
+
+
+    updateStats();
+
+    render();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    playersEl.innerHTML = `
+      <div class="empty">
+        Unable to load players.
+      </div>
+    `;
+
+  }
 
 }
 
@@ -1203,319 +2067,484 @@ render();
 
 function updateStats(){
 
-const total=
-players.length;
-
-const banned=
-players.filter(
-p=>p.banned===true
-).length;
-
-const arrested=
-players.filter(
-p=>p.arrested===true
-).length;
-
-const active=
-total-banned-arrested;
+  const total =
+    players.length;
 
 
-totalPlayers.textContent=
-total;
+  const banned =
+    players.filter(
+      p => p.banned === true
+    ).length;
 
-activePlayers.textContent=
-Math.max(active,0);
 
-bannedPlayers.textContent=
-banned;
+  const arrested =
+    players.filter(
+      p => p.arrested === true
+    ).length;
 
-arrestedPlayers.textContent=
-arrested;
+
+  const active =
+    players.filter(
+      p =>
+        p.banned !== true &&
+        p.arrested !== true
+    ).length;
+
+
+  totalPlayers.textContent =
+    total;
+
+  activePlayers.textContent =
+    active;
+
+  bannedPlayers.textContent =
+    banned;
+
+  arrestedPlayers.textContent =
+    arrested;
 
 }
 
 
 /* =====================================================
-   RENDER
+   RENDER PLAYERS
 ===================================================== */
 
 function render(){
 
-const q=
-search.value
-.trim()
-.toLowerCase();
+  const q =
+    search.value
+    .trim()
+    .toLowerCase();
 
-const f=
-filter.value;
 
+  const f =
+    filter.value;
 
-const list=
-players.filter(p=>{
 
-const text=[
-p.name,
-p.email,
-p.uid,
-p.city,
-p.job
-]
-.join(" ")
-.toLowerCase();
+  const list =
+    players.filter(
+      p => {
 
+        const text = [
 
-if(
-q &&
-!text.includes(q)
-)return false;
+          p.name,
+          p.email,
+          p.uid,
+          p.city,
+          p.job
 
+        ]
+        .join(" ")
+        .toLowerCase();
 
-if(
-f==="banned" &&
-p.banned!==true
-)return false;
 
+        if(
+          q &&
+          !text.includes(q)
+        ){
 
-if(
-f==="arrested" &&
-p.arrested!==true
-)return false;
+          return false;
 
+        }
 
-if(
-f==="active" &&
-(
-p.banned===true ||
-p.arrested===true
-)
-)return false;
 
+        if(
+          f === "banned" &&
+          p.banned !== true
+        ){
 
-return true;
+          return false;
 
-});
+        }
 
 
-if(!list.length){
+        if(
+          f === "arrested" &&
+          p.arrested !== true
+        ){
 
-playersEl.innerHTML=
-`
-<div class="empty">
-No players found.
-</div>
-`;
+          return false;
 
-return;
+        }
 
-}
 
+        if(
+          f === "active" &&
+          (
+            p.banned === true ||
+            p.arrested === true
+          )
+        ){
 
-playersEl.innerHTML=
-list.map(p=>{
+          return false;
 
-const banned=
-p.banned===true;
+        }
 
-const arrested=
-p.arrested===true;
 
+        return true;
 
-let jailText="";
+      }
+    );
 
-if(
-arrested &&
-p.jailUntil
-){
 
-const time=
-p.jailUntil.toDate
-? p.jailUntil.toDate()
-: new Date(p.jailUntil);
+  if(!list.length){
 
-jailText=
-"Until "+
-time.toLocaleString();
+    playersEl.innerHTML = `
+      <div class="empty">
+        No players found.
+      </div>
+    `;
 
-}
+    return;
 
+  }
 
-return `
 
-<div class="player">
+  playersEl.innerHTML =
+    list
+    .map(
+      p => {
 
-<div class="player-main">
+        const uid =
+          p.uid || p.id;
 
-<div class="avatar">
+        const banned =
+          p.banned === true;
 
-<svg viewBox="0 0 24 24">
-<circle cx="12" cy="8" r="4"/>
-<path d="M4 21a8 8 0 0 1 16 0"/>
-</svg>
+        const arrested =
+          p.arrested === true;
 
-</div>
 
-<div>
+        let jailText = "";
 
-<div class="name">
-${escapeHtml(
-p.name||"Unknown Player"
-)}
-</div>
 
-<div class="sub">
-${escapeHtml(
-p.email||p.uid||""
-)}
-</div>
+        if(
+          arrested &&
+          p.jailUntil
+        ){
 
-</div>
+          let date;
 
-</div>
 
+          if(
+            typeof p.jailUntil.toDate ===
+            "function"
+          ){
 
-<div>
+            date =
+              p.jailUntil.toDate();
 
-<div class="label">
-City
-</div>
+          }else{
 
-<div class="value">
-${escapeHtml(
-p.city||"Unknown"
-)}
-</div>
+            date =
+              new Date(
+                p.jailUntil
+              );
 
-</div>
+          }
 
 
-<div>
+          jailText =
+            "Until " +
+            date.toLocaleString();
 
-<div class="label">
-Level
-</div>
+        }
 
-<div class="value">
-${Number(p.level||1)}
-</div>
 
-</div>
+        let statusBadge;
 
 
-<div>
+        if(banned){
 
-<div class="label">
-Status
-</div>
+          statusBadge = `
 
-<div>
+            <span class="badge banned">
+              BANNED
+            </span>
 
-${
-banned
+          `;
 
-?
+        }else if(arrested){
 
-`<span class="badge banned">
-BANNED
-</span>`
+          statusBadge = `
 
-:
+            <span class="badge arrested">
+              ARRESTED
+            </span>
 
-arrested
+          `;
 
-?
+        }else{
 
-`<span class="badge arrested">
-ARRESTED
-</span>`
+          statusBadge = `
 
-:
+            <span class="badge active">
+              ACTIVE
+            </span>
 
-`<span class="badge active">
-ACTIVE
-</span>`
+          `;
 
-}
+        }
 
-</div>
 
-${
-arrested
-?
-`<div
-style="font-size:9px;color:#a98548;margin-top:5px;">
-${escapeHtml(jailText)}
-</div>`
-:""
-}
+        let mainAction;
 
-</div>
 
+        if(arrested){
 
-<div class="actions">
+          mainAction = `
 
+            <button
+              class="action release"
+              title="Release player"
+              data-action="release"
+              data-id="${escapeHtml(uid)}"
+            >
 
-${
-arrested
+              <svg viewBox="0 0 24 24">
 
-?
+                <path d="M5 12h14"/>
+                <path d="M12 5l7 7-7 7"/>
 
-`<button
-class="action release"
-title="Release player"
-data-action="release"
-data-id="${escapeHtml(p.uid||p.id)}">
+              </svg>
 
-<svg viewBox="0 0 24 24">
-<path d="M5 12h14"/>
-<path d="M12 5l7 7-7 7"/>
-</svg>
+            </button>
 
-</button>`
+          `;
 
-:
+        }else{
 
-`<button
-class="action arrest"
-title="Arrest player"
-data-action="arrest"
-data-id="${escapeHtml(p.uid||p.id)}"
-data-name="${escapeHtml(p.name||"Player")}">
+          mainAction = `
 
-<svg viewBox="0 0 24 24">
-<path d="M7 3h10"/>
-<path d="M7 21h10"/>
-<path d="M8 3v5l4 4-4 4v5"/>
-<path d="M16 3v5l-4 4 4 4v5"/>
-</svg>
+            <button
+              class="action arrest"
+              title="Arrest player"
+              data-action="arrest"
+              data-id="${escapeHtml(uid)}"
+              data-name="${escapeHtml(
+                p.name || "Player"
+              )}"
+            >
 
-</button>`
+              <svg viewBox="0 0 24 24">
 
-}
+                <path d="M7 3h10"/>
+                <path d="M7 21h10"/>
+                <path d="M8 3v5l4 4-4 4v5"/>
+                <path d="M16 3v5l-4 4 4 4v5"/>
 
+              </svg>
 
-</div>
+            </button>
 
-</div>
+          `;
 
-`;
+        }
 
-}).join("");
+
+        return `
+
+          <div class="player">
+
+            <div class="player-main">
+
+              <div class="avatar">
+
+                <svg viewBox="0 0 24 24">
+
+                  <circle
+                    cx="12"
+                    cy="8"
+                    r="4"
+                  />
+
+                  <path
+                    d="M4 21a8 8 0 0 1 16 0"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <div class="name">
+
+                  ${escapeHtml(
+                    p.name ||
+                    "Unknown Player"
+                  )}
+
+                </div>
+
+                <div class="sub">
+
+                  ${escapeHtml(
+                    p.email ||
+                    uid
+                  )}
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                City
+              </div>
+
+              <div class="value">
+
+                ${escapeHtml(
+                  p.city ||
+                  "Unknown"
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                Level
+              </div>
+
+              <div class="value">
+
+                ${Number(
+                  p.level || 1
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                Status
+              </div>
+
+              <div>
+
+                ${statusBadge}
+
+              </div>
+
+
+              ${
+                arrested
+                ?
+                `
+                <div
+                  style="
+                    font-size:9px;
+                    color:#a98548;
+                    margin-top:5px;
+                  "
+                >
+
+                  ${escapeHtml(
+                    jailText
+                  )}
+
+                </div>
+                `
+                :
+                ""
+              }
+
+            </div>
+
+
+            <div class="actions">
+
+
+              <button
+                class="action money"
+                title="Adjust money"
+                data-action="money"
+                data-id="${escapeHtml(uid)}"
+                data-name="${escapeHtml(
+                  p.name || "Player"
+                )}"
+              >
+
+                <svg viewBox="0 0 24 24">
+
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                  />
+
+                  <path d="M8 12h8"/>
+                  <path d="M12 8v8"/>
+
+                </svg>
+
+              </button>
+
+
+              ${mainAction}
+
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    )
+    .join("");
 
 }
 
 
 /* =====================================================
-   ESCAPE
+   ESCAPE HTML
 ===================================================== */
 
 function escapeHtml(value){
 
-return String(value??"")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+  return String(
+    value ?? ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
 
 }
 
@@ -1525,13 +2554,13 @@ return String(value??"")
 ===================================================== */
 
 search.addEventListener(
-"input",
-render
+  "input",
+  render
 );
 
 filter.addEventListener(
-"change",
-render
+  "change",
+  render
 );
 
 
@@ -1540,191 +2569,436 @@ render
 ===================================================== */
 
 playersEl.addEventListener(
-"click",
-async event=>{
+  "click",
+  async event => {
 
-const button=
-event.target.closest("button");
-
-if(!button)return;
-
-
-const action=
-button.dataset.action;
-
-const uid=
-button.dataset.id;
+    const button =
+      event.target.closest(
+        "button"
+      );
 
 
-if(!uid)return;
+    if(!button) return;
 
 
-if(action==="arrest"){
-
-selectedPlayer=uid;
-
-arrestPlayerName.textContent=
-"Player: "+
-button.dataset.name;
-
-jailMinutes.value="30";
-
-arrestReason.value="";
-
-arrestModal.classList.add("show");
-
-return;
-
-}
+    const action =
+      button.dataset.action;
 
 
-if(action==="release"){
-
-if(
-!confirm(
-"Release this player from jail?"
-)
-)return;
+    const uid =
+      button.dataset.id;
 
 
-try{
+    if(!uid) return;
 
-const release=
-httpsCallable(
-functions,
-"releasePlayer"
+
+    if(
+      action === "arrest"
+    ){
+
+      selectedPlayer =
+        uid;
+
+
+      arrestPlayerName.textContent =
+        "Player: " +
+        button.dataset.name;
+
+
+      jailMinutes.value =
+        "30";
+
+
+      arrestReason.value =
+        "";
+
+
+      arrestModal.classList.add(
+        "show"
+      );
+
+
+      return;
+
+    }
+
+
+    if(
+      action === "release"
+    ){
+
+      if(
+        !confirm(
+          "Release this player from jail?"
+        )
+      ){
+
+        return;
+
+      }
+
+
+      try{
+
+        const release =
+          httpsCallable(
+            functions,
+            "releasePlayer"
+          );
+
+
+        await release({
+
+          uid
+
+        });
+
+
+        alert(
+          "Player released successfully."
+        );
+
+
+        await loadPlayers();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        alert(
+          error.message ||
+          "Release failed."
+        );
+
+      }
+
+
+      return;
+
+    }
+
+
+    if(
+      action === "money"
+    ){
+
+      selectedMoneyPlayer =
+        uid;
+
+
+      moneyPlayerName.textContent =
+        "Player: " +
+        button.dataset.name;
+
+
+      moneyAmount.value =
+        "";
+
+
+      moneyReason.value =
+        "";
+
+
+      moneyModal.classList.add(
+        "show"
+      );
+
+    }
+
+  }
 );
-
-await release({
-uid
-});
-
-await loadPlayers();
-
-}catch(error){
-
-alert(
-error.message||
-"Release failed."
-);
-
-}
-
-}
-
-});
 
 
 /* =====================================================
-   CONFIRM ARREST
+   ARREST PLAYER
 ===================================================== */
 
 confirmArrest.addEventListener(
-"click",
-async()=>{
+  "click",
+  async () => {
 
-if(!selectedPlayer)return;
+    if(
+      !selectedPlayer
+    ){
+
+      return;
+
+    }
 
 
-const duration=
-Number(jailMinutes.value);
+    const duration =
+      Number(
+        jailMinutes.value
+      );
 
-const reason=
-arrestReason.value.trim();
+
+    const reason =
+      arrestReason.value
+      .trim();
 
 
-if(
-!Number.isFinite(duration) ||
-duration<1 ||
-duration>1440
-){
+    if(
+      !Number.isFinite(
+        duration
+      ) ||
+      duration < 1 ||
+      duration > 1440
+    ){
 
-alert(
-"Choose a jail time between 1 and 1440 minutes."
+      alert(
+        "Jail time must be between 1 and 1440 minutes."
+      );
+
+      return;
+
+    }
+
+
+    if(!reason){
+
+      alert(
+        "Enter an arrest reason."
+      );
+
+      return;
+
+    }
+
+
+    try{
+
+      confirmArrest.disabled =
+        true;
+
+      confirmArrest.textContent =
+        "Arresting...";
+
+
+      const arrest =
+        httpsCallable(
+          functions,
+          "arrestPlayer"
+        );
+
+
+      await arrest({
+
+        uid:
+          selectedPlayer,
+
+        durationMinutes:
+          duration,
+
+        reason
+
+      });
+
+
+      closeArrest();
+
+
+      alert(
+        "Player arrested successfully."
+      );
+
+
+      await loadPlayers();
+
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        error.message ||
+        "Arrest failed."
+      );
+
+    }finally{
+
+      confirmArrest.disabled =
+        false;
+
+      confirmArrest.textContent =
+        "Arrest Player";
+
+    }
+
+  }
 );
-
-return;
-
-}
-
-
-if(!reason){
-
-alert(
-"Enter an arrest reason."
-);
-
-return;
-
-}
-
-
-try{
-
-confirmArrest.disabled=true;
-
-
-const arrest=
-httpsCallable(
-functions,
-"arrestPlayer"
-);
-
-
-await arrest({
-
-uid:selectedPlayer,
-
-durationMinutes:
-duration,
-
-reason
-
-});
-
-
-closeArrest();
-
-await loadPlayers();
-
-
-}catch(error){
-
-alert(
-error.message||
-"Arrest failed."
-);
-
-}finally{
-
-confirmArrest.disabled=false;
-
-}
-
-});
 
 
 /* =====================================================
-   CLOSE ARREST
+   RELEASE ARREST MODAL
 ===================================================== */
 
 function closeArrest(){
 
-arrestModal.classList.remove(
-"show"
-);
+  arrestModal.classList.remove(
+    "show"
+  );
 
-selectedPlayer=null;
+  selectedPlayer =
+    null;
 
 }
 
 
 document
-.getElementById("closeArrest")
-.addEventListener(
-"click",
-closeArrest
+  .getElementById(
+    "closeArrest"
+  )
+  .addEventListener(
+    "click",
+    closeArrest
+  );
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+confirmMoney.addEventListener(
+  "click",
+  async () => {
+
+    if(
+      !selectedMoneyPlayer
+    ){
+
+      return;
+
+    }
+
+
+    const amount =
+      Number(
+        moneyAmount.value
+      );
+
+
+    const reason =
+      moneyReason.value.trim();
+
+
+    if(
+      !Number.isFinite(
+        amount
+      )
+    ){
+
+      alert(
+        "Enter a valid amount."
+      );
+
+      return;
+
+    }
+
+
+    if(
+      Math.abs(amount) >
+      100000000
+    ){
+
+      alert(
+        "Maximum adjustment is 100,000,000."
+      );
+
+      return;
+
+    }
+
+
+    try{
+
+      confirmMoney.disabled =
+        true;
+
+      confirmMoney.textContent =
+        "Applying...";
+
+
+      const addMoney =
+        httpsCallable(
+          functions,
+          "addGameMoney"
+        );
+
+
+      const result =
+        await addMoney({
+
+          uid:
+            selectedMoneyPlayer,
+
+          amount,
+
+          reason:
+            reason ||
+            "Admin adjustment"
+
+        });
+
+
+      closeMoney();
+
+
+      alert(
+        "Money updated successfully.\n\nNew balance: ₦" +
+        Number(
+          result.data.after
+        ).toLocaleString()
+      );
+
+
+      await loadPlayers();
+
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        error.message ||
+        "Money adjustment failed."
+      );
+
+    }finally{
+
+      confirmMoney.disabled =
+        false;
+
+      confirmMoney.textContent =
+        "Apply Money";
+
+    }
+
+  }
 );
+
+
+function closeMoney(){
+
+  moneyModal.classList.remove(
+    "show"
+  );
+
+  selectedMoneyPlayer =
+    null;
+
+}
+
+
+document
+  .getElementById(
+    "closeMoney"
+  )
+  .addEventListener(
+    "click",
+    closeMoney
+  );
 
 
 /* =====================================================
@@ -1732,29 +3006,102 @@ closeArrest
 ===================================================== */
 
 document
-.getElementById("refreshBtn")
-.addEventListener(
-"click",
-loadPlayers
-);
+  .getElementById(
+    "refreshBtn"
+  )
+  .addEventListener(
+    "click",
+    loadPlayers
+  );
 
 
 /* =====================================================
-   LOGOUT
+   LOCK / LOGOUT
+===================================================== */
+
+/*
+   IMPORTANT:
+   This does NOT sign out Firebase.
+
+   It only locks the admin interface.
+   That means you can tap the button and immediately
+   enter your admin password again.
+*/
+
+document
+  .getElementById(
+    "logoutBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      lockAdmin();
+
+    }
+  );
+
+
+/* =====================================================
+   MOBILE MENU
 ===================================================== */
 
 document
-.getElementById("logoutBtn")
-.addEventListener(
-"click",
-async()=>{
+  .getElementById(
+    "menuBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-await signOut(auth);
+      document
+        .getElementById(
+          "sidebar"
+        )
+        .classList.toggle(
+          "open"
+        );
 
-location.reload();
+    }
+  );
 
-});
 
+/* =====================================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+===================================================== */
+
+arrestModal.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      arrestModal
+    ){
+
+      closeArrest();
+
+    }
+
+  }
+);
+
+
+moneyModal.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      moneyModal
+    ){
+
+      closeMoney();
+
+    }
+
+  }
+);
 
 </script>
 
