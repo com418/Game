@@ -3,624 +3,920 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Naija Life</title>
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Naija Life — Lagos</title>
 
 <style>
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
-
 html,body{
   margin:0;
   width:100%;
   height:100%;
   overflow:hidden;
-  font-family:Arial,sans-serif;
-  background:#07120f;
-  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#101615;
+  color:#fff;
+  touch-action:none;
 }
 
 button,input,select{
   font:inherit;
 }
 
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.screen{
+#game{
   position:fixed;
   inset:0;
-  display:none;
-}
-
-.screen.active{
-  display:flex;
-}
-
-/* MENU */
-#menu{
-  align-items:center;
-  justify-content:center;
-  background:
-    radial-gradient(circle at 50% 20%,#159463 0,#07120f 45%);
-}
-
-.menuBox{
-  width:min(92%,430px);
-  padding:28px;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:28px;
-  background:rgba(7,18,15,.92);
-  box-shadow:0 25px 80px #0008;
-  text-align:center;
-}
-
-.logo{
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:-2px;
-}
-
-.sub{
-  opacity:.65;
-  margin:7px 0 25px;
-}
-
-.cityBtn{
-  width:100%;
-  margin:8px 0;
-  padding:18px;
-  border-radius:17px;
-  color:white;
-  background:#0d6f4c;
-  font-weight:800;
-}
-
-.cityBtn:active{
-  transform:scale(.98);
-}
-
-/* CREATOR */
-#creator{
-  align-items:center;
-  justify-content:center;
-  background:#08140f;
-}
-
-.creatorBox{
-  width:min(94%,480px);
-  max-height:94vh;
-  overflow:auto;
-  padding:22px;
-  border-radius:25px;
-  background:#102019;
-}
-
-.preview{
-  height:220px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:20px;
-  background:#07110d;
-  margin-bottom:15px;
-}
-
-label{
-  display:block;
-  margin:12px 0 6px;
-  font-size:13px;
-  opacity:.7;
-}
-
-input,select{
-  width:100%;
-  padding:13px;
-  border:1px solid #ffffff18;
-  border-radius:12px;
-  outline:none;
-  color:white;
-  background:#07130f;
-}
-
-.primary{
-  width:100%;
-  margin-top:16px;
-  padding:15px;
-  border-radius:14px;
-  color:white;
-  background:#0b8b5d;
-  font-weight:800;
-}
-
-/* GAME */
-#game{
-  display:none;
-  background:#080d0b;
+  overflow:hidden;
+  background:#18201d;
 }
 
 #world{
   position:absolute;
-  width:3000px;
-  height:2200px;
+  width:3600px;
+  height:2600px;
+  left:0;
+  top:0;
   overflow:hidden;
+  background:#77866c;
+  transform-origin:0 0;
+}
+
+/* =========================
+   TERRAIN
+========================= */
+
+.ground{
+  position:absolute;
+  inset:0;
   background:
-    linear-gradient(#b8d69d 0 100%);
+    radial-gradient(circle at 15% 20%,rgba(255,255,255,.04),transparent 20%),
+    radial-gradient(circle at 80% 60%,rgba(0,0,0,.06),transparent 30%),
+    #77886f;
 }
 
-.road{
+.water{
   position:absolute;
-  background:#373c3b;
+  background:
+    radial-gradient(circle at 25% 30%,rgba(255,255,255,.12),transparent 15%),
+    linear-gradient(135deg,#4c9eb0,#327f94);
+  border:8px solid rgba(255,255,255,.08);
 }
 
-.road.h{
-  width:3000px;
-  height:105px;
+#lagoon{
+  left:0;
+  top:1540px;
+  width:3600px;
+  height:1060px;
+  clip-path:polygon(
+    0 12%,10% 16%,18% 8%,28% 20%,38% 13%,
+    47% 25%,56% 15%,65% 23%,76% 10%,88% 18%,100% 8%,
+    100% 100%,0 100%
+  );
 }
 
-.road.v{
-  width:105px;
-  height:2200px;
+#ocean{
+  left:0;
+  top:2180px;
+  width:3600px;
+  height:420px;
+  background:#287c91;
 }
 
-.roadLine{
+.landmark{
   position:absolute;
-  background:#d8bd58;
-}
-
-.building{
-  position:absolute;
-  width:170px;
-  height:130px;
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 12px 20px #0003;
-}
-
-.building svg{
-  width:100%;
-  height:100%;
-}
-
-#player,
-.npc{
-  position:absolute;
-  width:70px;
-  height:100px;
-  transform-origin:center bottom;
-  z-index:20;
-}
-
-.npc{
-  transition:transform .4s linear;
-}
-
-.shadow{
-  fill:#0003;
-}
-
-/* HUD */
-#hud{
-  position:fixed;
-  top:12px;
-  left:12px;
-  right:12px;
-  z-index:100;
-  display:flex;
-  justify-content:space-between;
+  color:#fff;
+  text-align:center;
+  font-weight:800;
+  text-shadow:0 2px 5px #0008;
   pointer-events:none;
 }
 
-.hudLeft,.hudRight{
+/* =========================
+   ROADS
+========================= */
+
+.road{
+  position:absolute;
+  background:#303735;
+  box-shadow:
+    inset 0 8px rgba(255,255,255,.025),
+    inset 0 -8px rgba(0,0,0,.12);
+}
+
+.road:after{
+  content:"";
+  position:absolute;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent 0 32px,
+    #e9d56b 32px 58px
+  );
+}
+
+.road.h:after{
+  left:0;
+  right:0;
+  top:50%;
+  height:5px;
+  transform:translateY(-50%);
+}
+
+.road.v:after{
+  top:0;
+  bottom:0;
+  left:50%;
+  width:5px;
+  transform:translateX(-50%);
+  background:repeating-linear-gradient(
+    0deg,
+    transparent 0 32px,
+    #e9d56b 32px 58px
+  );
+}
+
+.sidewalk{
+  position:absolute;
+  background:#b9b39b;
+}
+
+.bridge{
+  position:absolute;
+  background:#494d4b;
+  box-shadow:0 8px 20px #0005;
+  z-index:4;
+}
+
+.bridge .rail{
+  position:absolute;
+  background:#222927;
+}
+
+/* Main roads */
+#ik-road{
+  left:0;
+  top:490px;
+  width:3600px;
+  height:120px;
+}
+
+#mainland-road{
+  left:0;
+  top:1020px;
+  width:3600px;
+  height:130px;
+}
+
+#lekki-road{
+  left:1450px;
+  top:1350px;
+  width:2150px;
+  height:115px;
+  transform:rotate(-7deg);
+  transform-origin:left center;
+}
+
+#third-mainland{
+  left:1070px;
+  top:1040px;
+  width:120px;
+  height:700px;
+}
+
+#island-road{
+  left:1840px;
+  top:650px;
+  width:120px;
+  height:1150px;
+}
+
+#vi-road{
+  left:2300px;
+  top:680px;
+  width:115px;
+  height:1200px;
+}
+
+#lekki-vertical{
+  left:2850px;
+  top:600px;
+  width:105px;
+  height:1250px;
+}
+
+/* Bridges */
+#third-bridge{
+  left:1090px;
+  top:1450px;
+  width:900px;
+  height:100px;
+  transform:rotate(-2deg);
+  border-radius:45px;
+}
+
+#third-bridge .rail{
+  left:0;
+  right:0;
+  top:-12px;
+  height:12px;
+}
+
+#island-bridge{
+  left:1880px;
+  top:1470px;
+  width:600px;
+  height:95px;
+  transform:rotate(8deg);
+  border-radius:40px;
+}
+
+#island-bridge .rail{
+  left:0;
+  right:0;
+  bottom:-12px;
+  height:12px;
+}
+
+/* =========================
+   DISTRICTS
+========================= */
+
+.district{
+  position:absolute;
+  border-radius:30px;
+  background:rgba(255,255,255,.025);
+}
+
+.districtName{
+  position:absolute;
+  font-size:34px;
+  font-weight:900;
+  color:#ffffffaa;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+
+/* Ikeja */
+#ikeja{
+  left:120px;
+  top:100px;
+  width:1050px;
+  height:700px;
+}
+#ikeja .districtName{left:40px;top:35px}
+
+/* Yaba */
+#yaba{
+  left:1150px;
+  top:170px;
+  width:650px;
+  height:620px;
+}
+#yaba .districtName{left:40px;top:35px}
+
+/* Surulere */
+#surulere{
+  left:120px;
+  top:670px;
+  width:950px;
+  height:650px;
+}
+#surulere .districtName{left:40px;top:35px}
+
+/* Lagos Island */
+#lagosIsland{
+  left:1510px;
+  top:650px;
+  width:600px;
+  height:760px;
+}
+#lagosIsland .districtName{left:35px;top:30px}
+
+/* Victoria Island */
+#victoria{
+  left:2100px;
+  top:650px;
+  width:750px;
+  height:720px;
+}
+#victoria .districtName{left:35px;top:30px}
+
+/* Lekki */
+#lekkiDistrict{
+  left:2650px;
+  top:1250px;
+  width:850px;
+  height:800px;
+}
+#lekkiDistrict .districtName{left:35px;top:30px}
+
+/* Mainland */
+#mainland{
+  left:120px;
+  top:1270px;
+  width:1050px;
+  height:500px;
+}
+#mainland .districtName{left:35px;top:30px}
+
+/* =========================
+   BUILDINGS
+========================= */
+
+.building{
+  position:absolute;
+  min-width:130px;
+  min-height:100px;
+  border-radius:12px;
+  border:4px solid #ffffff20;
+  box-shadow:0 10px 20px #0004;
   display:flex;
-  gap:7px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:800;
+  z-index:5;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.building:active{
+  transform:scale(.95);
+}
+
+.building .roof{
+  position:absolute;
+  left:10px;
+  right:10px;
+  top:-12px;
+  height:15px;
+  border-radius:10px 10px 0 0;
+  background:#333;
+}
+
+.home{background:#a87656}
+.bank{background:#176b58}
+.market{background:#c78d2d}
+.restaurant{background:#a5483d}
+.work{background:#465b73}
+.church{background:#7653a6}
+.club{background:#292333}
+.hospital{background:#b94855}
+.gym{background:#367b7e}
+.salon{background:#ad4c83}
+.fuel{background:#355b89}
+.police{background:#263d64}
+.school{background:#8d6b39}
+.shop{background:#61753d}
+.hotel{background:#735c42}
+.beach{background:#d19d49}
+
+/* Windows */
+.building:before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #a9d4dc 0 16px,
+      transparent 16px 30px
+    );
+  opacity:.55;
+  pointer-events:none;
+}
+
+/* =========================
+   PALM TREES
+========================= */
+
+.tree{
+  position:absolute;
+  width:65px;
+  height:120px;
+  z-index:3;
+}
+
+.tree .trunk{
+  position:absolute;
+  width:13px;
+  height:70px;
+  left:26px;
+  top:43px;
+  background:#805c38;
+  border-radius:8px;
+  transform:rotate(-4deg);
+}
+
+.tree .leaf{
+  position:absolute;
+  width:45px;
+  height:20px;
+  background:#28733c;
+  border-radius:50%;
+  left:10px;
+  top:25px;
+  transform-origin:right center;
+}
+
+.tree .l1{transform:rotate(0deg)}
+.tree .l2{transform:rotate(55deg)}
+.tree .l3{transform:rotate(110deg)}
+.tree .l4{transform:rotate(180deg)}
+.tree .l5{transform:rotate(235deg)}
+.tree .l6{transform:rotate(300deg)}
+
+/* =========================
+   PLAYER + NPC LAYER
+========================= */
+
+#people{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  pointer-events:none;
+}
+
+.person{
+  position:absolute;
+  width:70px;
+  height:112px;
+  transform-origin:center bottom;
   pointer-events:auto;
+  cursor:pointer;
+}
+
+.person svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.28));
+}
+
+.person.moving .walkArmL{
+  animation:armL .38s infinite alternate ease-in-out;
+}
+.person.moving .walkArmR{
+  animation:armR .38s infinite alternate ease-in-out;
+}
+.person.moving .walkLegL{
+  animation:legL .38s infinite alternate ease-in-out;
+}
+.person.moving .walkLegR{
+  animation:legR .38s infinite alternate ease-in-out;
+}
+
+.person.idle .bodyBob{
+  animation:breathe 1.8s infinite ease-in-out;
+}
+
+@keyframes armL{
+  from{transform:rotate(22deg)}
+  to{transform:rotate(-22deg)}
+}
+@keyframes armR{
+  from{transform:rotate(-22deg)}
+  to{transform:rotate(22deg)}
+}
+@keyframes legL{
+  from{transform:rotate(-18deg)}
+  to{transform:rotate(18deg)}
+}
+@keyframes legR{
+  from{transform:rotate(18deg)}
+  to{transform:rotate(-18deg)}
+}
+@keyframes breathe{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-2px)}
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+  position:fixed;
+  top:env(safe-area-inset-top,10px);
+  left:10px;
+  right:10px;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  pointer-events:none;
 }
 
 .hudCard{
+  pointer-events:auto;
+  background:#101716dd;
+  border:1px solid #ffffff1c;
+  backdrop-filter:blur(12px);
+  border-radius:18px;
   padding:9px 12px;
-  border-radius:13px;
-  background:#07130ed9;
-  border:1px solid #ffffff15;
-  backdrop-filter:blur(10px);
-  font-size:12px;
+  box-shadow:0 8px 25px #0005;
 }
 
-.hudButton{
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  color:white;
-  background:#07130ed9;
-  border:1px solid #ffffff15;
-}
-
-.hudButton svg{
-  width:22px;
-  height:22px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-}
-
-/* CLOCK */
-#clock{
-  position:fixed;
-  top:67px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:100;
-  padding:7px 12px;
-  border-radius:12px;
-  background:#07130ed9;
-  font-size:12px;
-}
-
-/* ACTION */
-#action{
-  position:fixed;
-  left:50%;
-  bottom:30px;
-  transform:translateX(-50%);
-  z-index:100;
-  padding:13px 22px;
-  border-radius:16px;
-  color:white;
-  background:#0b8b5d;
-  display:none;
+.stats{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:13px;
   font-weight:800;
 }
 
-/* JOYSTICK */
-#joystick{
+#clock{
+  font-size:18px;
+  font-weight:900;
+}
+
+#locationName{
+  font-size:12px;
+  opacity:.75;
+  margin-top:2px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+#controls{
   position:fixed;
-  bottom:25px;
-  left:20px;
-  width:125px;
-  height:125px;
+  left:18px;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  z-index:110;
+}
+
+#joystick{
+  width:135px;
+  height:135px;
   border-radius:50%;
-  background:#07130e99;
-  border:1px solid #ffffff15;
-  z-index:100;
-  touch-action:none;
+  background:#101716a8;
+  border:2px solid #ffffff25;
+  position:relative;
+  backdrop-filter:blur(8px);
 }
 
 #stick{
   position:absolute;
   width:55px;
   height:55px;
+  left:40px;
+  top:40px;
   border-radius:50%;
-  background:#0b8b5d;
-  left:35px;
-  top:35px;
+  background:#ffffff33;
+  border:2px solid #fff5;
 }
 
-/* PHONE */
-#phone{
+/* Action buttons */
+#actions{
+  position:fixed;
+  right:18px;
+  bottom:calc(20px + env(safe-area-inset-bottom));
+  z-index:110;
+  display:grid;
+  grid-template-columns:repeat(2,65px);
+  gap:10px;
+}
+
+.actionBtn{
+  width:65px;
+  height:65px;
+  border:0;
+  border-radius:50%;
+  color:white;
+  background:#101716dd;
+  border:1px solid #ffffff25;
+  font-weight:900;
+  box-shadow:0 7px 20px #0005;
+}
+
+.actionBtn:active{
+  transform:scale(.92);
+}
+
+/* =========================
+   MENU
+========================= */
+
+.overlay{
   position:fixed;
   inset:0;
   z-index:500;
+  background:linear-gradient(135deg,#08120f,#13251e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.panel{
+  width:min(560px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#111c18;
+  border:1px solid #ffffff18;
+  border-radius:28px;
+  padding:25px;
+  box-shadow:0 20px 70px #0009;
+}
+
+.logo{
+  font-size:42px;
+  font-weight:1000;
+  letter-spacing:-2px;
+  margin-bottom:4px;
+}
+
+.subtitle{
+  opacity:.65;
+  margin-bottom:25px;
+}
+
+.bigBtn{
+  width:100%;
+  padding:16px;
+  margin:7px 0;
+  border:0;
+  border-radius:15px;
+  background:#1f8f68;
+  color:#fff;
+  font-weight:900;
+}
+
+.bigBtn.secondary{
+  background:#24332e;
+}
+
+.field{
+  margin:12px 0;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  opacity:.65;
+  margin-bottom:5px;
+}
+
+.field input,
+.field select{
+  width:100%;
+  padding:13px;
+  border:1px solid #ffffff18;
+  border-radius:12px;
+  background:#0b1311;
+  color:#fff;
+  outline:none;
+}
+
+.colorRow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+}
+
+.colorBtn{
+  height:38px;
+  border:2px solid transparent;
+  border-radius:10px;
+}
+.colorBtn.selected{
+  border-color:#fff;
+}
+
+/* =========================
+   MODALS
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:400;
+  background:#0007;
   display:none;
   align-items:flex-end;
   justify-content:center;
-  background:#0008;
 }
 
-#phone.active{
+.modal.show{
   display:flex;
 }
 
-.phoneShell{
-  width:min(100%,430px);
-  height:min(88vh,760px);
-  border-radius:30px 30px 0 0;
-  overflow:hidden;
-  background:#101714;
-  box-shadow:0 -20px 80px #0009;
-  display:flex;
+.sheet{
+  width:min(650px,100%);
+  max-height:82vh;
+  overflow:auto;
+  background:#111c18;
+  border-radius:28px 28px 0 0;
+  padding:20px;
+  box-shadow:0 -15px 50px #0008;
+}
+
+.close{
+  float:right;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#ffffff12;
+  color:white;
+}
+
+.locationTitle{
+  font-size:28px;
+  font-weight:1000;
+}
+
+.activity{
+  width:100%;
+  text-align:left;
+  padding:15px;
+  margin:7px 0;
+  border:0;
+  border-radius:14px;
+  background:#1d2c26;
+  color:white;
+}
+
+/* =========================
+   PHONE
+========================= */
+
+#phone{
+  position:fixed;
+  right:15px;
+  top:75px;
+  width:min(370px,calc(100vw - 30px));
+  height:min(680px,calc(100vh - 95px));
+  z-index:300;
+  display:none;
   flex-direction:column;
+  background:#0b1210;
+  border:2px solid #ffffff18;
+  border-radius:30px;
+  box-shadow:0 20px 70px #0009;
+  overflow:hidden;
+}
+
+#phone.show{
+  display:flex;
 }
 
 .phoneTop{
-  padding:17px;
-  background:#0b8b5d;
+  padding:16px;
+  background:#14231e;
   display:flex;
-  align-items:center;
   justify-content:space-between;
 }
 
-.phoneTitle{
-  font-size:20px;
-  font-weight:900;
-}
-
-.phoneContent{
+.phoneBody{
   flex:1;
   overflow:auto;
-  padding:15px;
+  padding:14px;
 }
 
-.phoneNav{
+.phoneTabs{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  border-top:1px solid #ffffff12;
-  background:#0b110f;
+  background:#101a17;
 }
 
-.phoneNav button{
-  padding:13px 5px;
-  color:#aebbb6;
-  background:none;
+.phoneTabs button{
+  border:0;
+  background:transparent;
+  color:#ffffff88;
+  padding:12px 4px;
   font-size:11px;
 }
 
-.phoneNav button.active{
-  color:#50d99f;
+.phoneTabs button.active{
+  color:#fff;
+  background:#1d342b;
 }
 
-.phoneNav svg{
-  width:20px;
-  height:20px;
-  display:block;
-  margin:auto auto 4px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-}
-
-.phoneClose{
-  color:white;
-  background:#ffffff18;
-  border-radius:10px;
-  padding:7px 10px;
-}
-
-/* CONTACTS */
 .contact{
   display:flex;
+  gap:10px;
   align-items:center;
-  gap:12px;
-  padding:13px;
-  margin-bottom:8px;
-  border-radius:16px;
-  background:#17211d;
+  padding:12px;
+  border-radius:15px;
+  background:#14221e;
+  margin-bottom:7px;
 }
 
 .avatar{
-  width:48px;
-  height:48px;
+  width:43px;
+  height:43px;
   border-radius:50%;
   display:grid;
   place-items:center;
-  background:#0b8b5d;
-  font-weight:900;
+  background:#1e8565;
+  font-weight:1000;
 }
 
-.contactMain{
+.contactInfo{
   flex:1;
 }
 
 .contactName{
-  font-weight:800;
+  font-weight:900;
 }
 
-.contactStatus{
-  margin-top:4px;
+.small{
   font-size:11px;
   opacity:.55;
 }
 
-.smallBtn{
-  padding:9px 11px;
-  border-radius:10px;
+.phoneBtn{
+  border:0;
+  padding:8px 10px;
+  border-radius:9px;
+  background:#1d7659;
   color:white;
-  background:#0b8b5d;
   font-size:11px;
 }
 
-/* CHAT */
-.chatHeader{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
+/* =========================
+   CHAT
+========================= */
+
+.message{
+  padding:9px 11px;
+  margin:6px 0;
+  max-width:80%;
+  border-radius:13px;
+  background:#1b2925;
 }
 
-.backBtn{
-  color:white;
-  background:#ffffff10;
-  padding:9px 12px;
-  border-radius:10px;
-}
-
-.messages{
-  min-height:350px;
-}
-
-.msg{
-  max-width:78%;
-  padding:10px 12px;
-  border-radius:15px;
-  margin:7px 0;
-  font-size:13px;
-  line-height:1.35;
-}
-
-.msg.you{
+.message.me{
   margin-left:auto;
-  background:#0b8b5d;
-  border-bottom-right-radius:4px;
+  background:#176c51;
 }
 
-.msg.friend{
-  background:#202a26;
-  border-bottom-left-radius:4px;
-}
-
-.chatInput{
+#chatInput{
   display:flex;
   gap:7px;
-  margin-top:10px;
+  padding:10px;
+  border-top:1px solid #ffffff10;
 }
 
-.chatInput input{
+#chatInput input{
   flex:1;
-}
-
-.send{
-  width:48px;
+  border:0;
+  background:#16231f;
+  color:#fff;
   border-radius:12px;
-  background:#0b8b5d;
-  color:white;
+  padding:10px;
 }
 
-/* CALL */
-#callOverlay{
+#chatInput button{
+  border:0;
+  border-radius:12px;
+  background:#1d8b66;
+  color:#fff;
+  padding:0 15px;
+}
+
+/* =========================
+   NIGHT
+========================= */
+
+#night{
   position:fixed;
   inset:0;
-  z-index:700;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:#06120ddd;
+  z-index:80;
+  pointer-events:none;
+  background:rgba(5,15,40,.38);
+  opacity:0;
+  transition:opacity 1s;
 }
 
-#callOverlay.active{
-  display:flex;
+#night.on{
+  opacity:1;
 }
 
-.callBox{
-  width:90%;
-  max-width:350px;
-  text-align:center;
-  padding:30px;
-  border-radius:28px;
-  background:#102019;
-}
+/* =========================
+   TOAST
+========================= */
 
-.callAvatar{
-  width:90px;
-  height:90px;
-  margin:auto;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:#0b8b5d;
-  font-size:30px;
-  font-weight:900;
-}
-
-.callName{
-  margin-top:17px;
-  font-size:24px;
-  font-weight:900;
-}
-
-.callState{
-  margin-top:7px;
-  opacity:.65;
-}
-
-.callButtons{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:28px;
-}
-
-.callButton{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  color:white;
-  background:#202b26;
-}
-
-.callButton.end{
-  background:#c93636;
-}
-
-.callButton svg{
-  width:25px;
-  height:25px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-}
-
-/* LOCATION MODAL */
-#locationModal{
-  position:fixed;
-  inset:0;
-  z-index:450;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  background:#0007;
-}
-
-#locationModal.active{
-  display:flex;
-}
-
-.locationBox{
-  width:min(100%,430px);
-  padding:20px;
-  border-radius:28px 28px 0 0;
-  background:#102019;
-}
-
-.locationTitle{
-  font-size:22px;
-  font-weight:900;
-}
-
-.locationDescription{
-  margin:7px 0 15px;
-  opacity:.65;
-  font-size:13px;
-}
-
-.locationActions{
-  display:grid;
-  gap:8px;
-}
-
-.locationActions button{
-  padding:14px;
-  border-radius:13px;
-  color:white;
-  background:#173029;
-  text-align:left;
-}
-
-.locationActions button.primaryAction{
-  background:#0b8b5d;
-}
-
-/* TOAST */
 #toast{
   position:fixed;
   left:50%;
-  bottom:165px;
+  bottom:175px;
   transform:translateX(-50%) translateY(20px);
-  z-index:900;
-  padding:12px 17px;
-  border-radius:13px;
-  background:#07130ef2;
+  z-index:600;
+  background:#111c18ee;
+  border:1px solid #ffffff18;
+  padding:11px 16px;
+  border-radius:14px;
   opacity:0;
   pointer-events:none;
   transition:.25s;
-  font-size:12px;
-  white-space:nowrap;
+  font-weight:800;
 }
 
 #toast.show{
@@ -628,27 +924,20 @@ input,select{
   transform:translateX(-50%) translateY(0);
 }
 
-/* NIGHT */
-#night{
-  position:fixed;
-  inset:0;
-  z-index:80;
-  pointer-events:none;
-  background:#061329;
-  opacity:0;
-  transition:opacity 1s;
-  mix-blend-mode:multiply;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
-/* MOBILE */
-@media(max-width:500px){
-  .hudCard{
-    font-size:11px;
-    padding:8px;
+@media(max-width:600px){
+  .logo{font-size:35px}
+  .panel{padding:20px}
+  .districtName{font-size:27px}
+  #actions{
+    grid-template-columns:repeat(2,58px);
   }
-
-  .logo{
-    font-size:36px;
+  .actionBtn{
+    width:58px;
+    height:58px;
   }
 }
 </style>
@@ -656,765 +945,785 @@ input,select{
 
 <body>
 
-<!-- MENU -->
-<section id="menu" class="screen active">
-  <div class="menuBox">
-    <div class="logo">NAIJA LIFE</div>
-    <div class="sub">Your life. Your city. Your choices.</div>
+<div id="game">
 
-    <button class="cityBtn" onclick="chooseCity('Lagos')">
-      ENTER LAGOS
-    </button>
-
-    <button class="cityBtn" onclick="chooseCity('Warri')">
-      ENTER WARRI
-    </button>
-  </div>
-</section>
-
-<!-- CHARACTER CREATOR -->
-<section id="creator" class="screen">
-  <div class="creatorBox">
-
-    <h2>Create Your Character</h2>
-
-    <div class="preview">
-      <svg id="creatorPreview"
-           viewBox="0 0 100 140"
-           width="130"
-           height="180"></svg>
-    </div>
-
-    <label>Name</label>
-    <input id="charName" maxlength="18" placeholder="Your name">
-
-    <label>Skin</label>
-    <select id="charSkin">
-      <option value="#6b422d">Deep Brown</option>
-      <option value="#8b5a3c">Brown</option>
-      <option value="#a86f4c">Warm Brown</option>
-      <option value="#c58a62">Light Brown</option>
-    </select>
-
-    <label>Hair</label>
-    <select id="charHair">
-      <option value="#17120f">Black</option>
-      <option value="#3b2418">Dark Brown</option>
-      <option value="#5a321e">Brown</option>
-    </select>
-
-    <label>Shirt</label>
-    <select id="charShirt">
-      <option value="#0b8b5d">Green</option>
-      <option value="#2764d8">Blue</option>
-      <option value="#c83b3b">Red</option>
-      <option value="#eeeeee">White</option>
-      <option value="#171717">Black</option>
-    </select>
-
-    <label>Pants</label>
-    <select id="charPants">
-      <option value="#20252a">Black</option>
-      <option value="#315b91">Denim</option>
-      <option value="#6d482d">Brown</option>
-      <option value="#d0c5a8">Light</option>
-    </select>
-
-    <button class="primary" onclick="startGame()">
-      ENTER CITY
-    </button>
-  </div>
-</section>
-
-<!-- GAME -->
-<section id="game" class="screen">
-
+  <!-- ================= WORLD ================= -->
   <div id="world">
 
-    <!-- ROADS -->
-    <div class="road h" style="top:550px"></div>
-    <div class="road h" style="top:1450px"></div>
-    <div class="road v" style="left:700px"></div>
-    <div class="road v" style="left:2050px"></div>
+    <div class="ground"></div>
 
-    <div class="roadLine"
-         style="top:599px;left:0;width:3000px;height:5px"></div>
+    <!-- Lagos lagoon -->
+    <div id="lagoon" class="water"></div>
+    <div id="ocean" class="water"></div>
 
-    <div class="roadLine"
-         style="top:1499px;left:0;width:3000px;height:5px"></div>
-
-    <div class="roadLine"
-         style="top:0;left:750px;width:5px;height:2200px"></div>
-
-    <div class="roadLine"
-         style="top:0;left:2100px;width:5px;height:2200px"></div>
-
-    <!-- LOCATIONS -->
-
-    <div class="building"
-         data-location="Home"
-         style="left:270px;top:250px"
-         onclick="openLocation('Home')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#d7a46d"/>
-        <path d="M20 65 L85 15 L150 65" fill="#9e3f32"/>
-        <rect x="45" y="65" width="80" height="60" fill="#f0d0a2"/>
-        <rect x="75" y="88" width="20" height="37" fill="#70472d"/>
-        <rect x="53" y="75" width="15" height="15" fill="#8fd1dc"/>
-        <rect x="102" y="75" width="15" height="15" fill="#8fd1dc"/>
-      </svg>
+    <!-- Districts -->
+    <div id="ikeja" class="district">
+      <div class="districtName">Ikeja</div>
     </div>
 
-    <div class="building"
-         data-location="Bank"
-         style="left:870px;top:250px"
-         onclick="openLocation('Bank')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#edf4ef"/>
-        <path d="M20 45 L85 12 L150 45 Z" fill="#0b8b5d"/>
-        <g fill="#0b8b5d">
-          <rect x="32" y="52" width="15" height="60"/>
-          <rect x="60" y="52" width="15" height="60"/>
-          <rect x="88" y="52" width="15" height="60"/>
-          <rect x="116" y="52" width="15" height="60"/>
-        </g>
-        <rect x="20" y="112" width="130" height="8" fill="#15352a"/>
-      </svg>
+    <div id="yaba" class="district">
+      <div class="districtName">Yaba</div>
     </div>
 
-    <div class="building"
-         data-location="Market"
-         style="left:1110px;top:690px"
-         onclick="openLocation('Market')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#e8d09d"/>
-        <path d="M0 45 Q20 20 40 45 Q60 20 80 45 Q100 20 120 45 Q140 20 170 45 V70 H0Z"
-              fill="#c64a3b"/>
-        <rect x="25" y="72" width="120" height="48" fill="#7b4b2c"/>
-        <circle cx="50" cy="88" r="8" fill="#e54d42"/>
-        <circle cx="75" cy="88" r="8" fill="#edb52f"/>
-        <circle cx="100" cy="88" r="8" fill="#62a84f"/>
-      </svg>
+    <div id="surulere" class="district">
+      <div class="districtName">Surulere</div>
     </div>
 
-    <div class="building"
-         data-location="Restaurant"
-         style="left:1670px;top:700px"
-         onclick="openLocation('Restaurant')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#d05a43"/>
-        <rect x="15" y="15" width="140" height="30" rx="5" fill="#fff1db"/>
-        <rect x="35" y="62" width="100" height="50" rx="8" fill="#633c2d"/>
-        <circle cx="60" cy="87" r="9" fill="#e3b95f"/>
-        <circle cx="110" cy="87" r="9" fill="#e3b95f"/>
-      </svg>
+    <div id="lagosIsland" class="district">
+      <div class="districtName">Lagos Island</div>
     </div>
 
-    <div class="building"
-         data-location="Work"
-         style="left:2350px;top:250px"
-         onclick="openLocation('Work')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#66747d"/>
-        <rect x="20" y="15" width="130" height="100" fill="#a8c4cf"/>
-        <g fill="#526a73">
-          <rect x="30" y="25" width="25" height="20"/>
-          <rect x="70" y="25" width="25" height="20"/>
-          <rect x="110" y="25" width="25" height="20"/>
-          <rect x="30" y="55" width="25" height="20"/>
-          <rect x="70" y="55" width="25" height="20"/>
-          <rect x="110" y="55" width="25" height="20"/>
-        </g>
-      </svg>
+    <div id="victoria" class="district">
+      <div class="districtName">Victoria Island</div>
     </div>
 
-    <div class="building"
-         data-location="Church"
-         style="left:280px;top:800px"
-         onclick="openLocation('Church')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#dcdcdc"/>
-        <path d="M85 5 L95 25 H110 V35 H95 L85 55 L75 35 H60 V25 H75Z"
-              fill="#b99c50"/>
-        <path d="M25 55 L85 20 L145 55 V120 H25Z" fill="#eee"/>
-        <rect x="70" y="78" width="30" height="42" fill="#75513c"/>
-        <circle cx="50" cy="70" r="10" fill="#8fcbd2"/>
-        <circle cx="120" cy="70" r="10" fill="#8fcbd2"/>
-      </svg>
+    <div id="lekkiDistrict" class="district">
+      <div class="districtName">Lekki</div>
     </div>
 
-    <div class="building"
-         data-location="Club"
-         style="left:2150px;top:800px"
-         onclick="openLocation('Club')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#21142f"/>
-        <circle cx="45" cy="55" r="30" fill="#7b3fb2"/>
-        <circle cx="125" cy="55" r="30" fill="#c43c80"/>
-        <rect x="25" y="90" width="120" height="25" rx="8" fill="#111"/>
-      </svg>
+    <div id="mainland" class="district">
+      <div class="districtName">Mainland</div>
     </div>
 
-    <div class="building"
-         data-location="Hospital"
-         style="left:850px;top:1250px"
-         onclick="openLocation('Hospital')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#edf4f5"/>
-        <rect x="67" y="22" width="36" height="75" fill="#dcebed"/>
-        <rect x="47" y="42" width="76" height="35" fill="#dcebed"/>
-        <path d="M76 29 H94 V48 H113 V66 H94 V86 H76 V66 H57 V48 H76Z"
-              fill="#c73838"/>
-      </svg>
+    <!-- Main roads -->
+    <div id="ik-road" class="road h"></div>
+    <div id="mainland-road" class="road h"></div>
+    <div id="lekki-road" class="road h"></div>
+
+    <div id="third-mainland" class="road v"></div>
+    <div id="island-road" class="road v"></div>
+    <div id="vi-road" class="road v"></div>
+    <div id="lekki-vertical" class="road v"></div>
+
+    <!-- Bridges -->
+    <div id="third-bridge" class="bridge">
+      <div class="rail"></div>
     </div>
 
-    <div class="building"
-         data-location="Gym"
-         style="left:1500px;top:1300px"
-         onclick="openLocation('Gym')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#4d5960"/>
-        <rect x="25" y="20" width="120" height="80" fill="#263237"/>
-        <path d="M48 70 H122" stroke="#e5e5e5" stroke-width="7"/>
-        <path d="M40 52 V88 M130 52 V88"
-              stroke="#e5e5e5" stroke-width="10"/>
-      </svg>
+    <div id="island-bridge" class="bridge">
+      <div class="rail"></div>
     </div>
 
-    <div class="building"
-         data-location="Salon"
-         style="left:2250px;top:1300px"
-         onclick="openLocation('Salon')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#d18bb0"/>
-        <circle cx="85" cy="52" r="27" fill="#8b5a3c"/>
-        <path d="M52 48 Q85 8 118 48" fill="#20150f"/>
-        <rect x="48" y="88" width="74" height="20" rx="5" fill="#fff"/>
-      </svg>
+    <!-- LANDMARKS / BUILDINGS -->
+
+    <div class="building work" style="left:230px;top:220px"
+         data-place="ikeja-work">
+      <div class="roof"></div>OFFICE
     </div>
 
-    <div class="building"
-         data-location="Fuel"
-         style="left:350px;top:1700px"
-         onclick="openLocation('Fuel')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#e9e0c9"/>
-        <rect x="25" y="25" width="120" height="75" fill="#c53e34"/>
-        <rect x="45" y="40" width="30" height="25" fill="#e5e5e5"/>
-        <rect x="95" y="40" width="30" height="25" fill="#e5e5e5"/>
-        <rect x="70" y="70" width="30" height="30" fill="#e5e5e5"/>
-      </svg>
+    <div class="building hotel" style="left:480px;top:260px"
+         data-place="hotel">
+      <div class="roof"></div>HOTEL
     </div>
 
-    <div class="building"
-         data-location="Police"
-         style="left:1300px;top:1740px"
-         onclick="openLocation('Police')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#5479a0"/>
-        <rect x="25" y="25" width="120" height="90" fill="#dbe6ef"/>
-        <path d="M85 25 L110 40 L105 65 Q85 82 65 65 L60 40Z"
-              fill="#5479a0"/>
-        <circle cx="85" cy="48" r="8" fill="#fff"/>
-      </svg>
+    <div class="building hospital" style="left:780px;top:190px"
+         data-place="hospital">
+      <div class="roof"></div>HOSPITAL
     </div>
 
-    <div class="building"
-         data-location="School"
-         style="left:2000px;top:1740px"
-         onclick="openLocation('School')">
-      <svg viewBox="0 0 170 130">
-        <rect width="170" height="130" fill="#d9b86d"/>
-        <path d="M20 45 L85 15 L150 45Z" fill="#a44938"/>
-        <rect x="35" y="50" width="100" height="65" fill="#f1dfad"/>
-        <rect x="72" y="78" width="25" height="37" fill="#73503a"/>
-        <g fill="#78aab2">
-          <rect x="45" y="62" width="15" height="15"/>
-          <rect x="108" y="62" width="15" height="15"/>
-        </g>
-      </svg>
+    <div class="building bank" style="left:970px;top:350px"
+         data-place="bank">
+      <div class="roof"></div>BANK
     </div>
 
-    <!-- PLAYER -->
-    <div id="player">
-      <svg viewBox="0 0 70 100">
-        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
-        <circle id="pHead" cx="35" cy="25" r="16" fill="#8b5a3c"/>
-        <path id="pHair"
-              d="M19 25 Q20 5 35 6 Q51 6 52 25 Q46 16 35 18 Q25 17 19 25"
-              fill="#17120f"/>
-        <rect id="pShirt" x="19" y="41" width="32" height="32" rx="8" fill="#0b8b5d"/>
-        <path id="pLeftArm" d="M20 45 L9 68 L15 71 L27 53Z" fill="#8b5a3c"/>
-        <path id="pRightArm" d="M50 45 L61 68 L55 71 L43 53Z" fill="#8b5a3c"/>
-        <path id="pLeftLeg" d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
-        <path id="pRightLeg" d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
-      </svg>
+    <div class="building school" style="left:1280px;top:290px"
+         data-place="school">
+      <div class="roof"></div>SCHOOL
     </div>
 
-    <!-- NPCs -->
-    <div class="npc" id="npc1" style="left:500px;top:500px">
-      <svg viewBox="0 0 70 100">
-        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
-        <circle cx="35" cy="25" r="16" fill="#8b5a3c"/>
-        <path d="M19 25 Q20 5 35 6 Q51 6 52 25 Q46 16 35 18 Q25 17 19 25"
-              fill="#17120f"/>
-        <rect x="19" y="41" width="32" height="32" rx="8" fill="#e1b22c"/>
-        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#315b91"/>
-        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#315b91"/>
-      </svg>
+    <div class="building market" style="left:380px;top:790px"
+         data-place="market">
+      <div class="roof"></div>MARKET
     </div>
 
-    <div class="npc" id="npc2" style="left:1250px;top:500px">
-      <svg viewBox="0 0 70 100">
-        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
-        <circle cx="35" cy="25" r="16" fill="#a86f4c"/>
-        <circle cx="35" cy="15" r="16" fill="#24170f"/>
-        <rect x="19" y="41" width="32" height="32" rx="8" fill="#803f9b"/>
-        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
-        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
-      </svg>
+    <div class="building restaurant" style="left:700px;top:820px"
+         data-place="restaurant">
+      <div class="roof"></div>RESTAURANT
     </div>
 
-    <div class="npc" id="npc3" style="left:1850px;top:1150px">
-      <svg viewBox="0 0 70 100">
-        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
-        <circle cx="35" cy="25" r="16" fill="#c58a62"/>
-        <path d="M20 22 Q25 5 35 7 Q48 6 51 22"
-              fill="#5a321e"/>
-        <rect x="19" y="41" width="32" height="32" rx="8" fill="#2869b5"/>
-        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
-        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
-      </svg>
+    <div class="building police" style="left:900px;top:750px"
+         data-place="police">
+      <div class="roof"></div>POLICE
     </div>
+
+    <div class="building church" style="left:1250px;top:860px"
+         data-place="church">
+      <div class="roof"></div>CHURCH
+    </div>
+
+    <div class="building bank" style="left:1540px;top:760px"
+         data-place="bank">
+      <div class="roof"></div>BANK
+    </div>
+
+    <div class="building shop" style="left:1740px;top:900px"
+         data-place="shop">
+      <div class="roof"></div>SHOP
+    </div>
+
+    <div class="building restaurant" style="left:1900px;top:760px"
+         data-place="restaurant">
+      <div class="roof"></div>RESTAURANT
+    </div>
+
+    <div class="building club" style="left:2180px;top:830px"
+         data-place="club">
+      <div class="roof"></div>CLUB
+    </div>
+
+    <div class="building hotel" style="left:2420px;top:760px"
+         data-place="hotel">
+      <div class="roof"></div>HOTEL
+    </div>
+
+    <div class="building gym" style="left:2550px;top:1020px"
+         data-place="gym">
+      <div class="roof"></div>GYM
+    </div>
+
+    <div class="building salon" style="left:2220px;top:1120px"
+         data-place="salon">
+      <div class="roof"></div>SALON
+    </div>
+
+    <div class="building market" style="left:2860px;top:1420px"
+         data-place="market">
+      <div class="roof"></div>MARKET
+    </div>
+
+    <div class="building restaurant" style="left:3100px;top:1530px"
+         data-place="restaurant">
+      <div class="roof"></div>RESTAURANT
+    </div>
+
+    <div class="building club" style="left:3300px;top:1680px"
+         data-place="club">
+      <div class="roof"></div>CLUB
+    </div>
+
+    <div class="building fuel" style="left:3050px;top:1840px"
+         data-place="fuel">
+      <div class="roof"></div>FUEL
+    </div>
+
+    <div class="building home" style="left:380px;top:1430px"
+         data-place="home">
+      <div class="roof"></div>HOME
+    </div>
+
+    <div class="building home" style="left:650px;top:1500px"
+         data-place="home">
+      <div class="roof"></div>HOME
+    </div>
+
+    <div class="building school" style="left:850px;top:1400px"
+         data-place="school">
+      <div class="roof"></div>SCHOOL
+    </div>
+
+    <div class="building beach" style="left:2450px;top:1950px"
+         data-place="beach">
+      <div class="roof"></div>BEACH
+    </div>
+
+    <!-- Palm trees -->
+    <div class="tree" style="left:150px;top:250px">
+      <div class="trunk"></div>
+      <div class="leaf l1"></div><div class="leaf l2"></div>
+      <div class="leaf l3"></div><div class="leaf l4"></div>
+      <div class="leaf l5"></div><div class="leaf l6"></div>
+    </div>
+
+    <div class="tree" style="left:1170px;top:500px">
+      <div class="trunk"></div>
+      <div class="leaf l1"></div><div class="leaf l2"></div>
+      <div class="leaf l3"></div><div class="leaf l4"></div>
+      <div class="leaf l5"></div><div class="leaf l6"></div>
+    </div>
+
+    <div class="tree" style="left:2850px;top:1950px">
+      <div class="trunk"></div>
+      <div class="leaf l1"></div><div class="leaf l2"></div>
+      <div class="leaf l3"></div><div class="leaf l4"></div>
+      <div class="leaf l5"></div><div class="leaf l6"></div>
+    </div>
+
+    <div class="tree" style="left:3350px;top:2050px">
+      <div class="trunk"></div>
+      <div class="leaf l1"></div><div class="leaf l2"></div>
+      <div class="leaf l3"></div><div class="leaf l4"></div>
+      <div class="leaf l5"></div><div class="leaf l6"></div>
+    </div>
+
+    <!-- People -->
+    <div id="people"></div>
+
+    <!-- Player -->
+    <div id="player" class="person idle"></div>
 
   </div>
 
+  <!-- NIGHT -->
   <div id="night"></div>
 
-  <!-- HUD -->
+  <!-- ================= HUD ================= -->
+
   <div id="hud">
 
-    <div class="hudLeft">
-      <div class="hudCard" id="money">₦5,000</div>
-      <div class="hudCard" id="energy">Energy 100</div>
-      <div class="hudCard" id="level">Lv 1</div>
+    <div class="hudCard">
+      <div class="stats">
+        <span>₦<span id="money">250000</span></span>
+        <span>⚡<span id="energy">100</span></span>
+        <span>Lv <span id="level">1</span></span>
+      </div>
+      <div id="locationName">Lagos</div>
     </div>
 
-    <div class="hudRight">
+    <div class="hudCard">
+      <div id="clock">00:00</div>
+      <div class="small">Nigeria Time</div>
+    </div>
 
-      <button class="hudButton" onclick="openPhone()" aria-label="Phone">
-        <svg viewBox="0 0 24 24">
-          <rect x="7" y="2" width="10" height="20" rx="3"/>
-          <path d="M10 18h4"/>
-        </svg>
-      </button>
+  </div>
 
-      <button class="hudButton" onclick="openCreatorEdit()" aria-label="Profile">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="8" r="4"/>
-          <path d="M4 22 Q4 15 12 15 Q20 15 20 22"/>
-        </svg>
-      </button>
+  <!-- ================= CONTROLS ================= -->
 
+  <div id="controls">
+    <div id="joystick">
+      <div id="stick"></div>
     </div>
   </div>
 
-  <div id="clock">--:--:--</div>
-
-  <button id="action" onclick="currentAction()">
-    INTERACT
-  </button>
-
-  <div id="joystick">
-    <div id="stick"></div>
+  <div id="actions">
+    <button class="actionBtn" id="phoneBtn">PHONE</button>
+    <button class="actionBtn" id="interactBtn">ACT</button>
+    <button class="actionBtn" id="runBtn">RUN</button>
+    <button class="actionBtn" id="mapBtn">MAP</button>
   </div>
-</section>
 
-<!-- LOCATION -->
-<div id="locationModal">
-  <div class="locationBox">
-    <div class="locationTitle" id="locationTitle"></div>
-    <div class="locationDescription" id="locationDescription"></div>
-    <div class="locationActions" id="locationActions"></div>
-    <button class="primary"
-            onclick="closeLocation()">
-      CLOSE
-    </button>
-  </div>
-</div>
+  <!-- ================= PHONE ================= -->
 
-<!-- PHONE -->
-<div id="phone">
-
-  <div class="phoneShell">
+  <div id="phone">
 
     <div class="phoneTop">
-      <div class="phoneTitle">PHONE</div>
-      <button class="phoneClose" onclick="closePhone()">Close</button>
+      <strong>NAIJA PHONE</strong>
+      <button class="close" id="closePhone">×</button>
     </div>
 
-    <div class="phoneContent" id="phoneContent"></div>
+    <div class="phoneBody" id="phoneBody"></div>
 
-    <div class="phoneNav">
-
-      <button id="navHome"
-              class="active"
-              onclick="phonePage('home')">
-        <svg viewBox="0 0 24 24">
-          <path d="M3 11 L12 3 L21 11 V21 H3Z"/>
-        </svg>
-        Home
-      </button>
-
-      <button id="navFriends"
-              onclick="phonePage('friends')">
-        <svg viewBox="0 0 24 24">
-          <circle cx="9" cy="8" r="4"/>
-          <circle cx="17" cy="10" r="3"/>
-          <path d="M2 21 Q2 14 9 14 Q16 14 16 21"/>
-          <path d="M15 15 Q21 15 22 21"/>
-        </svg>
-        Friends
-      </button>
-
-      <button id="navMessages"
-              onclick="phonePage('messages')">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 5 H20 V17 H9 L4 21Z"/>
-        </svg>
-        Messages
-      </button>
-
-      <button id="navCalls"
-              onclick="phonePage('calls')">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 4 L4 6 Q4 15 18 20 L20 17 L14 13 L11 15 Q8 13 7 10 L9 8Z"/>
-        </svg>
-        Calls
-      </button>
-
-    </div>
-  </div>
-</div>
-
-<!-- CALL SCREEN -->
-<div id="callOverlay">
-
-  <div class="callBox">
-
-    <div class="callAvatar" id="callAvatar">A</div>
-
-    <div class="callName" id="callName">Friend</div>
-
-    <div class="callState" id="callState">
-      Calling...
-    </div>
-
-    <div class="callButtons">
-
-      <button class="callButton" onclick="toggleMute()">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 2 V13"/>
-          <path d="M6 10 V12 A6 6 0 0 0 18 12 V10"/>
-          <path d="M12 18 V22"/>
-          <path d="M8 22 H16"/>
-        </svg>
-      </button>
-
-      <button class="callButton end"
-              onclick="endCall()">
-        <svg viewBox="0 0 24 24">
-          <path d="M5 9 Q12 3 19 9 L17 14 Q12 11 7 14Z"/>
-        </svg>
-      </button>
-
+    <div class="phoneTabs">
+      <button class="active" data-tab="home">HOME</button>
+      <button data-tab="friends">FRIENDS</button>
+      <button data-tab="messages">MESSAGES</button>
+      <button data-tab="calls">CALLS</button>
     </div>
 
   </div>
-</div>
 
-<div id="toast"></div>
+  <!-- ================= LOCATION MODAL ================= -->
+
+  <div class="modal" id="locationModal">
+    <div class="sheet">
+      <button class="close" id="closeLocation">×</button>
+      <div class="locationTitle" id="modalTitle">Location</div>
+      <p id="modalDescription" class="small"></p>
+      <div id="activities"></div>
+    </div>
+  </div>
+
+  <!-- ================= NPC MODAL ================= -->
+
+  <div class="modal" id="npcModal">
+    <div class="sheet">
+      <button class="close" id="closeNpc">×</button>
+      <div class="locationTitle" id="npcName">NPC</div>
+      <p id="npcStatus" class="small"></p>
+      <div id="npcActions"></div>
+    </div>
+  </div>
+
+  <!-- ================= CHARACTER CREATOR ================= -->
+
+  <div class="overlay" id="startScreen">
+
+    <div class="panel">
+
+      <div class="logo">NAIJA LIFE</div>
+      <div class="subtitle">
+        Lagos • Nigeria • Your life, your story.
+      </div>
+
+      <div id="creator">
+
+        <div class="field">
+          <label>Your name</label>
+          <input id="charName" maxlength="18" placeholder="Enter your name">
+        </div>
+
+        <div class="field">
+          <label>City</label>
+          <select id="city">
+            <option value="Lagos">Lagos</option>
+            <option value="Warri">Warri</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Skin</label>
+          <div class="colorRow" id="skinChoices">
+            <button class="colorBtn selected" data-color="#7b4a2f" style="background:#7b4a2f"></button>
+            <button class="colorBtn" data-color="#9c6341" style="background:#9c6341"></button>
+            <button class="colorBtn" data-color="#b97852" style="background:#b97852"></button>
+            <button class="colorBtn" data-color="#5b3425" style="background:#5b3425"></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Shirt</label>
+          <div class="colorRow" id="shirtChoices">
+            <button class="colorBtn selected" data-color="#176c51" style="background:#176c51"></button>
+            <button class="colorBtn" data-color="#315a8a" style="background:#315a8a"></button>
+            <button class="colorBtn" data-color="#a74646" style="background:#a74646"></button>
+            <button class="colorBtn" data-color="#222" style="background:#222"></button>
+          </div>
+        </div>
+
+        <button class="bigBtn" id="startGame">
+          ENTER LAGOS
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+</div>
 
 <script>
 /* =========================================================
-   NAija LIFE
-   PHONE + FRIENDS + MESSAGES + CALLS
+   NAIJA LIFE
+   ORIGINAL LAGOS-INSPIRED LIFE SIM
 ========================================================= */
 
-const SAVE_KEY = "naijaLifeSaveV4";
+const world = document.getElementById("world");
+const playerEl = document.getElementById("player");
+const peopleEl = document.getElementById("people");
 
-const defaultCharacter = {
-  name:"Maro",
-  skin:"#8b5a3c",
-  hair:"#17120f",
-  shirt:"#0b8b5d",
-  pants:"#20252a"
+const state = {
+  city:"Lagos",
+  name:"Player",
+  skin:"#7b4a2f",
+  shirt:"#176c51",
+  pants:"#24282b",
+  money:250000,
+  energy:100,
+  level:1,
+
+  player:{
+    x:760,
+    y:1080,
+    speed:3.4,
+    running:false
+  },
+
+  camera:{
+    x:0,
+    y:0
+  },
+
+  friends:[],
+  messages:{},
+  calls:[],
+
+  currentPlace:null,
+  selectedNPC:null,
+
+  keys:{
+    up:false,
+    down:false,
+    left:false,
+    right:false
+  }
 };
 
-const defaultFriends = [
+/* =========================================================
+   HUMAN SVG GENERATOR
+========================================================= */
+
+const npcLooks = [
   {
-    id:"ada",
-    name:"Ada",
-    city:"Lagos",
-    location:"Work",
-    relationship:72,
-    avatar:"A",
-    messages:[
-      {
-        from:"friend",
-        text:"Hey! How are you doing?"
-      }
-    ]
+    skin:"#7b4a2f",
+    hair:"#17120f",
+    shirt:"#315a8a",
+    pants:"#262a2d",
+    shoes:"#171717",
+    hairStyle:"fade"
   },
   {
-    id:"emeka",
-    name:"Emeka",
-    city:"Lagos",
-    location:"Home",
-    relationship:58,
-    avatar:"E",
-    messages:[
-      {
-        from:"friend",
-        text:"Bro, where you dey?"
-      }
-    ]
+    skin:"#9c6341",
+    hair:"#21140f",
+    shirt:"#9b4a45",
+    pants:"#24282d",
+    shoes:"#191919",
+    hairStyle:"afro"
   },
   {
-    id:"tunde",
-    name:"Tunde",
-    city:"Warri",
-    location:"Club",
-    relationship:81,
-    avatar:"T",
-    messages:[
-      {
-        from:"friend",
-        text:"We dey link up tonight?"
-      }
-    ]
+    skin:"#b97852",
+    hair:"#17100e",
+    shirt:"#176c51",
+    pants:"#3d3029",
+    shoes:"#201a18",
+    hairStyle:"braids"
   },
   {
-    id:"amaka",
-    name:"Amaka",
-    city:"Warri",
-    location:"Market",
-    relationship:64,
-    avatar:"A",
-    messages:[
-      {
-        from:"friend",
-        text:"I just reach the market."
-      }
-    ]
+    skin:"#5b3425",
+    hair:"#15110e",
+    shirt:"#8055a5",
+    pants:"#20252b",
+    shoes:"#141414",
+    hairStyle:"lowcut"
+  },
+  {
+    skin:"#8b5538",
+    hair:"#20140e",
+    shirt:"#c47a34",
+    pants:"#343638",
+    shoes:"#171717",
+    hairStyle:"locs"
+  },
+  {
+    skin:"#aa6d4a",
+    hair:"#1c130f",
+    shirt:"#c34c67",
+    pants:"#22272b",
+    shoes:"#161616",
+    hairStyle:"pony"
+  },
+  {
+    skin:"#71432d",
+    hair:"#17100c",
+    shirt:"#d09b32",
+    pants:"#242a2c",
+    shoes:"#151515",
+    hairStyle:"fade"
+  },
+  {
+    skin:"#96603e",
+    hair:"#1a120e",
+    shirt:"#3b7c78",
+    pants:"#34302d",
+    shoes:"#191919",
+    hairStyle:"afro"
   }
 ];
 
-let state = JSON.parse(localStorage.getItem(SAVE_KEY)) || {
-  city:"Lagos",
-  x:500,
-  y:450,
-  money:5000,
-  energy:100,
-  level:1,
-  xp:0,
-  character:{...defaultCharacter},
-  friends:defaultFriends,
-  callHistory:[]
-};
-
-if(!state.friends){
-  state.friends=defaultFriends;
-}
-
-let selectedFriend=null;
-let currentPhonePage="home";
-let currentLocation=null;
-let callTimer=null;
-let callSeconds=0;
-let muted=false;
-
-/* =========================
-   BASIC HELPERS
-========================= */
-
-function save(){
-  localStorage.setItem(SAVE_KEY,JSON.stringify(state));
-}
-
-function toast(text){
-  const el=document.getElementById("toast");
-  el.textContent=text;
-  el.classList.add("show");
-
-  setTimeout(()=>{
-    el.classList.remove("show");
-  },2200);
-}
-
-function money(){
-  document.getElementById("money").textContent=
-    "₦"+Number(state.money).toLocaleString();
-}
-
-function updateHUD(){
-  money();
-
-  document.getElementById("energy").textContent=
-    "Energy "+Math.round(state.energy);
-
-  document.getElementById("level").textContent=
-    "Lv "+state.level;
-}
-
-function addXP(amount){
-  state.xp+=amount;
-
-  while(state.xp>=100){
-    state.xp-=100;
-    state.level++;
-    toast("Level up! You are now level "+state.level);
+function hairSVG(style,color){
+  if(style==="afro"){
+    return `
+      <circle cx="35" cy="19" r="23" fill="${color}"/>
+      <circle cx="21" cy="22" r="11" fill="${color}"/>
+      <circle cx="49" cy="22" r="11" fill="${color}"/>
+    `;
   }
 
-  save();
-  updateHUD();
-}
+  if(style==="braids"){
+    return `
+      <path d="M14 24 Q35 1 56 24" fill="none"
+            stroke="${color}" stroke-width="9"
+            stroke-linecap="round"/>
+      <path d="M16 23 L10 42 M23 18 L18 45 M31 16 L28 45
+               M39 16 L42 45 M47 19 L53 43 M54 24 L61 40"
+            stroke="${color}" stroke-width="3"
+            stroke-linecap="round"/>
+    `;
+  }
 
-/* =========================
-   CITY
-========================= */
+  if(style==="locs"){
+    return `
+      <path d="M13 25 Q35 0 57 25"
+            fill="none"
+            stroke="${color}"
+            stroke-width="11"
+            stroke-linecap="round"/>
+      <path d="M15 24v25 M23 18v34 M32 16v35 M41 18v34 M50 22v28 M57 28v20"
+            stroke="${color}" stroke-width="4" stroke-linecap="round"/>
+    `;
+  }
 
-function chooseCity(city){
-  state.city=city;
+  if(style==="pony"){
+    return `
+      <path d="M14 25 Q35 2 56 25"
+            fill="none"
+            stroke="${color}"
+            stroke-width="10"
+            stroke-linecap="round"/>
+      <circle cx="59" cy="22" r="8" fill="${color}"/>
+      <path d="M58 22 Q69 36 60 52"
+            fill="none"
+            stroke="${color}"
+            stroke-width="7"
+            stroke-linecap="round"/>
+    `;
+  }
 
-  document.getElementById("menu").classList.remove("active");
-  document.getElementById("creator").classList.add("active");
+  if(style==="fade"){
+    return `
+      <path d="M15 25 Q35 5 55 25 L52 16 Q35 3 18 16Z"
+            fill="${color}"/>
+      <path d="M17 25 Q35 8 53 25"
+            fill="none"
+            stroke="${color}"
+            stroke-width="5"/>
+    `;
+  }
 
-  loadCreator();
-}
-
-function loadCreator(){
-  document.getElementById("charName").value=
-    state.character.name;
-
-  document.getElementById("charSkin").value=
-    state.character.skin;
-
-  document.getElementById("charHair").value=
-    state.character.hair;
-
-  document.getElementById("charShirt").value=
-    state.character.shirt;
-
-  document.getElementById("charPants").value=
-    state.character.pants;
-
-  updateCreatorPreview();
-}
-
-function updateCreatorPreview(){
-
-  const skin=document.getElementById("charSkin").value;
-  const hair=document.getElementById("charHair").value;
-  const shirt=document.getElementById("charShirt").value;
-  const pants=document.getElementById("charPants").value;
-
-  document.getElementById("creatorPreview").innerHTML=`
-    <ellipse cx="50" cy="130" rx="22" ry="5"
-             fill="#0003"/>
-    <circle cx="50" cy="30" r="18"
-            fill="${skin}"/>
-    <path d="M32 30 Q34 8 50 10 Q67 8 68 30
-             Q61 20 50 22 Q39 20 32 30"
-          fill="${hair}"/>
-    <rect x="31" y="49" width="38" height="38"
-          rx="9" fill="${shirt}"/>
-    <path d="M34 86 L32 122 L43 122 L50 87Z"
-          fill="${pants}"/>
-    <path d="M50 87 L57 122 L68 122 L66 86Z"
-          fill="${pants}"/>
-    <path d="M33 52 L18 79 L25 82 L39 61Z"
-          fill="${skin}"/>
-    <path d="M67 52 L82 79 L75 82 L61 61Z"
-          fill="${skin}"/>
+  return `
+    <path d="M15 25 Q35 5 55 25"
+          fill="none"
+          stroke="${color}"
+          stroke-width="9"
+          stroke-linecap="round"/>
   `;
 }
 
-[
-  "charName",
-  "charSkin",
-  "charHair",
-  "charShirt",
-  "charPants"
-].forEach(id=>{
-  document.getElementById(id)
-    .addEventListener("input",updateCreatorPreview);
-  document.getElementById(id)
-    .addEventListener("change",updateCreatorPreview);
-});
+function createHumanSVG(look, scale=1){
 
-function startGame(){
+  return `
+  <svg viewBox="0 0 70 112"
+       style="transform:scale(${scale})"
+       xmlns="http://www.w3.org/2000/svg">
 
-  state.character={
-    name:document.getElementById("charName").value.trim()
-      || "Maro",
-    skin:document.getElementById("charSkin").value,
-    hair:document.getElementById("charHair").value,
-    shirt:document.getElementById("charShirt").value,
-    pants:document.getElementById("charPants").value
-  };
+    <g class="bodyBob">
 
-  save();
+      <!-- shadow -->
+      <ellipse cx="35" cy="107"
+               rx="22" ry="5"
+               fill="#0005"/>
 
-  document.getElementById("creator").classList.remove("active");
-  document.getElementById("game").style.display="block";
+      <!-- back hair -->
+      ${hairSVG(look.hairStyle,look.hair)}
 
-  updatePlayerSVG();
-  updateHUD();
-  updateClock();
+      <!-- neck -->
+      <rect x="29" y="36"
+            width="12" height="12"
+            rx="5"
+            fill="${look.skin}"/>
 
-  toast(
-    "Welcome to "+state.city+", "+state.character.name
-  );
+      <!-- face -->
+      <ellipse cx="35" cy="29"
+               rx="18" ry="20"
+               fill="${look.skin}"/>
+
+      <!-- ears -->
+      <circle cx="17" cy="29" r="4.5"
+              fill="${look.skin}"/>
+      <circle cx="53" cy="29" r="4.5"
+              fill="${look.skin}"/>
+
+      <!-- hair front -->
+      ${hairSVG(look.hairStyle,look.hair)}
+
+      <!-- eyes -->
+      <ellipse cx="28" cy="29" rx="2.2" ry="2.8" fill="#111"/>
+      <ellipse cx="42" cy="29" rx="2.2" ry="2.8" fill="#111"/>
+
+      <!-- nose -->
+      <path d="M35 29 L32.5 35 L36.5 35"
+            fill="none"
+            stroke="#0005"
+            stroke-width="1.4"
+            stroke-linecap="round"/>
+
+      <!-- mouth -->
+      <path d="M30 39 Q35 42 40 39"
+            fill="none"
+            stroke="#55261f"
+            stroke-width="1.5"
+            stroke-linecap="round"/>
+
+      <!-- torso -->
+      <path d="M22 47 Q35 42 48 47
+               L52 72 Q35 78 18 72Z"
+            fill="${look.shirt}"/>
+
+      <!-- collar -->
+      <path d="M29 46 L35 53 L41 46"
+            fill="none"
+            stroke="#fff5"
+            stroke-width="2"/>
+
+      <!-- left arm -->
+      <g class="walkArmL"
+         style="transform-origin:22px 49px">
+        <path d="M22 49 L13 70 L17 88"
+              fill="none"
+              stroke="${look.skin}"
+              stroke-width="8"
+              stroke-linecap="round"/>
+        <circle cx="17" cy="88"
+                r="4"
+                fill="${look.skin}"/>
+      </g>
+
+      <!-- right arm -->
+      <g class="walkArmR"
+         style="transform-origin:48px 49px">
+        <path d="M48 49 L57 70 L53 88"
+              fill="none"
+              stroke="${look.skin}"
+              stroke-width="8"
+              stroke-linecap="round"/>
+        <circle cx="53" cy="88"
+                r="4"
+                fill="${look.skin}"/>
+      </g>
+
+      <!-- waist -->
+      <rect x="21" y="69"
+            width="28"
+            height="9"
+            rx="3"
+            fill="#16191a"/>
+
+      <!-- left leg -->
+      <g class="walkLegL"
+         style="transform-origin:29px 76px">
+        <path d="M29 76 L26 99"
+              stroke="${look.pants}"
+              stroke-width="10"
+              stroke-linecap="round"/>
+        <path d="M26 99 L17 104"
+              stroke="${look.shoes}"
+              stroke-width="7"
+              stroke-linecap="round"/>
+      </g>
+
+      <!-- right leg -->
+      <g class="walkLegR"
+         style="transform-origin:41px 76px">
+        <path d="M41 76 L44 99"
+              stroke="${look.pants}"
+              stroke-width="10"
+              stroke-linecap="round"/>
+        <path d="M44 99 L53 104"
+              stroke="${look.shoes}"
+              stroke-width="7"
+              stroke-linecap="round"/>
+      </g>
+
+    </g>
+  </svg>`;
 }
 
-function openCreatorEdit(){
-  document.getElementById("game").style.display="none";
-  document.getElementById("creator").classList.add("active");
-  loadCreator();
-}
-
-/* =========================
+/* =========================================================
    PLAYER
-========================= */
+========================================================= */
 
-function updatePlayerSVG(){
+function renderPlayer(){
 
-  document.getElementById("pHead")
-    .setAttribute("fill",state.character.skin);
+  playerEl.innerHTML = createHumanSVG({
+    skin:state.skin,
+    hair:"#17120f",
+    shirt:state.shirt,
+    pants:"#25292c",
+    shoes:"#111",
+    hairStyle:"fade"
+  },1.08);
 
-  document.getElementById("pHair")
-    .setAttribute("fill",state.character.hair);
+  playerEl.style.left =
+    (state.player.x-35)+"px";
 
-  document.getElementById("pShirt")
-    .setAttribute("fill",state.character.shirt);
-
-  document.getElementById("pLeftArm")
-    .setAttribute("fill",state.character.skin);
-
-  document.getElementById("pRightArm")
-    .setAttribute("fill",state.character.skin);
-
-  document.getElementById("pLeftLeg")
-    .setAttribute("fill",state.character.pants);
-
-  document.getElementById("pRightLeg")
-    .setAttribute("fill",state.character.pants);
+  playerEl.style.top =
+    (state.player.y-105)+"px";
 }
 
-/* =========================
-   REAL NIGERIAN TIME
-========================= */
+/* =========================================================
+   NPC DATA
+========================================================= */
+
+const npcNames = [
+  "Chinedu",
+  "Blessing",
+  "Tobi",
+  "Amaka",
+  "Daniel",
+  "Favour",
+  "Kelvin",
+  "Sharon",
+  "Emeka",
+  "Aisha",
+  "David",
+  "Joy"
+];
+
+const npcJobs = [
+  "Designer",
+  "Trader",
+  "Driver",
+  "Student",
+  "Bank worker",
+  "Engineer",
+  "Nurse",
+  "Chef",
+  "Fashion designer",
+  "Business owner",
+  "Teacher",
+  "Developer"
+];
+
+const npcDestinations = {
+  home:{x:650,y:1500},
+  work:{x:820,y:240},
+  market:{x:450,y:850},
+  restaurant:{x:720,y:860},
+  church:{x:1280,y:900},
+  club:{x:2220,y:870},
+  gym:{x:2600,y:1040},
+  beach:{x:2480,y:1980}
+};
+
+const npcs=[];
+
+function makeNPC(i){
+
+  const look = npcLooks[i % npcLooks.length];
+
+  const homeX =
+    250 + (i%5)*170;
+
+  const homeY =
+    1450 + Math.floor(i/5)*120;
+
+  return {
+    id:"npc_"+i,
+    name:npcNames[i],
+    job:npcJobs[i],
+    look,
+    x:homeX,
+    y:homeY,
+    home:{x:homeX,y:homeY},
+    target:{x:homeX,y:homeY},
+    destination:"home",
+    speed:0.75 + (i%4)*0.12,
+    state:"idle",
+    element:null,
+    friend:false,
+    relationship:0,
+    messages:[],
+    callHistory:[]
+  };
+}
+
+for(let i=0;i<12;i++){
+  npcs.push(makeNPC(i));
+}
+
+/* =========================================================
+   NPC SCHEDULE
+========================================================= */
 
 function nigeriaDate(){
 
@@ -1426,1351 +1735,1317 @@ function nigeriaDate(){
   );
 }
 
-function updateClock(){
+function chooseNPCDestination(npc){
 
   const d=nigeriaDate();
-
-  let h=d.getHours();
-  const m=d.getMinutes().toString().padStart(2,"0");
-  const s=d.getSeconds().toString().padStart(2,"0");
-
-  const suffix=h>=12?"PM":"AM";
-
-  let hh=h%12;
-  if(hh===0) hh=12;
-
-  document.getElementById("clock").textContent=
-    `${hh}:${m}:${s} ${suffix} • ${state.city}`;
-
-  let nightOpacity=0;
-
-  if(h>=20 || h<5){
-    nightOpacity=.62;
-  }else if(h>=18){
-    nightOpacity=.25;
-  }else if(h<7){
-    nightOpacity=.12;
-  }
-
-  document.getElementById("night")
-    .style.opacity=nightOpacity;
-
-  updateFriendSchedules(d);
-}
-
-setInterval(updateClock,1000);
-
-/* =========================
-   FRIEND SCHEDULES
-========================= */
-
-function updateFriendSchedules(d){
-
-  const h=d.getHours();
-
-  state.friends.forEach(friend=>{
-
-    if(h>=8 && h<17){
-      friend.location="Work";
-    }else if(h>=17 && h<19){
-      friend.location="Restaurant";
-    }else if(h>=20 && h<24){
-      friend.location="Club";
-    }else{
-      friend.location="Home";
-    }
-
-    if(d.getDay()===0 && h>=8 && h<13){
-      friend.location="Church";
-    }
-  });
-}
-
-/* =========================
-   PHONE
-========================= */
-
-function openPhone(){
-  document.getElementById("phone").classList.add("active");
-  phonePage("home");
-}
-
-function closePhone(){
-  document.getElementById("phone").classList.remove("active");
-}
-
-function phonePage(page){
-
-  currentPhonePage=page;
-
-  document.querySelectorAll(".phoneNav button")
-    .forEach(b=>b.classList.remove("active"));
-
-  const nav={
-    home:"navHome",
-    friends:"navFriends",
-    messages:"navMessages",
-    calls:"navCalls"
-  };
-
-  document.getElementById(nav[page])
-    .classList.add("active");
-
-  if(page==="home") renderPhoneHome();
-  if(page==="friends") renderFriends();
-  if(page==="messages") renderMessages();
-  if(page==="calls") renderCalls();
-}
-
-function renderPhoneHome(){
-
-  const d=nigeriaDate();
-
-  document.getElementById("phoneContent").innerHTML=`
-    <h2>Good ${d.getHours()<12?"morning":
-               d.getHours()<18?"afternoon":"evening"},
-        ${escapeHTML(state.character.name)}</h2>
-
-    <p style="opacity:.6;font-size:13px">
-      ${state.city} • Your phone is connected to your life.
-    </p>
-
-    <div class="contact">
-      <div class="avatar">₦</div>
-      <div class="contactMain">
-        <div class="contactName">Wallet</div>
-        <div class="contactStatus">
-          ₦${Number(state.money).toLocaleString()}
-        </div>
-      </div>
-    </div>
-
-    <div class="contact">
-      <div class="avatar">F</div>
-      <div class="contactMain">
-        <div class="contactName">Friends</div>
-        <div class="contactStatus">
-          ${state.friends.length} contacts
-        </div>
-      </div>
-      <button class="smallBtn"
-              onclick="phonePage('friends')">
-        Open
-      </button>
-    </div>
-
-    <div class="contact">
-      <div class="avatar">M</div>
-      <div class="contactMain">
-        <div class="contactName">Messages</div>
-        <div class="contactStatus">
-          Chat with your friends
-        </div>
-      </div>
-      <button class="smallBtn"
-              onclick="phonePage('messages')">
-        Open
-      </button>
-    </div>
-
-    <div class="contact">
-      <div class="avatar">C</div>
-      <div class="contactMain">
-        <div class="contactName">Calls</div>
-        <div class="contactStatus">
-          Call history
-        </div>
-      </div>
-      <button class="smallBtn"
-              onclick="phonePage('calls')">
-        Open
-      </button>
-    </div>
-  `;
-}
-
-function renderFriends(){
-
-  let html=`<h2>Friends</h2>`;
-
-  state.friends.forEach(friend=>{
-
-    html+=`
-      <div class="contact">
-
-        <div class="avatar">${friend.avatar}</div>
-
-        <div class="contactMain">
-          <div class="contactName">
-            ${escapeHTML(friend.name)}
-          </div>
-
-          <div class="contactStatus">
-            ${escapeHTML(friend.location)}
-            • Friendship ${friend.relationship}%
-          </div>
-        </div>
-
-        <button class="smallBtn"
-                onclick="openFriend('${friend.id}')">
-          View
-        </button>
-
-      </div>
-    `;
-  });
-
-  document.getElementById("phoneContent").innerHTML=html;
-}
-
-function openFriend(id){
-
-  selectedFriend=state.friends.find(f=>f.id===id);
-
-  if(!selectedFriend) return;
-
-  document.getElementById("phoneContent").innerHTML=`
-
-    <div class="chatHeader">
-
-      <button class="backBtn"
-              onclick="phonePage('friends')">
-        Back
-      </button>
-
-      <div>
-        <strong>${escapeHTML(selectedFriend.name)}</strong>
-        <div style="font-size:11px;opacity:.55">
-          ${escapeHTML(selectedFriend.location)}
-        </div>
-      </div>
-
-    </div>
-
-    <button class="smallBtn"
-            onclick="startCall('${selectedFriend.id}')">
-      Call ${escapeHTML(selectedFriend.name)}
-    </button>
-
-    <button class="smallBtn"
-            onclick="inviteFriend('${selectedFriend.id}')">
-      Invite to meet
-    </button>
-
-    <div class="messages"
-         id="messagesBox">
-      ${renderMessageHTML(selectedFriend)}
-    </div>
-
-    <div class="chatInput">
-      <input id="messageInput"
-             placeholder="Type a message..."
-             maxlength="150"
-             onkeydown="if(event.key==='Enter')sendMessage()">
-
-      <button class="send"
-              onclick="sendMessage()">
-        Send
-      </button>
-    </div>
-  `;
-}
-
-function renderMessageHTML(friend){
-
-  return friend.messages.map(m=>`
-    <div class="msg ${m.from==="you"?"you":"friend"}">
-      ${escapeHTML(m.text)}
-    </div>
-  `).join("");
-}
-
-function sendMessage(){
-
-  if(!selectedFriend) return;
-
-  const input=document.getElementById("messageInput");
-
-  if(!input) return;
-
-  const text=input.value.trim();
-
-  if(!text) return;
-
-  selectedFriend.messages.push({
-    from:"you",
-    text:text
-  });
-
-  selectedFriend.relationship=
-    Math.min(100,selectedFriend.relationship+1);
-
-  save();
-
-  input.value="";
-
-  openFriend(selectedFriend.id);
-
-  setTimeout(()=>{
-    friendReply(selectedFriend.id,text);
-  },900);
-}
-
-/* =========================
-   SMART FRIEND REPLIES
-========================= */
-
-function friendReply(id,text){
-
-  const friend=state.friends.find(f=>f.id===id);
-
-  if(!friend) return;
-
-  const lower=text.toLowerCase();
-
-  let reply="Nice one bro.";
-
-  if(
-    lower.includes("where") ||
-    lower.includes("dey") ||
-    lower.includes("where are")
-  ){
-    reply=`I dey ${friend.location.toLowerCase()} now.`;
-  }
-  else if(
-    lower.includes("club") ||
-    lower.includes("tonight")
-  ){
-    reply="Sure. We fit link up tonight.";
-  }
-  else if(
-    lower.includes("church")
-  ){
-    reply="Okay. I fit meet you there.";
-  }
-  else if(
-    lower.includes("restaurant") ||
-    lower.includes("food")
-  ){
-    reply="Food sounds good. Make we go.";
-  }
-  else if(
-    lower.includes("love") ||
-    lower.includes("miss")
-  ){
-    reply="Aww, that's nice to hear.";
-  }
-  else if(
-    lower.includes("hello") ||
-    lower.includes("hi")
-  ){
-    reply="Hey! Good to hear from you.";
-  }
-  else{
-    const replies=[
-      "Yeah, I understand.",
-      "No wahala.",
-      "That sounds good.",
-      "Okay, I hear you.",
-      "We go sort am out.",
-      "Definitely."
-    ];
-
-    reply=replies[
-      Math.floor(Math.random()*replies.length)
-    ];
-  }
-
-  friend.messages.push({
-    from:"friend",
-    text:reply
-  });
-
-  save();
-
-  if(
-    currentPhonePage==="friends" &&
-    selectedFriend &&
-    selectedFriend.id===id
-  ){
-    openFriend(id);
-  }
-}
-
-/* =========================
-   MESSAGE LIST
-========================= */
-
-function renderMessages(){
-
-  let html=`<h2>Messages</h2>`;
-
-  state.friends.forEach(friend=>{
-
-    const last=
-      friend.messages[friend.messages.length-1];
-
-    html+=`
-      <div class="contact"
-           onclick="openFriend('${friend.id}')">
-
-        <div class="avatar">${friend.avatar}</div>
-
-        <div class="contactMain">
-          <div class="contactName">
-            ${escapeHTML(friend.name)}
-          </div>
-
-          <div class="contactStatus">
-            ${escapeHTML(last?.text || "No messages")}
-          </div>
-        </div>
-
-      </div>
-    `;
-  });
-
-  document.getElementById("phoneContent").innerHTML=html;
-}
-
-/* =========================
-   CALLING
-========================= */
-
-function startCall(id){
-
-  const friend=state.friends.find(f=>f.id===id);
-
-  if(!friend) return;
-
-  closePhone();
-
-  document.getElementById("callOverlay")
-    .classList.add("active");
-
-  document.getElementById("callAvatar")
-    .textContent=friend.avatar;
-
-  document.getElementById("callName")
-    .textContent=friend.name;
-
-  document.getElementById("callState")
-    .textContent="Calling...";
-
-  callSeconds=0;
-  muted=false;
-
-  clearInterval(callTimer);
-
-  setTimeout(()=>{
-    if(
-      document.getElementById("callOverlay")
-        .classList.contains("active")
-    ){
-      document.getElementById("callState")
-        .textContent="Connected";
-
-      callTimer=setInterval(()=>{
-        callSeconds++;
-
-        const min=Math.floor(callSeconds/60);
-        const sec=(callSeconds%60)
-          .toString()
-          .padStart(2,"0");
-
-        document.getElementById("callState")
-          .textContent=
-          `Connected • ${min}:${sec}`;
-      },1000);
-    }
-  },1200);
-}
-
-function toggleMute(){
-
-  muted=!muted;
-
-  toast(muted ? "Microphone muted" : "Microphone on");
-}
-
-function endCall(){
-
-  clearInterval(callTimer);
-
-  const name=
-    document.getElementById("callName").textContent;
-
-  state.callHistory.unshift({
-    name:name,
-    duration:callSeconds,
-    time:new Date().toISOString()
-  });
-
-  state.callHistory=
-    state.callHistory.slice(0,30);
-
-  save();
-
-  document.getElementById("callOverlay")
-    .classList.remove("active");
-
-  toast("Call ended");
-
-  callSeconds=0;
-}
-
-function renderCalls(){
-
-  let html=`<h2>Calls</h2>`;
-
-  if(!state.callHistory.length){
-
-    html+=`
-      <p style="opacity:.55">
-        No calls yet.
-      </p>
-    `;
+  const hour=d.getHours();
+  const day=d.getDay();
+
+  let destination="home";
+
+  if(day===0){
+
+    if(hour>=8 && hour<13)
+      destination="church";
+    else if(hour>=16 && hour<21)
+      destination="restaurant";
+    else
+      destination="home";
 
   }else{
 
-    state.callHistory.forEach(call=>{
+    if(hour>=7 && hour<17)
+      destination="work";
+    else if(hour>=17 && hour<20)
+      destination="restaurant";
+    else if(hour>=20 && hour<24)
+      destination =
+        (parseInt(npc.id.replace("npc_",""))%3===0)
+        ?"club"
+        :"home";
+    else
+      destination="home";
+  }
 
-      const min=Math.floor(call.duration/60);
-      const sec=(call.duration%60)
-        .toString()
-        .padStart(2,"0");
+  if(npc.destination!==destination){
 
-      html+=`
-        <div class="contact">
+    npc.destination=destination;
+    npc.target={
+      x:npcDestinations[destination].x +
+        (Math.random()*120-60),
+      y:npcDestinations[destination].y +
+        (Math.random()*120-60)
+    };
+  }
+}
 
-          <div class="avatar">↗</div>
+/* =========================================================
+   CREATE NPC DOM
+========================================================= */
 
-          <div class="contactMain">
-            <div class="contactName">
-              ${escapeHTML(call.name)}
-            </div>
+function renderNPC(npc){
 
-            <div class="contactStatus">
-              ${min}:${sec}
-            </div>
-          </div>
+  const el=document.createElement("div");
 
-        </div>
-      `;
+  el.className="person idle";
+
+  el.innerHTML=createHumanSVG(
+    npc.look,
+    .9 + Math.random()*.16
+  );
+
+  el.title=npc.name;
+
+  el.addEventListener("click",e=>{
+    e.stopPropagation();
+    openNPC(npc);
+  });
+
+  npc.element=el;
+  peopleEl.appendChild(el);
+
+  updateNPCElement(npc);
+}
+
+function updateNPCElement(npc){
+
+  if(!npc.element)return;
+
+  npc.element.style.left =
+    (npc.x-35)+"px";
+
+  npc.element.style.top =
+    (npc.y-105)+"px";
+}
+
+function renderAllNPCs(){
+
+  npcs.forEach(renderNPC);
+}
+
+/* =========================================================
+   NPC MOVEMENT
+========================================================= */
+
+function updateNPCs(){
+
+  npcs.forEach(npc=>{
+
+    chooseNPCDestination(npc);
+
+    const dx=npc.target.x-npc.x;
+    const dy=npc.target.y-npc.y;
+
+    const distance=Math.sqrt(dx*dx+dy*dy);
+
+    if(distance>8){
+
+      npc.x += (dx/distance)*npc.speed;
+      npc.y += (dy/distance)*npc.speed;
+
+      npc.state="walking";
+
+      npc.element.classList.add("moving");
+      npc.element.classList.remove("idle");
+
+      npc.element.style.transform =
+        dx<0 ? "scaleX(-1)" : "scaleX(1)";
+
+    }else{
+
+      npc.state="idle";
+
+      npc.element.classList.remove("moving");
+      npc.element.classList.add("idle");
+    }
+
+    updateNPCElement(npc);
+  });
+}
+
+/* =========================================================
+   NPC INTERACTION
+========================================================= */
+
+function openNPC(npc){
+
+  state.selectedNPC=npc;
+
+  document.getElementById("npcName").textContent =
+    npc.name;
+
+  document.getElementById("npcStatus").textContent =
+    `${npc.job} • ${npc.destination.toUpperCase()} • Relationship ${npc.relationship}`;
+
+  const actions=document.getElementById("npcActions");
+
+  actions.innerHTML="";
+
+  addNpcButton(actions,"Talk",()=>{
+    talkToNPC(npc);
+  });
+
+  if(!npc.friend){
+
+    addNpcButton(actions,"Add Friend",()=>{
+      addFriend(npc);
+    });
+
+  }else{
+
+    addNpcButton(actions,"Message",()=>{
+      openChat(npc);
+    });
+
+    addNpcButton(actions,"Call",()=>{
+      startCall(npc);
     });
   }
 
-  document.getElementById("phoneContent").innerHTML=html;
+  document.getElementById("npcModal")
+    .classList.add("show");
 }
 
-/* =========================
-   INVITE FRIEND
-========================= */
+function addNpcButton(parent,text,fn){
 
-function inviteFriend(id){
+  const b=document.createElement("button");
 
-  const friend=state.friends.find(f=>f.id===id);
+  b.className="activity";
+  b.textContent=text;
 
-  if(!friend) return;
+  b.onclick=fn;
 
-  const places=[
-    "Restaurant",
-    "Club",
-    "Park",
-    "Market"
-  ];
+  parent.appendChild(b);
+}
 
-  const place=places[
-    Math.floor(Math.random()*places.length)
-  ];
+function talkToNPC(npc){
 
-  friend.messages.push({
-    from:"friend",
-    text:`Sure! Let's meet at the ${place.toLowerCase()}.`
-  });
-
-  friend.relationship=
-    Math.min(100,friend.relationship+3);
-
-  save();
+  npc.relationship += 2;
 
   toast(
-    friend.name+" agreed to meet you!"
+    `${npc.name}: "Nice to meet you!"`
   );
 
-  openFriend(id);
-}
+  closeNPC();
 
-/* =========================
-   LOCATIONS
-========================= */
+  if(npc.relationship>=10 && !npc.friend){
 
-const locations={
-
-  Home:{
-    description:"Your home. Rest, eat, shower and change clothes.",
-    actions:[
-      ["Sleep","sleepAtHome"],
-      ["Eat at home","eatAtHome"],
-      ["Take a shower","shower"],
-      ["Change clothes","changeClothes"]
-    ]
-  },
-
-  Work:{
-    description:"Go to work and earn money.",
-    actions:[
-      ["Start work shift","workShift"],
-      ["Check job options","jobs"]
-    ]
-  },
-
-  Bank:{
-    description:"Manage your game finances.",
-    actions:[
-      ["Check balance","bankBalance"],
-      ["Deposit ₦500","depositMoney"],
-      ["Withdraw ₦500","withdrawMoney"]
-    ]
-  },
-
-  Market:{
-    description:"Buy food and everyday items.",
-    actions:[
-      ["Buy food — ₦200","buyFood"],
-      ["Buy groceries — ₦500","buyGroceries"]
-    ]
-  },
-
-  Restaurant:{
-    description:"Grab a meal and relax.",
-    actions:[
-      ["Eat meal — ₦500","restaurantEat"],
-      ["Meet friends","openPhone"]
-    ]
-  },
-
-  Church:{
-    description:"Attend church and socialize.",
-    actions:[
-      ["Attend service","churchService"],
-      ["Talk to people","churchTalk"]
-    ]
-  },
-
-  Club:{
-    description:"Music, dancing and nightlife.",
-    actions:[
-      ["Enter club","clubEnter"],
-      ["Dance","clubDance"],
-      ["Meet people","meetPeople"]
-    ]
-  },
-
-  Hospital:{
-    description:"Take care of your character.",
-    actions:[
-      ["Visit doctor — ₦300","doctor"],
-      ["Rest","hospitalRest"]
-    ]
-  },
-
-  Gym:{
-    description:"Work on your fitness.",
-    actions:[
-      ["Workout","workout"],
-      ["Train hard","hardWorkout"]
-    ]
-  },
-
-  Salon:{
-    description:"Change your hairstyle.",
-    actions:[
-      ["Get haircut — ₦300","haircut"],
-      ["Style hair — ₦500","hairStyle"]
-    ]
-  },
-
-  Fuel:{
-    description:"Refuel your vehicle.",
-    actions:[
-      ["Buy fuel — ₦1,000","fuel"]
-    ]
-  },
-
-  Police:{
-    description:"Police station.",
-    actions:[
-      ["Ask for help","policeHelp"],
-      ["Report an issue","policeReport"]
-    ]
-  },
-
-  School:{
-    description:"Study and improve your skills.",
-    actions:[
-      ["Attend class","schoolClass"],
-      ["Study","study"]
-    ]
+    addFriend(npc);
   }
-};
-
-function openLocation(name){
-
-  currentLocation=name;
-
-  const loc=locations[name];
-
-  if(!loc) return;
-
-  document.getElementById("locationTitle")
-    .textContent=name;
-
-  document.getElementById("locationDescription")
-    .textContent=loc.description;
-
-  const box=document.getElementById("locationActions");
-
-  box.innerHTML="";
-
-  loc.actions.forEach(action=>{
-
-    const btn=document.createElement("button");
-
-    btn.textContent=action[0];
-
-    if(
-      action[1]==="workShift" ||
-      action[1]==="churchService" ||
-      action[1]==="clubEnter"
-    ){
-      btn.classList.add("primaryAction");
-    }
-
-    btn.onclick=()=>{
-      window[action[1]]();
-    };
-
-    box.appendChild(btn);
-  });
-
-  document.getElementById("locationModal")
-    .classList.add("active");
 }
 
-function closeLocation(){
-  document.getElementById("locationModal")
-    .classList.remove("active");
+function addFriend(npc){
+
+  npc.friend=true;
+
+  if(!state.friends.includes(npc.id))
+    state.friends.push(npc.id);
+
+  if(!state.messages[npc.id])
+    state.messages[npc.id]=[
+      {
+        from:"them",
+        text:"Hey! Nice meeting you."
+      }
+    ];
+
+  npc.relationship += 5;
+
+  toast(`${npc.name} is now your friend.`);
+
+  closeNPC();
 }
 
-/* =========================
-   LOCATION ACTIONS
-========================= */
+function closeNPC(){
 
-function sleepAtHome(){
-
-  state.energy=Math.min(100,state.energy+50);
-
-  addXP(5);
-
-  toast("You rested at home.");
-
-  closeLocation();
-  updateHUD();
-  save();
+  document.getElementById("npcModal")
+    .classList.remove("show");
 }
 
-function eatAtHome(){
+/* =========================================================
+   PLAYER MOVEMENT
+========================================================= */
 
-  if(state.money<100){
-    toast("Not enough money.");
-    return;
-  }
+let lastTime=performance.now();
 
-  state.money-=100;
-  state.energy=Math.min(100,state.energy+35);
-
-  addXP(5);
-
-  toast("You ate at home.");
-
-  closeLocation();
-  updateHUD();
-  save();
-}
-
-function shower(){
-
-  addXP(3);
-
-  toast("Fresh and clean.");
-
-  closeLocation();
-}
-
-function changeClothes(){
-
-  openCreatorEdit();
-  closeLocation();
-}
-
-function workShift(){
-
-  const h=nigeriaDate().getHours();
-
-  if(h<7 || h>=19){
-    toast("Your workplace is closed right now.");
-    return;
-  }
-
-  toast("You started your work shift.");
-
-  closeLocation();
-
-  setTimeout(()=>{
-
-    state.money+=1500;
-    state.energy=Math.max(0,state.energy-20);
-
-    addXP(25);
-
-    updateHUD();
-    save();
-
-    toast("Work finished. +₦1,500");
-
-  },5000);
-}
-
-function jobs(){
-  toast("Available: Office Worker • Driver • Shop Worker");
-}
-
-function bankBalance(){
-  toast("Balance: ₦"+Number(state.money).toLocaleString());
-}
-
-function depositMoney(){
-
-  toast("Money is already represented in your game wallet.");
-}
-
-function withdrawMoney(){
-
-  toast("Your available balance is ₦"+
-        Number(state.money).toLocaleString());
-}
-
-function buyFood(){
-
-  if(state.money<200){
-    toast("Not enough money.");
-    return;
-  }
-
-  state.money-=200;
-  state.energy=Math.min(100,state.energy+25);
-
-  addXP(5);
-  updateHUD();
-  save();
-
-  toast("Food purchased.");
-}
-
-function buyGroceries(){
-
-  if(state.money<500){
-    toast("Not enough money.");
-    return;
-  }
-
-  state.money-=500;
-  state.energy=Math.min(100,state.energy+40);
-
-  addXP(8);
-  updateHUD();
-  save();
-
-  toast("Groceries purchased.");
-}
-
-function restaurantEat(){
-
-  if(state.money<500){
-    toast("You need ₦500.");
-    return;
-  }
-
-  state.money-=500;
-  state.energy=Math.min(100,state.energy+50);
-
-  addXP(8);
-  updateHUD();
-  save();
-
-  toast("That meal was good.");
-}
-
-function churchService(){
-
-  const d=nigeriaDate();
-
-  if(d.getDay()!==0){
-    toast("Main church service is on Sunday.");
-    return;
-  }
-
-  state.energy=Math.max(0,state.energy-5);
-
-  addXP(15);
-
-  toast("You attended church service.");
-
-  closeLocation();
-  updateHUD();
-  save();
-}
-
-function churchTalk(){
-
-  addXP(4);
-
-  toast("You met people at church.");
-}
-
-function clubEnter(){
-
-  const h=nigeriaDate().getHours();
-
-  if(h<18){
-    toast("The club opens later.");
-    return;
-  }
-
-  toast("Welcome to the club.");
-
-  closeLocation();
-}
-
-function clubDance(){
-
-  const h=nigeriaDate().getHours();
-
-  if(h<18){
-    toast("Come back tonight.");
-    return;
-  }
-
-  state.energy=Math.max(0,state.energy-10);
-
-  addXP(10);
-
-  toast("You danced with the crowd.");
-
-  updateHUD();
-  save();
-}
-
-function meetPeople(){
-
-  addXP(8);
-
-  toast("You met new people.");
-
-  phonePage("friends");
-  openPhone();
-}
-
-function doctor(){
-
-  if(state.money<300){
-    toast("Doctor visit costs ₦300.");
-    return;
-  }
-
-  state.money-=300;
-  state.energy=Math.min(100,state.energy+25);
-
-  addXP(5);
-
-  updateHUD();
-  save();
-
-  toast("You feel better.");
-}
-
-function hospitalRest(){
-
-  state.energy=Math.min(100,state.energy+30);
-
-  updateHUD();
-
-  toast("You rested at the hospital.");
-}
-
-function workout(){
-
-  state.energy=Math.max(0,state.energy-15);
-
-  addXP(12);
-
-  updateHUD();
-  save();
-
-  toast("Workout completed.");
-}
-
-function hardWorkout(){
-
-  state.energy=Math.max(0,state.energy-25);
-
-  addXP(20);
-
-  updateHUD();
-  save();
-
-  toast("Hard workout completed.");
-}
-
-function haircut(){
-
-  if(state.money<300){
-    toast("You need ₦300.");
-    return;
-  }
-
-  state.money-=300;
-
-  addXP(5);
-
-  updateHUD();
-  save();
-
-  toast("Fresh haircut.");
-}
-
-function hairStyle(){
-
-  if(state.money<500){
-    toast("You need ₦500.");
-    return;
-  }
-
-  state.money-=500;
-
-  addXP(8);
-
-  updateHUD();
-  save();
-
-  toast("New hairstyle.");
-}
-
-function fuel(){
-
-  if(state.money<1000){
-    toast("You need ₦1,000.");
-    return;
-  }
-
-  state.money-=1000;
-
-  addXP(5);
-
-  updateHUD();
-  save();
-
-  toast("Vehicle refueled.");
-}
-
-function policeHelp(){
-  toast("The police are available.");
-}
-
-function policeReport(){
-  toast("Report recorded.");
-}
-
-function schoolClass(){
-
-  state.energy=Math.max(0,state.energy-10);
-
-  addXP(15);
-
-  updateHUD();
-  save();
-
-  toast("Class completed.");
-}
-
-function study(){
-
-  state.energy=Math.max(0,state.energy-7);
-
-  addXP(10);
-
-  updateHUD();
-  save();
-
-  toast("You studied.");
-}
-
-/* =========================
-   SIMPLE MOVEMENT
-========================= */
-
-let keys={
-  up:false,
-  down:false,
-  left:false,
-  right:false
-};
-
-let joystick={
-  active:false,
-  x:0,
-  y:0
-};
-
-const speed=2.5;
-
-function movePlayer(){
+function updatePlayer(){
 
   let dx=0;
   let dy=0;
 
-  if(keys.up)dy-=1;
-  if(keys.down)dy+=1;
-  if(keys.left)dx-=1;
-  if(keys.right)dx+=1;
+  if(state.keys.left)dx--;
+  if(state.keys.right)dx++;
+  if(state.keys.up)dy--;
+  if(state.keys.down)dy++;
 
-  if(joystick.active){
-    dx+=joystick.x;
-    dy+=joystick.y;
-  }
+  if(dx!==0 || dy!==0){
 
-  const len=Math.hypot(dx,dy);
+    const len=Math.sqrt(dx*dx+dy*dy);
 
-  if(len>0){
+    const speed =
+      state.player.running ? 6 : 3.4;
 
-    dx/=len;
-    dy/=len;
+    state.player.x +=
+      (dx/len)*speed;
 
-    state.x+=dx*speed;
-    state.y+=dy*speed;
+    state.player.y +=
+      (dy/len)*speed;
 
-    state.x=Math.max(20,Math.min(2930,state.x));
-    state.y=Math.max(20,Math.min(2130,state.y));
-
-    state.energy=Math.max(
-      0,
-      state.energy-.002
+    state.player.x=Math.max(
+      40,
+      Math.min(3560,state.player.x)
     );
+
+    state.player.y=Math.max(
+      50,
+      Math.min(2520,state.player.y)
+    );
+
+    playerEl.classList.add("moving");
+    playerEl.classList.remove("idle");
+
+    playerEl.style.transform =
+      dx<0 ? "scaleX(-1)" : "scaleX(1)";
+
+  }else{
+
+    playerEl.classList.remove("moving");
+    playerEl.classList.add("idle");
   }
 
-  const player=document.getElementById("player");
-
-  player.style.left=state.x+"px";
-  player.style.top=state.y+"px";
-
-  cameraFollow();
-
-  requestAnimationFrame(movePlayer);
+  renderPlayer();
 }
 
-function cameraFollow(){
+/* =========================================================
+   CAMERA
+========================================================= */
 
-  const world=document.getElementById("world");
+function updateCamera(){
 
-  const screenW=innerWidth;
-  const screenH=innerHeight;
+  const vw=window.innerWidth;
+  const vh=window.innerHeight;
 
-  let left=
-    screenW/2-state.x-35;
+  let targetX=
+    state.player.x-vw/2;
 
-  let top=
-    screenH/2-state.y-70;
+  let targetY=
+    state.player.y-vh/2;
 
-  left=Math.min(0,Math.max(screenW-3000,left));
-  top=Math.min(0,Math.max(screenH-2200,top));
+  targetX=Math.max(
+    0,
+    Math.min(3600-vw,targetX)
+  );
 
-  world.style.transform=
-    `translate(${left}px,${top}px)`;
+  targetY=Math.max(
+    0,
+    Math.min(2600-vh,targetY)
+  );
+
+  state.camera.x +=
+    (targetX-state.camera.x)*.12;
+
+  state.camera.y +=
+    (targetY-state.camera.y)*.12;
+
+  world.style.transform =
+    `translate(${-state.camera.x}px,${-state.camera.y}px)`;
 }
 
-document.addEventListener("keydown",e=>{
+/* =========================================================
+   KEYBOARD
+========================================================= */
 
-  if(e.key==="ArrowUp"||e.key==="w")
-    keys.up=true;
+window.addEventListener("keydown",e=>{
 
-  if(e.key==="ArrowDown"||e.key==="s")
-    keys.down=true;
+  if(e.key==="ArrowUp" || e.key.toLowerCase()==="w")
+    state.keys.up=true;
 
-  if(e.key==="ArrowLeft"||e.key==="a")
-    keys.left=true;
+  if(e.key==="ArrowDown" || e.key.toLowerCase()==="s")
+    state.keys.down=true;
 
-  if(e.key==="ArrowRight"||e.key==="d")
-    keys.right=true;
+  if(e.key==="ArrowLeft" || e.key.toLowerCase()==="a")
+    state.keys.left=true;
+
+  if(e.key==="ArrowRight" || e.key.toLowerCase()==="d")
+    state.keys.right=true;
+
 });
 
-document.addEventListener("keyup",e=>{
+window.addEventListener("keyup",e=>{
 
-  if(e.key==="ArrowUp"||e.key==="w")
-    keys.up=false;
+  if(e.key==="ArrowUp" || e.key.toLowerCase()==="w")
+    state.keys.up=false;
 
-  if(e.key==="ArrowDown"||e.key==="s")
-    keys.down=false;
+  if(e.key==="ArrowDown" || e.key.toLowerCase()==="s")
+    state.keys.down=false;
 
-  if(e.key==="ArrowLeft"||e.key==="a")
-    keys.left=false;
+  if(e.key==="ArrowLeft" || e.key.toLowerCase()==="a")
+    state.keys.left=false;
 
-  if(e.key==="ArrowRight"||e.key==="d")
-    keys.right=false;
+  if(e.key==="ArrowRight" || e.key.toLowerCase()==="d")
+    state.keys.right=false;
 });
 
-/* =========================
-   MOBILE JOYSTICK
-========================= */
+/* =========================================================
+   JOYSTICK
+========================================================= */
 
-const joystickEl=document.getElementById("joystick");
+const joystick=document.getElementById("joystick");
 const stick=document.getElementById("stick");
 
-function joystickMove(e){
+let joyActive=false;
 
-  const rect=joystickEl.getBoundingClientRect();
+function joystickMove(clientX,clientY){
 
-  const cx=rect.left+rect.width/2;
-  const cy=rect.top+rect.height/2;
+  const r=joystick.getBoundingClientRect();
 
-  let x=e.clientX-cx;
-  let y=e.clientY-cy;
+  const cx=r.left+r.width/2;
+  const cy=r.top+r.height/2;
+
+  let dx=clientX-cx;
+  let dy=clientY-cy;
 
   const max=40;
 
-  const dist=Math.hypot(x,y);
+  const len=Math.sqrt(dx*dx+dy*dy);
 
-  if(dist>max){
-    x=x/dist*max;
-    y=y/dist*max;
+  if(len>max){
+
+    dx=dx/len*max;
+    dy=dy/len*max;
   }
 
-  stick.style.left=
-    (35+x)+"px";
+  stick.style.transform=
+    `translate(${dx}px,${dy}px)`;
 
-  stick.style.top=
-    (35+y)+"px";
-
-  joystick.x=x/max;
-  joystick.y=y/max;
+  state.keys.left=dx<-10;
+  state.keys.right=dx>10;
+  state.keys.up=dy<-10;
+  state.keys.down=dy>10;
 }
 
-joystickEl.addEventListener("pointerdown",e=>{
-  joystick.active=true;
-  joystickEl.setPointerCapture(e.pointerId);
-  joystickMove(e);
-});
+function joystickReset(){
 
-joystickEl.addEventListener("pointermove",e=>{
-  if(joystick.active)joystickMove(e);
-});
+  joyActive=false;
 
-function resetJoystick(){
+  stick.style.transform="translate(0,0)";
 
-  joystick.active=false;
-  joystick.x=0;
-  joystick.y=0;
-
-  stick.style.left="35px";
-  stick.style.top="35px";
+  state.keys.up=false;
+  state.keys.down=false;
+  state.keys.left=false;
+  state.keys.right=false;
 }
 
-joystickEl.addEventListener("pointerup",resetJoystick);
-joystickEl.addEventListener("pointercancel",resetJoystick);
+joystick.addEventListener("pointerdown",e=>{
+  joyActive=true;
+  joystick.setPointerCapture(e.pointerId);
+  joystickMove(e.clientX,e.clientY);
+});
 
-/* =========================
-   NPC MOVEMENT
-========================= */
+joystick.addEventListener("pointermove",e=>{
+  if(joyActive)
+    joystickMove(e.clientX,e.clientY);
+});
 
-const npcData=[
-  {
-    id:"npc1",
-    x:500,
-    y:500,
-    dx:0,
-    dy:0
+joystick.addEventListener("pointerup",joystickReset);
+joystick.addEventListener("pointercancel",joystickReset);
+
+/* =========================================================
+   RUN
+========================================================= */
+
+document.getElementById("runBtn")
+.addEventListener("pointerdown",()=>{
+  state.player.running=true;
+});
+
+document.getElementById("runBtn")
+.addEventListener("pointerup",()=>{
+  state.player.running=false;
+});
+
+document.getElementById("runBtn")
+.addEventListener("pointercancel",()=>{
+  state.player.running=false;
+});
+
+/* =========================================================
+   REAL TIME
+========================================================= */
+
+function updateRealTime(){
+
+  const d=nigeriaDate();
+
+  const h=String(d.getHours()).padStart(2,"0");
+  const m=String(d.getMinutes()).padStart(2,"0");
+  const s=String(d.getSeconds()).padStart(2,"0");
+
+  document.getElementById("clock").textContent=
+    `${h}:${m}:${s}`;
+
+  let night=false;
+
+  if(d.getHours()>=19 || d.getHours()<6)
+    night=true;
+
+  document.getElementById("night")
+    .classList.toggle("on",night);
+}
+
+/* =========================================================
+   LOCATION SYSTEM
+========================================================= */
+
+const placeData={
+
+  home:{
+    title:"Home",
+    description:"Your personal home in Lagos.",
+    actions:[
+      ["Sleep",()=>{
+        state.energy=100;
+        toast("You slept and restored your energy.");
+      }],
+      ["Eat",()=>{
+        state.energy=Math.min(100,state.energy+20);
+        toast("You ate a meal.");
+      }],
+      ["Relax",()=>{
+        toast("You relaxed at home.");
+      }]
+    ]
   },
-  {
-    id:"npc2",
-    x:1250,
-    y:500,
-    dx:0,
-    dy:0
+
+  bank:{
+    title:"Bank",
+    description:"Manage your money.",
+    actions:[
+      ["Check balance",()=>{
+        toast(`Balance: ₦${state.money.toLocaleString()}`);
+      }]
+    ]
   },
-  {
-    id:"npc3",
-    x:1850,
-    y:1150,
-    dx:0,
-    dy:0
+
+  market:{
+    title:"Market",
+    description:"Buy food and everyday items.",
+    actions:[
+      ["Buy food — ₦5,000",()=>{
+        if(state.money>=5000){
+          state.money-=5000;
+          state.energy=Math.min(100,state.energy+15);
+          updateHUD();
+          toast("You bought food.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  restaurant:{
+    title:"Restaurant",
+    description:"Grab something to eat.",
+    actions:[
+      ["Eat meal — ₦7,500",()=>{
+        if(state.money>=7500){
+          state.money-=7500;
+          state.energy=Math.min(100,state.energy+25);
+          updateHUD();
+          toast("You enjoyed your meal.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  work:{
+    title:"Work",
+    description:"Go to work and earn money.",
+    actions:[
+      ["Work shift",()=>{
+        state.money+=15000;
+        state.energy=Math.max(0,state.energy-20);
+        state.level++;
+        updateHUD();
+        toast("You completed your work shift: +₦15,000");
+      }]
+    ]
+  },
+
+  church:{
+    title:"Church",
+    description:"Attend a church service.",
+    actions:[
+      ["Attend service",()=>{
+        state.energy=Math.min(100,state.energy+10);
+        toast("You attended church.");
+      }]
+    ]
+  },
+
+  club:{
+    title:"Club",
+    description:"Meet people and enjoy the night.",
+    actions:[
+      ["Enter club — ₦10,000",()=>{
+        if(state.money>=10000){
+          state.money-=10000;
+          state.energy=Math.max(0,state.energy-10);
+          updateHUD();
+          toast("You entered the club.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  hospital:{
+    title:"Hospital",
+    description:"Health and medical services.",
+    actions:[
+      ["Rest",()=>{
+        state.energy=100;
+        toast("You rested at the hospital.");
+      }]
+    ]
+  },
+
+  gym:{
+    title:"Gym",
+    description:"Train your character.",
+    actions:[
+      ["Workout",()=>{
+        state.energy=Math.max(0,state.energy-15);
+        state.level++;
+        updateHUD();
+        toast("Workout complete. Level increased.");
+      }]
+    ]
+  },
+
+  salon:{
+    title:"Salon",
+    description:"Hair and grooming.",
+    actions:[
+      ["Get haircut — ₦3,000",()=>{
+        if(state.money>=3000){
+          state.money-=3000;
+          updateHUD();
+          toast("Fresh haircut 🔥");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  fuel:{
+    title:"Fuel Station",
+    description:"Refuel your vehicle.",
+    actions:[
+      ["Buy fuel — ₦8,000",()=>{
+        if(state.money>=8000){
+          state.money-=8000;
+          updateHUD();
+          toast("Vehicle refueled.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  police:{
+    title:"Police Station",
+    description:"Lagos Police Station.",
+    actions:[
+      ["Talk to officer",()=>{
+        toast("Officer: Everything is under control.");
+      }]
+    ]
+  },
+
+  school:{
+    title:"School",
+    description:"Education and learning.",
+    actions:[
+      ["Attend class",()=>{
+        state.level++;
+        updateHUD();
+        toast("You attended class.");
+      }]
+    ]
+  },
+
+  shop:{
+    title:"Shop",
+    description:"Local Lagos shop.",
+    actions:[
+      ["Buy item — ₦2,000",()=>{
+        if(state.money>=2000){
+          state.money-=2000;
+          updateHUD();
+          toast("Item purchased.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  hotel:{
+    title:"Hotel",
+    description:"A place to stay and relax.",
+    actions:[
+      ["Book room — ₦20,000",()=>{
+        if(state.money>=20000){
+          state.money-=20000;
+          updateHUD();
+          toast("Hotel room booked.");
+        }else toast("Not enough money.");
+      }]
+    ]
+  },
+
+  beach:{
+    title:"Lagos Beach",
+    description:"Enjoy the coastline.",
+    actions:[
+      ["Relax at the beach",()=>{
+        state.energy=Math.min(100,state.energy+20);
+        toast("You relaxed by the Lagos coast.");
+      }]
+    ]
   }
-];
+};
 
-function moveNPCs(){
+document.querySelectorAll(".building")
+.forEach(b=>{
 
-  npcData.forEach(n=>{
+  b.addEventListener("click",()=>{
 
-    if(Math.random()<.025){
+    const key=b.dataset.place;
 
-      n.dx=
-        Math.random()-.5;
+    if(placeData[key])
+      openLocation(key);
+  });
+});
 
-      n.dy=
-        Math.random()-.5;
-    }
+function openLocation(key){
 
-    n.x+=n.dx*.7;
-    n.y+=n.dy*.7;
+  const p=placeData[key];
 
-    n.x=Math.max(50,Math.min(2900,n.x));
-    n.y=Math.max(50,Math.min(2100,n.y));
+  state.currentPlace=key;
 
-    const el=document.getElementById(n.id);
+  document.getElementById("modalTitle")
+    .textContent=p.title;
 
-    if(el){
-      el.style.left=n.x+"px";
-      el.style.top=n.y+"px";
+  document.getElementById("modalDescription")
+    .textContent=p.description;
+
+  const box=document.getElementById("activities");
+
+  box.innerHTML="";
+
+  p.actions.forEach(([name,fn])=>{
+
+    const b=document.createElement("button");
+
+    b.className="activity";
+    b.textContent=name;
+
+    b.onclick=fn;
+
+    box.appendChild(b);
+  });
+
+  document.getElementById("locationModal")
+    .classList.add("show");
+}
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+document.getElementById("interactBtn")
+.addEventListener("click",()=>{
+
+  let nearest=null;
+  let nearestDistance=Infinity;
+
+  npcs.forEach(npc=>{
+
+    const dx=npc.x-state.player.x;
+    const dy=npc.y-state.player.y;
+
+    const d=Math.sqrt(dx*dx+dy*dy);
+
+    if(d<nearestDistance){
+      nearestDistance=d;
+      nearest=npc;
     }
   });
 
-  setTimeout(moveNPCs,50);
+  if(nearest && nearestDistance<120)
+    openNPC(nearest);
+  else
+    toast("Nothing close enough to interact with.");
+});
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+const phone=document.getElementById("phone");
+const phoneBody=document.getElementById("phoneBody");
+
+document.getElementById("phoneBtn")
+.addEventListener("click",()=>{
+  phone.classList.toggle("show");
+  if(phone.classList.contains("show"))
+    renderPhone("home");
+});
+
+document.getElementById("closePhone")
+.addEventListener("click",()=>{
+  phone.classList.remove("show");
+});
+
+document.querySelectorAll(".phoneTabs button")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    document.querySelectorAll(".phoneTabs button")
+      .forEach(b=>b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    renderPhone(btn.dataset.tab);
+  });
+});
+
+function friendNPCs(){
+
+  return npcs.filter(n=>n.friend);
 }
 
-/* =========================
-   ESCAPE
-========================= */
+function renderPhone(tab){
 
-function escapeHTML(value){
+  if(tab==="home"){
 
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    phoneBody.innerHTML=`
+      <h2>Good day, ${state.name}</h2>
+      <p class="small">
+        Lagos • Nigeria
+      </p>
+
+      <div class="contact">
+        <div class="avatar">₦</div>
+        <div class="contactInfo">
+          <div class="contactName">
+            Bank Balance
+          </div>
+          <div class="small">
+            ₦${state.money.toLocaleString()}
+          </div>
+        </div>
+      </div>
+
+      <div class="contact">
+        <div class="avatar">⌖</div>
+        <div class="contactInfo">
+          <div class="contactName">
+            Current city
+          </div>
+          <div class="small">
+            Lagos
+          </div>
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  if(tab==="friends"){
+
+    const friends=friendNPCs();
+
+    if(!friends.length){
+
+      phoneBody.innerHTML=`
+        <h3>No friends yet</h3>
+        <p class="small">
+          Talk to people around Lagos to make friends.
+        </p>
+      `;
+
+      return;
+    }
+
+    phoneBody.innerHTML="";
+
+    friends.forEach(npc=>{
+
+      const div=document.createElement("div");
+
+      div.className="contact";
+
+      div.innerHTML=`
+        <div class="avatar">
+          ${npc.name[0]}
+        </div>
+
+        <div class="contactInfo">
+          <div class="contactName">
+            ${npc.name}
+          </div>
+
+          <div class="small">
+            ${npc.destination}
+            • Relationship ${npc.relationship}
+          </div>
+        </div>
+
+        <button class="phoneBtn">
+          Chat
+        </button>
+      `;
+
+      div.querySelector("button")
+        .onclick=()=>openChat(npc);
+
+      phoneBody.appendChild(div);
+    });
+
+    return;
+  }
+
+  if(tab==="messages"){
+
+    phoneBody.innerHTML="";
+
+    friendNPCs().forEach(npc=>{
+
+      const messages=
+        state.messages[npc.id]||[];
+
+      const last=
+        messages[messages.length-1];
+
+      const div=document.createElement("div");
+
+      div.className="contact";
+
+      div.innerHTML=`
+        <div class="avatar">
+          ${npc.name[0]}
+        </div>
+
+        <div class="contactInfo">
+          <div class="contactName">
+            ${npc.name}
+          </div>
+
+          <div class="small">
+            ${last ? last.text : "No messages"}
+          </div>
+        </div>
+      `;
+
+      div.onclick=()=>openChat(npc);
+
+      phoneBody.appendChild(div);
+    });
+
+    return;
+  }
+
+  if(tab==="calls"){
+
+    phoneBody.innerHTML=
+      "<h3>Call history</h3>";
+
+    if(!state.calls.length){
+
+      phoneBody.innerHTML+=
+        `<p class="small">No calls yet.</p>`;
+
+      return;
+    }
+
+    state.calls.slice().reverse()
+    .forEach(call=>{
+
+      const div=document.createElement("div");
+
+      div.className="contact";
+
+      div.innerHTML=`
+        <div class="avatar">☎</div>
+        <div class="contactInfo">
+          <div class="contactName">
+            ${call.name}
+          </div>
+          <div class="small">
+            ${call.time}
+          </div>
+        </div>
+      `;
+
+      phoneBody.appendChild(div);
+    });
+  }
 }
 
-/* =========================
-   START
-========================= */
+/* =========================================================
+   CHAT
+========================================================= */
 
-updateCreatorPreview();
-moveNPCs();
-movePlayer();
+function openChat(npc){
 
-if(localStorage.getItem(SAVE_KEY)){
-  state=JSON.parse(localStorage.getItem(SAVE_KEY));
+  phone.classList.add("show");
+
+  phoneBody.innerHTML="";
+
+  const title=document.createElement("h3");
+
+  title.textContent=npc.name;
+
+  phoneBody.appendChild(title);
+
+  const messages=
+    state.messages[npc.id]||[];
+
+  messages.forEach(m=>{
+
+    const div=document.createElement("div");
+
+    div.className=
+      "message "+(m.from==="me"?"me":"");
+
+    div.textContent=m.text;
+
+    phoneBody.appendChild(div);
+  });
+
+  const input=document.createElement("div");
+
+  input.id="chatInput";
+
+  input.innerHTML=`
+    <input id="messageText"
+           placeholder="Type a message...">
+    <button id="sendMessage">
+      Send
+    </button>
+  `;
+
+  phoneBody.appendChild(input);
+
+  document.getElementById("sendMessage")
+    .onclick=()=>sendMessage(npc);
+
+  document.getElementById("messageText")
+    .addEventListener("keydown",e=>{
+      if(e.key==="Enter")
+        sendMessage(npc);
+    });
 }
+
+function sendMessage(npc){
+
+  const input=
+    document.getElementById("messageText");
+
+  const text=input.value.trim();
+
+  if(!text)return;
+
+  if(!state.messages[npc.id])
+    state.messages[npc.id]=[];
+
+  state.messages[npc.id].push({
+    from:"me",
+    text
+  });
+
+  npc.relationship++;
+
+  input.value="";
+
+  openChat(npc);
+
+  setTimeout(()=>{
+
+    const replies=[
+      "Yeah, I'm around Lagos.",
+      "Nice 😂",
+      "We should meet later.",
+      "I'm heading somewhere now.",
+      "No problem bro.",
+      "Sounds good!",
+      "I'll call you later."
+    ];
+
+    state.messages[npc.id].push({
+      from:"them",
+      text:replies[
+        Math.floor(Math.random()*replies.length)
+      ]
+    });
+
+    openChat(npc);
+
+  },900);
+}
+
+/* =========================================================
+   CALL SYSTEM
+========================================================= */
+
+function startCall(npc){
+
+  phone.classList.add("show");
+
+  phoneBody.innerHTML=`
+    <h2>Calling ${npc.name}</h2>
+    <p class="small">
+      Connecting...
+    </p>
+  `;
+
+  setTimeout(()=>{
+
+    phoneBody.innerHTML=`
+      <h2>${npc.name}</h2>
+      <p class="small">
+        Connected
+      </p>
+
+      <button class="bigBtn"
+              id="endCall">
+        END CALL
+      </button>
+    `;
+
+    const time=
+      new Date().toLocaleTimeString();
+
+    state.calls.push({
+      name:npc.name,
+      time
+    });
+
+    document.getElementById("endCall")
+      .onclick=()=>{
+        renderPhone("calls");
+      };
+
+  },1200);
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD(){
+
+  document.getElementById("money")
+    .textContent=
+      Math.floor(state.money).toLocaleString();
+
+  document.getElementById("energy")
+    .textContent=
+      Math.floor(state.energy);
+
+  document.getElementById("level")
+    .textContent=
+      state.level;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function toast(text){
+
+  const el=document.getElementById("toast");
+
+  el.textContent=text;
+
+  el.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    el.classList.remove("show");
+  },2500);
+}
+
+/* =========================================================
+   CHARACTER CREATOR
+========================================================= */
+
+document.querySelectorAll("#skinChoices .colorBtn")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    document.querySelectorAll(
+      "#skinChoices .colorBtn"
+    ).forEach(b=>b.classList.remove("selected"));
+
+    btn.classList.add("selected");
+
+    state.skin=btn.dataset.color;
+  });
+});
+
+document.querySelectorAll("#shirtChoices .colorBtn")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    document.querySelectorAll(
+      "#shirtChoices .colorBtn"
+    ).forEach(b=>b.classList.remove("selected"));
+
+    btn.classList.add("selected");
+
+    state.shirt=btn.dataset.color;
+  });
+});
+
+document.getElementById("startGame")
+.addEventListener("click",()=>{
+
+  const name=
+    document.getElementById("charName")
+      .value.trim();
+
+  state.name=name||"Player";
+
+  state.city=
+    document.getElementById("city").value;
+
+  localStorage.setItem(
+    "naijaLifeCharacter",
+    JSON.stringify({
+      name:state.name,
+      city:state.city,
+      skin:state.skin,
+      shirt:state.shirt
+    })
+  );
+
+  document.getElementById("startScreen")
+    .style.display="none";
+
+  renderPlayer();
+  renderAllNPCs();
+  updateHUD();
+
+  toast(
+    `Welcome to Lagos, ${state.name}.`
+  );
+});
+
+/* =========================================================
+   LOAD CHARACTER
+========================================================= */
+
+try{
+
+  const saved=
+    JSON.parse(
+      localStorage.getItem(
+        "naijaLifeCharacter"
+      )
+    );
+
+  if(saved){
+
+    state.name=saved.name||"Player";
+    state.city=saved.city||"Lagos";
+    state.skin=saved.skin||state.skin;
+    state.shirt=saved.shirt||state.shirt;
+
+    document.getElementById("charName")
+      .value=state.name;
+
+    document.getElementById("city")
+      .value=state.city;
+  }
+
+}catch(e){}
+
+/* =========================================================
+   CLOSE MODALS
+========================================================= */
+
+document.getElementById("closeLocation")
+.addEventListener("click",()=>{
+  document.getElementById("locationModal")
+    .classList.remove("show");
+});
+
+document.getElementById("closeNpc")
+.addEventListener("click",closeNPC);
+
+/* =========================================================
+   MAP BUTTON
+========================================================= */
+
+document.getElementById("mapBtn")
+.addEventListener("click",()=>{
+
+  toast(
+    "Lagos map: Ikeja → Yaba → Mainland → Island → VI → Lekki"
+  );
+
+});
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function gameLoop(){
+
+  updatePlayer();
+  updateCamera();
+
+  requestAnimationFrame(gameLoop);
+}
+
+setInterval(updateNPCs,35);
+setInterval(updateRealTime,500);
+updateRealTime();
+
+renderPlayer();
+gameLoop();
+
+/* =========================================================
+   INITIAL PLAYER PREVIEW
+========================================================= */
+
+playerEl.style.display="block";
+
+/* =========================================================
+   AUTO SAVE
+========================================================= */
+
+setInterval(()=>{
+
+  localStorage.setItem(
+    "naijaLifeCharacter",
+    JSON.stringify({
+      name:state.name,
+      city:state.city,
+      skin:state.skin,
+      shirt:state.shirt,
+      money:state.money,
+      energy:state.energy,
+      level:state.level
+    })
+  );
+
+},5000);
 
 </script>
 
