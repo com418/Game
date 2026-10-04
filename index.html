@@ -3,1562 +3,1369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Naija Life — Enterable Buildings</title>
+<title>Naija Life</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08110d;font-family:Arial,sans-serif;color:#fff}
-button{font:inherit;border:0;cursor:pointer}
-#game{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  background:#183d2d;
-}
-#world,#interior{
-  position:absolute;
-  width:3600px;
-  height:2600px;
-  transform-origin:0 0;
-}
-#world{
-  background:
-    linear-gradient(90deg,transparent 0 49%,rgba(255,255,255,.035) 49.2% 49.5%,transparent 49.7%),
-    #72a95f;
-}
-#interior{
-  display:none;
-  width:1600px;
-  height:1000px;
-  background:#d9d2c5;
-}
-.water{
-  position:absolute;
-  background:#287ca0;
-  border:8px solid #23647f;
-}
-#lagoon{
-  left:1450px;
-  top:0;
-  width:650px;
-  height:1200px;
-  border-radius:0 0 50% 50%;
-}
-#ocean{
-  left:0;
-  top:1900px;
-  width:3600px;
-  height:700px;
-}
-.road{
-  position:absolute;
-  background:#353a3c;
-  border:4px solid #555;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07110c;color:white;font-family:Arial,sans-serif}
+button,input{font:inherit}
+button{border:0;cursor:pointer}
+#game{position:fixed;inset:0;overflow:hidden;background:#6ea65b}
+#camera{position:absolute;inset:0;overflow:hidden}
+#world,#interior{position:absolute;transform-origin:0 0}
+#world{width:3600px;height:2600px;background:#72a95f}
+#interior{display:none;width:1600px;height:1000px;background:#d7cec0}
+.water{position:absolute;background:#287fa4;border:7px solid #23657f}
+#lagoon{left:1450px;top:0;width:650px;height:1200px;border-radius:0 0 50% 50%}
+#ocean{left:0;top:1900px;width:3600px;height:700px}
+.road{position:absolute;background:#35393b;border:4px solid #555}
 .road.h{height:90px}
 .road.v{width:90px}
-.lane{
-  position:absolute;
-  border-color:#e5d36d;
-  border-style:dashed;
-}
 .building{
-  position:absolute;
-  width:190px;
-  height:130px;
-  border:5px solid #26332d;
-  border-radius:14px;
-  box-shadow:0 8px 20px rgba(0,0,0,.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-weight:900;
-  color:#fff;
-  cursor:pointer;
-  user-select:none;
+ position:absolute;width:190px;height:130px;border:5px solid #26332d;
+ border-radius:14px;display:flex;align-items:center;justify-content:center;
+ text-align:center;font-weight:900;color:white;cursor:pointer;
+ box-shadow:0 8px 20px #0004
 }
-.building small{
-  display:block;
-  margin-top:7px;
-  font-weight:600;
-  opacity:.85;
-}
-.office{background:#315d83}
-.bank{background:#155c46}
-.hospital{background:#a43f48}
-.school{background:#c98d38}
-.market{background:#8b573d}
-.restaurant{background:#b55b31}
-.police{background:#294d7b}
-.church{background:#624d8b}
-.shop{background:#8b3f72}
-.club{background:#35264e}
-.gym{background:#4a6241}
-.salon{background:#a35b83}
-.fuel{background:#725b2f}
-.home{background:#875f46}
-.hotel{background:#536c7a}
-.palm{
-  position:absolute;
-  width:30px;
-  height:120px;
-}
-.palm:before{
-  content:"";
-  position:absolute;
-  left:12px;
-  bottom:0;
-  width:7px;
-  height:70px;
-  background:#65452d;
-  border-radius:5px;
-}
-.palm:after{
-  content:"✦";
-  position:absolute;
-  top:0;
-  left:-18px;
-  font-size:65px;
-  color:#175c35;
-}
-#worldPeople,#interiorPeople{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-.character{
-  position:absolute;
-  width:52px;
-  height:78px;
-  transform:translate(-50%,-50%);
-  z-index:50;
-}
-.character svg{
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-#player{
-  z-index:100;
-}
-#camera{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-}
+.building small{display:block;margin-top:7px;opacity:.8}
+.office{background:#315d83}.bank{background:#155c46}.hospital{background:#a43f48}
+.school{background:#c98d38}.market{background:#8b573d}.restaurant{background:#b55b31}
+.police{background:#294d7b}.church{background:#624d8b}.shop{background:#8b3f72}
+.club{background:#35264e}.gym{background:#4a6241}.salon{background:#a35b83}
+.fuel{background:#725b2f}.home{background:#875f46}.hotel{background:#536c7a}
+.palm{position:absolute;width:30px;height:120px}
+.palm:before{content:"";position:absolute;left:12px;bottom:0;width:7px;height:70px;background:#65452d}
+.palm:after{content:"✦";position:absolute;top:0;left:-18px;font-size:65px;color:#175c35}
+.character{position:absolute;width:52px;height:78px;transform:translate(-50%,-50%);z-index:50}
+.character svg{width:100%;height:100%}
+#player{z-index:100}
 #hud{
-  position:fixed;
-  top:12px;
-  left:12px;
-  right:12px;
-  display:flex;
-  justify-content:space-between;
-  z-index:500;
-  pointer-events:none;
+ position:fixed;top:12px;left:12px;right:12px;z-index:500;
+ display:flex;justify-content:space-between;pointer-events:none
 }
 .hudBox{
-  background:rgba(5,18,12,.78);
-  border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(10px);
-  padding:10px 13px;
-  border-radius:15px;
-  box-shadow:0 8px 25px rgba(0,0,0,.2);
+ background:#07160dcc;border:1px solid #ffffff25;border-radius:15px;
+ padding:10px 13px;backdrop-filter:blur(10px)
 }
-#stats{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.stat{
-  font-size:12px;
-  font-weight:800;
-}
-#clock{
-  font-size:15px;
-  font-weight:900;
-  text-align:right;
-}
-#controls{
-  position:fixed;
-  inset:0;
-  z-index:600;
-  pointer-events:none;
-}
+#stats{display:flex;gap:9px;flex-wrap:wrap}
+.stat{font-size:12px;font-weight:800}
+#clock{font-size:15px;font-weight:900}
+#controls{position:fixed;inset:0;z-index:600;pointer-events:none}
 #joystick{
-  position:absolute;
-  left:25px;
-  bottom:25px;
-  width:125px;
-  height:125px;
-  border-radius:50%;
-  background:rgba(255,255,255,.12);
-  border:2px solid rgba(255,255,255,.25);
-  pointer-events:auto;
+ position:absolute;left:25px;bottom:25px;width:125px;height:125px;
+ border-radius:50%;background:#ffffff1f;border:2px solid #ffffff30;
+ pointer-events:auto
 }
 #stick{
-  position:absolute;
-  width:55px;
-  height:55px;
-  left:33px;
-  top:33px;
-  border-radius:50%;
-  background:rgba(255,255,255,.75);
+ position:absolute;width:55px;height:55px;left:33px;top:33px;
+ border-radius:50%;background:#ffffffc9
 }
 .actions{
-  position:absolute;
-  right:18px;
-  bottom:20px;
-  display:flex;
-  gap:9px;
-  pointer-events:auto;
+ position:absolute;right:18px;bottom:20px;display:flex;gap:9px;pointer-events:auto
 }
 .action{
-  width:64px;
-  height:64px;
-  border-radius:20px;
-  background:rgba(7,24,16,.86);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.2);
-  font-size:11px;
-  font-weight:900;
+ width:64px;height:64px;border-radius:20px;background:#071810e8;
+ color:white;border:1px solid #ffffff25;font-size:10px;font-weight:900
 }
-.action.primary{
-  background:#00a86b;
-}
+.action.primary{background:#00a86b}
 #interiorBar{
-  position:fixed;
-  top:85px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:700;
-  display:none;
-  align-items:center;
-  gap:10px;
+ position:fixed;top:85px;left:50%;transform:translateX(-50%);
+ z-index:700;display:none;gap:10px
 }
-#interiorTitle{
-  background:rgba(8,20,14,.9);
-  padding:12px 18px;
-  border-radius:14px;
-  font-weight:900;
+#interiorTitle,#exitBuilding{
+ background:#08160fe8;padding:12px 17px;border-radius:14px;font-weight:900
 }
-#exitBuilding{
-  background:#b83d45;
-  color:#fff;
-  padding:12px 17px;
-  border-radius:14px;
-  font-weight:900;
-}
+#exitBuilding{background:#a83c43;color:white}
 #modal{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  background:rgba(0,0,0,.48);
+ position:fixed;inset:0;z-index:1000;display:none;align-items:flex-end;
+ justify-content:center;background:#0008
 }
 .modalCard{
-  width:min(520px,94%);
-  margin-bottom:18px;
-  background:#10251a;
-  border:1px solid rgba(255,255,255,.16);
-  border-radius:25px;
-  padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.45);
+ width:min(520px,94%);margin-bottom:18px;background:#10251a;
+ border-radius:25px;padding:20px;border:1px solid #ffffff25
 }
-.modalCard h2{
-  margin:0 0 6px;
-}
-.modalCard p{
-  color:#b8c7bf;
-  margin:7px 0 15px;
-}
-.modalBtns{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.modalBtns button{
-  padding:14px;
-  border-radius:14px;
-  background:#1d3a2a;
-  color:#fff;
-  font-weight:800;
-}
-.modalBtns .enter{
-  background:#00a86b;
-}
-.modalBtns .close{
-  background:#713b40;
-}
-#phone{
-  position:fixed;
-  inset:0;
-  z-index:1100;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.7);
-}
-.phoneBody{
-  width:min(380px,94%);
-  height:min(700px,88vh);
-  background:#101414;
-  border:7px solid #262b2a;
-  border-radius:35px;
-  padding:18px;
-  box-shadow:0 30px 90px #000;
-}
-.phoneTop{
-  display:flex;
-  justify-content:space-between;
-  font-weight:900;
-}
-.phoneScreen{
-  margin-top:18px;
-  height:calc(100% - 60px);
-  background:#eef4ef;
-  color:#122018;
-  border-radius:25px;
-  padding:18px;
-  overflow:auto;
-}
-.phoneScreen button{
-  width:100%;
-  margin:6px 0;
-  padding:13px;
-  border-radius:12px;
-  background:#dbe8df;
-  color:#10251a;
-  font-weight:800;
-}
-#creator{
-  position:fixed;
-  inset:0;
-  z-index:2000;
-  background:linear-gradient(145deg,#092017,#12462e);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-.creatorCard{
-  width:min(480px,100%);
-  max-height:92vh;
-  overflow:auto;
-  background:rgba(8,22,15,.95);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:28px;
-  padding:24px;
-}
-.creatorCard h1{
-  margin-top:0;
-}
-.creatorCard label{
-  display:block;
-  margin-top:13px;
-  margin-bottom:5px;
-  color:#b7c9bf;
-  font-size:13px;
-  font-weight:700;
-}
-.creatorCard input,
-.creatorCard select{
-  width:100%;
-  padding:14px;
-  border-radius:13px;
-  border:1px solid #385443;
-  background:#152b20;
-  color:#fff;
-}
-.start{
-  width:100%;
-  margin-top:20px;
-  padding:15px;
-  border-radius:15px;
-  background:#00a86b;
-  color:#fff;
-  font-weight:900;
-  font-size:16px;
-}
-.night{
-  position:fixed;
-  inset:0;
-  background:rgba(5,10,35,.38);
-  z-index:450;
-  pointer-events:none;
-  display:none;
-}
+.modalCard h2{margin:0 0 7px}
+.modalCard p{color:#b8c7bf}
+.modalBtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modalBtns button{padding:14px;border-radius:14px;background:#1d3a2a;color:white;font-weight:800}
+.modalBtns .enter{background:#00a86b}
+.modalBtns .close{background:#713b40}
 #toast{
-  position:fixed;
-  left:50%;
-  bottom:105px;
-  transform:translateX(-50%);
-  z-index:1500;
-  background:#10251a;
-  padding:12px 17px;
-  border-radius:13px;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-  white-space:nowrap;
+ position:fixed;left:50%;bottom:105px;transform:translateX(-50%);
+ z-index:5000;background:#10251a;padding:12px 17px;border-radius:13px;
+ opacity:0;transition:.25s;pointer-events:none;white-space:nowrap
 }
 #toast.show{opacity:1}
-.interiorFloor{
-  fill:#d7cdbd;
-  stroke:#8c8172;
-  stroke-width:8;
+.night{
+ position:fixed;inset:0;background:#050a233f;z-index:450;
+ pointer-events:none;display:none
 }
-.interiorWall{
-  fill:#b5aa9a;
-  stroke:#756b5f;
-  stroke-width:10;
+/* PHONE */
+#phone{
+ position:fixed;inset:0;z-index:3000;display:none;
+ align-items:center;justify-content:center;background:#000b
 }
-.roomLabel{
-  font-size:32px;
-  font-weight:900;
-  fill:#3a342e;
+.phone{
+ width:min(390px,95vw);height:min(760px,94vh);
+ background:#050606;border:6px solid #222;border-radius:40px;
+ padding:10px;box-shadow:0 30px 100px #000
 }
-.furniture{
-  cursor:pointer;
+.phoneInner{
+ height:100%;border-radius:31px;overflow:hidden;
+ background:#e8eee9;color:#102018;position:relative
 }
-.furniture rect,
-.furniture circle{
-  stroke:#473b31;
-  stroke-width:6;
+.phoneStatus{
+ height:34px;background:#101713;color:white;display:flex;
+ justify-content:space-between;align-items:center;padding:0 15px;
+ font-size:11px;font-weight:800
 }
-.furniture text{
-  font-size:22px;
-  font-weight:900;
-  fill:#302a25;
-  pointer-events:none;
+.phoneApp{height:calc(100% - 34px);position:relative}
+.phoneHeader{
+ height:54px;background:#ffffff;padding:10px 14px;
+ display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid #ccd7cf
 }
-@media(max-width:600px){
-  .building{
-    width:155px;
-    height:108px;
-    font-size:12px;
-  }
-  #stats .stat:nth-child(3){display:none}
+.phoneHeader strong{font-size:17px}
+.backBtn{background:none;color:#087b50;font-size:24px}
+.phoneHome{
+ height:100%;
+ padding:25px 18px;
+ background:linear-gradient(160deg,#173e2c,#0a251a);
+ color:white
+}
+.phoneTime{font-size:47px;font-weight:300;text-align:center;margin-top:12px}
+.phoneDate{text-align:center;opacity:.8;margin-bottom:30px}
+.appGrid{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:19px 12px
+}
+.appIcon{text-align:center;font-size:10px;font-weight:700}
+.appIcon button{
+ width:58px;height:58px;border-radius:17px;background:#ffffff1e;
+ color:white;font-size:22px;margin-bottom:5px;border:1px solid #ffffff20
+}
+.appIcon button.installed{background:#ffffff28}
+.phoneDock{
+ position:absolute;left:12px;right:12px;bottom:14px;
+ background:#ffffff20;border-radius:25px;padding:10px;
+ display:grid;grid-template-columns:repeat(4,1fr);gap:8px
+}
+.phoneDock button{
+ background:#ffffff20;color:white;border-radius:16px;height:48px
+}
+.appPage{height:100%;background:#f0f5f1;color:#112019}
+.appBody{padding:15px;height:calc(100% - 54px);overflow:auto}
+.chatList button{
+ width:100%;background:white;border-bottom:1px solid #d5ddd7;
+ text-align:left;padding:15px;color:#102018
+}
+.chatName{font-weight:900}
+.chatPreview{font-size:12px;color:#6c776f;margin-top:4px}
+.chatPage{height:100%;background:#e4eee8}
+.messages{
+ height:calc(100% - 108px);padding:15px;overflow:auto;
+ display:flex;flex-direction:column;gap:9px
+}
+.msg{
+ max-width:78%;padding:10px 13px;border-radius:15px;
+ background:white;align-self:flex-start
+}
+.msg.me{background:#b8e5c9;align-self:flex-end}
+.chatInput{
+ position:absolute;bottom:0;left:0;right:0;padding:9px;
+ display:flex;gap:7px;background:#f7faf8
+}
+.chatInput input{
+ flex:1;padding:12px;border-radius:20px;border:1px solid #ccd8d0
+}
+.chatInput button{
+ width:48px;border-radius:50%;background:#087b50;color:white
+}
+.contactCard{
+ background:white;padding:14px;border-radius:15px;margin-bottom:9px
+}
+.contactCard button{
+ padding:9px 12px;border-radius:10px;background:#087b50;color:white;
+ margin-top:8px
+}
+.dial{
+ font-size:29px;text-align:center;background:white;border:0;width:100%;
+ padding:15px
+}
+.dialPad{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px
+}
+.dialPad button{
+ height:58px;border-radius:50%;background:#dce8df;font-size:20px
+}
+.storeCard{
+ background:white;border-radius:18px;padding:15px;margin-bottom:10px;
+ display:flex;align-items:center;gap:13px
+}
+.storeIcon{
+ width:55px;height:55px;border-radius:15px;background:#dcebe1;
+ display:flex;align-items:center;justify-content:center;font-size:25px
+}
+.storeInfo{flex:1}
+.storeInfo strong{display:block}
+.storeInfo small{color:#718078}
+.storeCard button{
+ padding:10px 12px;border-radius:11px;background:#087b50;color:white
+}
+.storeCard button.remove{background:#a83c43}
+.setting{
+ background:white;padding:15px;border-bottom:1px solid #d7dfd9;
+ display:flex;justify-content:space-between
+}
+.mapArea{
+ height:100%;background:#72a95f;position:relative;overflow:hidden
+}
+.mapRoad{position:absolute;background:#444}
+.mapWater{position:absolute;background:#287fa4}
+.mapPlace{
+ position:absolute;background:#10251a;color:white;
+ padding:7px 10px;border-radius:10px;font-size:10px;font-weight:900
+}
+.cameraView{
+ height:100%;background:linear-gradient(#86b7dc 0 45%,#659b57 45%);
+ display:flex;align-items:center;justify-content:center
+}
+.cameraLens{
+ width:220px;height:220px;border:3px solid white;border-radius:50%;
+ box-shadow:0 0 0 999px #0002
+}
+.cameraButton{
+ position:absolute;bottom:25px;left:50%;transform:translateX(-50%);
+ width:70px;height:70px;border-radius:50%;background:white;
+ border:7px solid #bbb
+}
+.offline{
+ height:100%;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;text-align:center;
+ padding:30px;background:#101614;color:white
+}
+.offline button{
+ padding:13px 20px;border-radius:13px;background:#00a86b;color:white;
+ font-weight:900;margin-top:15px
+}
+/* INTERIOR */
+.interiorFloor{fill:#d7cdbd;stroke:#8c8172;stroke-width:8}
+.roomLabel{font-size:32px;font-weight:900;fill:#3a342e}
+.furniture{cursor:pointer}
+.furniture rect,.furniture circle{stroke:#473b31;stroke-width:6}
+.furniture text{font-size:22px;font-weight:900;fill:#302a25}
+#creator{
+ position:fixed;inset:0;z-index:4000;background:linear-gradient(145deg,#092017,#12462e);
+ display:flex;align-items:center;justify-content:center;padding:20px
+}
+.creatorCard{
+ width:min(480px,100%);max-height:92vh;overflow:auto;
+ background:#08160ff5;border:1px solid #ffffff25;border-radius:28px;padding:24px
+}
+.creatorCard h1{margin-top:0}
+.creatorCard label{display:block;margin-top:13px;margin-bottom:5px;color:#b7c9bf}
+.creatorCard input,.creatorCard select{
+ width:100%;padding:14px;border-radius:13px;border:1px solid #385443;
+ background:#152b20;color:white
+}
+.start{
+ width:100%;margin-top:20px;padding:15px;border-radius:15px;
+ background:#00a86b;color:white;font-weight:900
 }
 </style>
 </head>
 <body>
 <div id="game">
-  <div id="camera">
-    <div id="world">
-  <div id="lagoon" class="water"></div>
-  <div id="ocean" class="water"></div>
-  <div class="road h" style="left:0;top:550px;width:3600px"></div>
-  <div class="road h" style="left:0;top:1050px;width:3600px"></div>
-  <div class="road h" style="left:0;top:1550px;width:3600px"></div>
-  <div class="road h" style="left:0;top:1880px;width:3600px"></div>
-  <div class="road v" style="left:650px;top:0;height:2600px"></div>
-  <div class="road v" style="left:1250px;top:0;height:2600px"></div>
-  <div class="road v" style="left:2050px;top:0;height:2600px"></div>
-  <div class="road v" style="left:2850px;top:0;height:2600px"></div>
-  <div class="building office" data-place="ikeja-work" style="left:280px;top:420px">
-    OFFICE<small>Ikeja</small>
+ <div id="camera">
+  <div id="world">
+   <div id="lagoon" class="water"></div>
+   <div id="ocean" class="water"></div>
+   <div class="road h" style="left:0;top:550px;width:3600px"></div>
+   <div class="road h" style="left:0;top:1050px;width:3600px"></div>
+   <div class="road h" style="left:0;top:1550px;width:3600px"></div>
+   <div class="road h" style="left:0;top:1880px;width:3600px"></div>
+   <div class="road v" style="left:650px;top:0;height:2600px"></div>
+   <div class="road v" style="left:1250px;top:0;height:2600px"></div>
+   <div class="road v" style="left:2050px;top:0;height:2600px"></div>
+   <div class="road v" style="left:2850px;top:0;height:2600px"></div>
+   <div class="building office" data-place="work" style="left:280px;top:420px">OFFICE<small>Ikeja</small></div>
+   <div class="building hotel" data-place="hotel" style="left:820px;top:410px">HOTEL</div>
+   <div class="building bank" data-place="bank" style="left:1350px;top:400px">BANK</div>
+   <div class="building hospital" data-place="hospital" style="left:2300px;top:420px">HOSPITAL</div>
+   <div class="building school" data-place="school" style="left:3000px;top:420px">SCHOOL</div>
+   <div class="building market" data-place="market" style="left:350px;top:900px">MARKET</div>
+   <div class="building restaurant" data-place="restaurant" style="left:900px;top:900px">RESTAURANT</div>
+   <div class="building police" data-place="police" style="left:1370px;top:900px">POLICE</div>
+   <div class="building church" data-place="church" style="left:2250px;top:900px">CHURCH</div>
+   <div class="building shop" data-place="shop" style="left:2920px;top:900px">SHOP</div>
+   <div class="building club" data-place="club" style="left:360px;top:1420px">CLUB</div>
+   <div class="building gym" data-place="gym" style="left:900px;top:1420px">GYM</div>
+   <div class="building salon" data-place="salon" style="left:1400px;top:1420px">SALON</div>
+   <div class="building fuel" data-place="fuel" style="left:2200px;top:1420px">FUEL STATION</div>
+   <div class="building home" data-place="home" style="left:2920px;top:1420px">HOME</div>
+   <div class="building hotel" data-place="hotel" style="left:600px;top:2050px">HOTEL</div>
+   <div class="building restaurant" data-place="restaurant" style="left:1800px;top:2050px">RESTAURANT</div>
+   <div class="building shop" data-place="shop" style="left:2700px;top:2050px">SHOP</div>
+   <div class="palm" style="left:100px;top:300px"></div>
+   <div class="palm" style="left:500px;top:300px"></div>
+   <div class="palm" style="left:1900px;top:300px"></div>
+   <div class="palm" style="left:2700px;top:300px"></div>
+   <div id="worldPeople"></div>
+   <div id="player" class="character"></div>
   </div>
-  <div class="building hotel" data-place="hotel" style="left:820px;top:410px">
-    HOTEL
-  </div>
-  <div class="building bank" data-place="bank" style="left:1350px;top:400px">
-    BANK
-  </div>
-  <div class="building hospital" data-place="hospital" style="left:2300px;top:420px">
-    HOSPITAL
-  </div>
-  <div class="building school" data-place="school" style="left:3000px;top:420px">
-    SCHOOL
-  </div>
-  <div class="building market" data-place="market" style="left:350px;top:900px">
-    MARKET
-  </div>
-  <div class="building restaurant" data-place="restaurant" style="left:900px;top:900px">
-    RESTAURANT
-  </div>
-  <div class="building police" data-place="police" style="left:1370px;top:900px">
-    POLICE
-  </div>
-  <div class="building church" data-place="church" style="left:2250px;top:900px">
-    CHURCH
-  </div>
-  <div class="building shop" data-place="shop" style="left:2920px;top:900px">
-    SHOP
-  </div>
-  <div class="building club" data-place="club" style="left:360px;top:1420px">
-    CLUB
-  </div>
-  <div class="building gym" data-place="gym" style="left:900px;top:1420px">
-    GYM
-  </div>
-  <div class="building salon" data-place="salon" style="left:1400px;top:1420px">
-    SALON
-  </div>
-  <div class="building fuel" data-place="fuel" style="left:2200px;top:1420px">
-    FUEL STATION
-  </div>
-  <div class="building home" data-place="home" style="left:2920px;top:1420px">
-    HOME
-  </div>
-  <div class="building hotel" data-place="hotel" style="left:600px;top:2050px">
-    HOTEL
-  </div>
-  <div class="building restaurant" data-place="restaurant" style="left:1800px;top:2050px">
-    RESTAURANT
-  </div>
-  <div class="building shop" data-place="shop" style="left:2700px;top:2050px">
-    SHOP
-  </div>
-  <div class="palm" style="left:100px;top:300px"></div>
-  <div class="palm" style="left:500px;top:300px"></div>
-  <div class="palm" style="left:1900px;top:300px"></div>
-  <div class="palm" style="left:2700px;top:300px"></div>
-  <div class="palm" style="left:3200px;top:700px"></div>
-  <div class="palm" style="left:1800px;top:1250px"></div>
-  <div class="palm" style="left:3200px;top:1750px"></div>
-  <div id="worldPeople"></div>
-  <div id="player" class="character"></div>
-</div>
-<div id="interior"></div>
-  </div>
+  <div id="interior"></div>
+ </div>
 </div>
 <div class="night" id="night"></div>
 <div id="hud">
-  <div class="hudBox">
-    <div id="stats">
-      <div class="stat">₦<span id="money">25000</span></div>
-      <div class="stat">Energy <span id="energy">100</span></div>
-      <div class="stat">Level <span id="level">1</span></div>
-      <div class="stat" id="location">Lagos</div>
-    </div>
+ <div class="hudBox">
+  <div id="stats">
+   <div class="stat">₦<span id="money">25000</span></div>
+   <div class="stat">Energy <span id="energy">100</span></div>
+   <div class="stat">Level <span id="level">1</span></div>
+   <div class="stat" id="location">Lagos</div>
   </div>
-  <div class="hudBox">
-    <div id="clock">--:--</div>
-    <div style="font-size:10px;text-align:right;color:#aebdb5">Nigeria</div>
-  </div>
+ </div>
+ <div class="hudBox">
+  <div id="clock">--:--</div>
+  <div style="font-size:10px;text-align:right;color:#aebdb5">Nigeria</div>
+ </div>
 </div>
 <div id="controls">
-  <div id="joystick">
-    <div id="stick"></div>
-  </div>
-  <div class="actions">
-    <button class="action" id="phoneBtn">PHONE</button>
-    <button class="action" id="actBtn">ACT</button>
-    <button class="action" id="runBtn">RUN</button>
-    <button class="action primary" id="mapBtn">MAP</button>
-  </div>
+ <div id="joystick"><div id="stick"></div></div>
+ <div class="actions">
+  <button class="action" id="phoneBtn">PHONE</button>
+  <button class="action" id="actBtn">ACT</button>
+  <button class="action" id="runBtn">RUN</button>
+  <button class="action primary" id="mapBtn">MAP</button>
+ </div>
 </div>
 <div id="interiorBar">
-  <div id="interiorTitle">Building</div>
-  <button id="exitBuilding">EXIT</button>
+ <div id="interiorTitle">Building</div>
+ <button id="exitBuilding">EXIT</button>
 </div>
 <div id="modal">
-  <div class="modalCard">
-    <h2 id="modalTitle">Building</h2>
-    <p id="modalText"></p>
-    <div class="modalBtns" id="modalBtns"></div>
-  </div>
-</div>
-<div id="phone">
-  <div class="phoneBody">
-    <div class="phoneTop">
-      <span>Naija Phone</span>
-      <button id="closePhone">✕</button>
-    </div>
-<div class="phoneScreen">
-  <h2>Phone</h2>
-  <button onclick="phoneMessage()">Messages</button>
-  <button onclick="phoneFriends()">Friends</button>
-  <button onclick="phoneCalls()">Calls</button>
-  <button onclick="showToast('No new notifications')">Notifications</button>
-</div>
-  </div>
+ <div class="modalCard">
+  <h2 id="modalTitle"></h2>
+  <p id="modalText"></p>
+  <div class="modalBtns" id="modalBtns"></div>
+ </div>
 </div>
 <div id="toast"></div>
-<div id="creator">
-  <div class="creatorCard">
-    <h1>Naija Life</h1>
-    <p>Create your character and start your life in Nigeria.</p>
-<label>Your name</label>
-<input id="nameInput" placeholder="Enter your name">
-<label>City</label>
-<select id="cityInput">
-  <option>Lagos</option>
-  <option>Warri</option>
-</select>
-<label>Skin</label>
-<select id="skinInput">
-  <option value="#6b3d25">Dark</option>
-  <option value="#8b5135">Brown</option>
-  <option value="#a96b49">Light Brown</option>
-  <option value="#c98a67">Light</option>
-</select>
-<label>Shirt</label>
-<select id="shirtInput">
-  <option value="#168f5b">Green</option>
-  <option value="#2366a8">Blue</option>
-  <option value="#c94a4a">Red</option>
-  <option value="#222">Black</option>
-  <option value="#eee">White</option>
-</select>
-<button class="start" id="startGame">START LIFE</button>
+<!-- PHONE -->
+<div id="phone">
+ <div class="phone">
+  <div class="phoneInner">
+   <div class="phoneStatus">
+    <span id="phoneTime">15:00</span>
+    <span id="signal">5G　▰▰▰　🔋100%</span>
+   </div>
+   <div id="phoneContent" class="phoneApp"></div>
   </div>
+ </div>
+</div>
+<!-- CHARACTER CREATOR -->
+<div id="creator">
+ <div class="creatorCard">
+  <h1>Naija Life</h1>
+  <p>Create your character and start your life in Nigeria.</p>
+
+Your name
+City
+   <option>Lagos</option>
+   <option>Warri</option>
+  </select>
+
+Skin
+   <option value="#6b3d25">Dark</option>
+   <option value="#8b5135">Brown</option>
+   <option value="#a96b49">Light Brown</option>
+   <option value="#c98a67">Light</option>
+  </select>
+
+Shirt
+   <option value="#168f5b">Green</option>
+   <option value="#2366a8">Blue</option>
+   <option value="#c94a4a">Red</option>
+   <option value="#222">Black</option>
+   <option value="#eee">White</option>
+  </select>
+
+START LIFE
+
+ </div>
 </div>
 <script>
-/* =========================
-   GAME STATE
-========================= */
+/* =========================================================
+   GAME
+========================================================= */
 const state={
-  name:"",
-  city:"Lagos",
-  money:25000,
-  energy:100,
-  level:1,
-  x:720,
-  y:700,
-  speed:3.2,
-  running:false,
-  gameMode:"outdoor",
-  interior:null,
-  returnPoint:null,
-  skin:"#8b5135",
-  shirt:"#168f5b"
+ name:"",
+ city:"Lagos",
+ money:25000,
+ energy:100,
+ level:1,
+ x:720,
+ y:700,
+ speed:3.2,
+ running:false,
+ gameMode:"outdoor",
+ interior:null,
+ returnPoint:null,
+ skin:"#8b5135",
+ shirt:"#168f5b"
 };
 const player=document.getElementById("player");
 const world=document.getElementById("world");
 const interior=document.getElementById("interior");
-const modal=document.getElementById("modal");
 const worldPeople=document.getElementById("worldPeople");
 let keys={};
 let joystick={x:0,y:0};
-let lastTime=performance.now();
-let toastTimer=null;
-/* =========================
-   SVG HUMAN
-========================= */
-function humanSVG(skin,shirt,hair="#151515",pants="#20252a",female=false){
-  return `
-  <svg viewBox="0 0 100 145">
-    <ellipse cx="50" cy="138" rx="22" ry="5" fill="rgba(0,0,0,.25)"/>
-    <rect x="34" y="72" width="32" height="43" rx="12" fill="${shirt}"/>
-    <rect x="22" y="76" width="12" height="39" rx="6" fill="${skin}"/>
-    <rect x="66" y="76" width="12" height="39" rx="6" fill="${skin}"/>
-    <circle cx="28" cy="116" r="7" fill="${skin}"/>
-    <circle cx="72" cy="116" r="7" fill="${skin}"/>
-    <rect x="37" y="108" width="11" height="28" rx="5" fill="${pants}"/>
-    <rect x="52" y="108" width="11" height="28" rx="5" fill="${pants}"/>
-    <rect x="33" y="133" width="19" height="7" rx="3" fill="#111"/>
-    <rect x="49" y="133" width="19" height="7" rx="3" fill="#111"/>
-    <circle cx="50" cy="48" r="25" fill="${skin}"/>
-    <circle cx="40" cy="48" r="3" fill="#151515"/>
-    <circle cx="60" cy="48" r="3" fill="#151515"/>
-    <path d="M44 60 Q50 64 56 60" fill="none" stroke="#421f17" stroke-width="3" stroke-linecap="round"/>
-    <path d="M25 43 Q27 15 50 16 Q76 15 76 43
-             Q68 27 53 29 Q37 27 25 43Z"
-          fill="${hair}"/>
-    <path d="M34 69 Q50 76 66 69" fill="none" stroke="rgba(0,0,0,.16)" stroke-width="3"/>
-  </svg>`;
+let last=performance.now();
+function humanSVG(skin,shirt,hair="#151515",pants="#20252a"){
+ return `<svg viewBox="0 0 100 145">
+ <ellipse cx="50" cy="138" rx="22" ry="5" fill="#0003"/>
+ <rect x="34" y="72" width="32" height="43" rx="12" fill="${shirt}"/>
+ <rect x="22" y="76" width="12" height="39" rx="6" fill="${skin}"/>
+ <rect x="66" y="76" width="12" height="39" rx="6" fill="${skin}"/>
+ <circle cx="28" cy="116" r="7" fill="${skin}"/>
+ <circle cx="72" cy="116" r="7" fill="${skin}"/>
+ <rect x="37" y="108" width="11" height="28" rx="5" fill="${pants}"/>
+ <rect x="52" y="108" width="11" height="28" rx="5" fill="${pants}"/>
+ <rect x="33" y="133" width="19" height="7" rx="3" fill="#111"/>
+ <rect x="49" y="133" width="19" height="7" rx="3" fill="#111"/>
+ <circle cx="50" cy="48" r="25" fill="${skin}"/>
+ <circle cx="40" cy="48" r="3" fill="#151515"/>
+ <circle cx="60" cy="48" r="3" fill="#151515"/>
+ <path d="M44 60 Q50 64 56 60" fill="none" stroke="#421f17" stroke-width="3"/>
+ <path d="M25 43 Q27 15 50 16 Q76 15 76 43 Q68 27 53 29 Q37 27 25 43Z" fill="${hair}"/>
+ </svg>`;
 }
-function setPlayerSVG(){
-  player.innerHTML=humanSVG(state.skin,state.shirt);
-}
-/* =========================
-   CREATOR
-========================= */
-document.getElementById("startGame").onclick=()=>{
-  state.name=document.getElementById("nameInput").value.trim() || "Player";
-  state.city=document.getElementById("cityInput").value;
-  state.skin=document.getElementById("skinInput").value;
-  state.shirt=document.getElementById("shirtInput").value;
-  localStorage.setItem("naijaLifeCharacter",JSON.stringify(state));
-  if(state.city==="Warri"){
-    state.x=3300;
-    state.y=1650;
-  }
-  setPlayerSVG();
-  document.getElementById("creator").style.display="none";
-  updateClock();
-  spawnNPCs();
-  showToast("Welcome to Naija Life, "+state.name);
-};
-/* =========================
-   LOAD CHARACTER
-========================= */
-try{
-  const saved=JSON.parse(localStorage.getItem("naijaLifeCharacter"));
-  if(saved && saved.name){
-    Object.assign(state,saved);
-    setPlayerSVG();
-    document.getElementById("creator").style.display="none";
-    spawnNPCs();
-  }
-}catch(e){}
-/* =========================
-   CLOCK
-========================= */
+player.innerHTML=humanSVG(state.skin,state.shirt);
 function nigeriaTime(){
-  return new Date(new Date().toLocaleString("en-US",{timeZone:"Africa/Lagos"}));
+ return new Date(new Date().toLocaleString("en-US",{timeZone:"Africa/Lagos"}));
 }
 function updateClock(){
-  const d=nigeriaTime();
-  let h=d.getHours();
-  let m=d.getMinutes();
-  document.getElementById("clock").textContent=
-    String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
-  const night=h>=19 || h<6;
-  document.getElementById("night").style.display=night?"block":"none";
-  if(state.gameMode==="outdoor"){
-    document.getElementById("location").textContent=state.city;
-  }
+ const d=nigeriaTime();
+ const h=String(d.getHours()).padStart(2,"0");
+ const m=String(d.getMinutes()).padStart(2,"0");
+ document.getElementById("clock").textContent=h+":"+m;
+ document.getElementById("phoneTime").textContent=h+":"+m;
+ const hour=d.getHours();
+ document.getElementById("night").style.display=(hour>=19||hour<6)?"block":"none";
 }
 setInterval(updateClock,1000);
-/* =========================
-   NPC SYSTEM
-========================= */
+document.getElementById("startGame").onclick=()=>{
+ state.name=document.getElementById("nameInput").value.trim()||"Player";
+ state.city=document.getElementById("cityInput").value;
+ state.skin=document.getElementById("skinInput").value;
+ state.shirt=document.getElementById("shirtInput").value;
+ if(state.city==="Warri"){
+  state.x=3300;
+  state.y=1650;
+ }
+ localStorage.setItem("naijaLifeCharacter",JSON.stringify(state));
+ document.getElementById("creator").style.display="none";
+ spawnNPCs();
+ showToast("Welcome, "+state.name);
+};
+try{
+ const saved=JSON.parse(localStorage.getItem("naijaLifeCharacter"));
+ if(saved&&saved.name){
+  Object.assign(state,saved);
+  player.innerHTML=humanSVG(state.skin,state.shirt);
+  document.getElementById("creator").style.display="none";
+  spawnNPCs();
+ }
+}catch(e){}
 const npcNames=[
  "Tunde","Amaka","Chinedu","Blessing","David","Joy",
  "Emeka","Mercy","Daniel","Ada","Kelechi","Esther"
 ];
-const npcColors=[
- ["#6b3d25","#222","#174e9a","#242424"],
- ["#8b5135","#4a2416","#b33c3c","#292929"],
- ["#a96b49","#151515","#168f5b","#313131"],
- ["#c98a67","#24150f","#d18a25","#292929"]
-];
 let npcs=[];
 function spawnNPCs(){
-  worldPeople.innerHTML="";
-  npcs=[];
-  npcNames.forEach((name,i)=>{
-    const el=document.createElement("div");
-    el.className="character";
-    el.innerHTML=humanSVG(
-      npcColors[i%npcColors.length][0],
-      npcColors[i%npcColors.length][2],
-      npcColors[i%npcColors.length][1],
-      npcColors[i%npcColors.length][3]
-    );
-    worldPeople.appendChild(el);
-    npcs.push({
-      name,
-      el,
-      x:300+Math.random()*3000,
-      y:250+Math.random()*1900,
-      tx:300+Math.random()*3000,
-      ty:250+Math.random()*1900,
-      speed:.7+Math.random()*.8
-    });
+ worldPeople.innerHTML="";
+ npcs=[];
+ npcNames.forEach((name,i)=>{
+  const el=document.createElement("div");
+  el.className="character";
+  el.innerHTML=humanSVG(
+   ["#6b3d25","#8b5135","#a96b49","#c98a67"][i%4],
+   ["#168f5b","#2366a8","#c94a4a","#222"][i%4]
+  );
+  worldPeople.appendChild(el);
+  npcs.push({
+   name,el,
+   x:300+Math.random()*3000,
+   y:250+Math.random()*1900,
+   tx:300+Math.random()*3000,
+   ty:250+Math.random()*1900,
+   speed:.7+Math.random()*.8
   });
+ });
 }
 function updateNPCs(){
-  npcs.forEach(n=>{
-    const dx=n.tx-n.x;
-    const dy=n.ty-n.y;
-    const d=Math.hypot(dx,dy);
-    if(d<20){
-      n.tx=250+Math.random()*3100;
-      n.ty=200+Math.random()*1900;
-    }else{
-      n.x+=(dx/d)*n.speed;
-      n.y+=(dy/d)*n.speed;
-    }
-    n.el.style.left=n.x+"px";
-    n.el.style.top=n.y+"px";
-  });
-}
-/* =========================
-   PLACE DATA
-========================= */
-const placeData={
-  work:{
-    title:"Office",
-    text:"A modern Lagos workplace.",
-    activities:["WORK","MEET PEOPLE"]
-  },
-  bank:{
-    title:"Bank",
-    text:"Use the lobby, ATM and teller area.",
-    activities:["CHECK BALANCE","ATM"]
-  },
-  hospital:{
-    title:"Hospital",
-    text:"Reception, wards and treatment rooms.",
-    activities:["RECEPTION","REST"]
-  },
-  school:{
-    title:"School",
-    text:"Classrooms and school grounds.",
-    activities:["CLASSROOM","STUDY"]
-  },
-  market:{
-    title:"Market",
-    text:"Walk through stalls and shops.",
-    activities:["SHOP","TALK"]
-  },
-  restaurant:{
-    title:"Restaurant",
-    text:"Tables, counter and kitchen.",
-    activities:["EAT","ORDER FOOD"]
-  },
-  police:{
-    title:"Police Station",
-    text:"Reception and interview room.",
-    activities:["RECEPTION","REPORT"]
-  },
-  church:{
-    title:"Church",
-    text:"Pews, altar and prayer area.",
-    activities:["PRAY","SIT"]
-  },
-  shop:{
-    title:"Shop",
-    text:"Browse products and the checkout.",
-    activities:["SHOP","BUY"]
-  },
-  club:{
-    title:"Club",
-    text:"Dance floor, DJ booth and bar.",
-    activities:["DANCE","SOCIALIZE"]
-  },
-  gym:{
-    title:"Gym",
-    text:"Training equipment and workout area.",
-    activities:["WORKOUT","TRAIN"]
-  },
-  salon:{
-    title:"Salon",
-    text:"Hair styling and grooming area.",
-    activities:["HAIRCUT","STYLE"]
-  },
-  fuel:{
-    title:"Fuel Station",
-    text:"Fuel pumps and convenience store.",
-    activities:["FUEL","SHOP"]
-  },
-  home:{
-    title:"Your Home",
-    text:"Your bedroom, living room, kitchen and bathroom.",
-    activities:["SLEEP","EAT"]
-  },
-  hotel:{
-    title:"Hotel",
-    text:"Lobby and guest rooms.",
-    activities:["CHECK IN","REST"]
+ npcs.forEach(n=>{
+  const dx=n.tx-n.x,dy=n.ty-n.y,d=Math.hypot(dx,dy);
+  if(d<20){
+   n.tx=250+Math.random()*3100;
+   n.ty=200+Math.random()*1900;
+  }else{
+   n.x+=dx/d*n.speed;
+   n.y+=dy/d*n.speed;
   }
+  n.el.style.left=n.x+"px";
+  n.el.style.top=n.y+"px";
+ });
+}
+/* BUILDINGS */
+const places={
+ work:["Office","Work"],
+ bank:["Bank","Bank"],
+ hospital:["Hospital","Hospital"],
+ school:["School","School"],
+ market:["Market","Market"],
+ restaurant:["Restaurant","Restaurant"],
+ police:["Police Station","Police"],
+ church:["Church","Church"],
+ shop:["Shop","Shop"],
+ club:["Club","Club"],
+ gym:["Gym","Gym"],
+ salon:["Salon","Salon"],
+ fuel:["Fuel Station","Fuel"],
+ home:["Your Home","Home"],
+ hotel:["Hotel","Hotel"]
 };
-const placeKeyMap={
-  "ikeja-work":"work"
+const interiors={
+ home:"Home",
+ bank:"Bank",
+ market:"Market",
+ restaurant:"Restaurant",
+ church:"Church",
+ hospital:"Hospital",
+ gym:"Gym",
+ salon:"Salon",
+ club:"Club",
+ police:"Police Station",
+ school:"School",
+ hotel:"Hotel",
+ shop:"Shop",
+ fuel:"Fuel Station",
+ work:"Office"
 };
-/* =========================
-   BUILDING CLICK
-========================= */
 document.querySelectorAll(".building").forEach(b=>{
-  b.addEventListener("click",()=>{
-    const raw=b.dataset.place;
-    const key=placeKeyMap[raw] || raw;
-    openBuilding(key,b);
-  });
-});
-function buildingCenter(el){
-  return {
-    x:parseFloat(el.style.left)+el.offsetWidth/2,
-    y:parseFloat(el.style.top)+el.offsetHeight/2
+ b.onclick=()=>{
+  const key=b.dataset.place;
+  const c={
+   x:parseFloat(b.style.left)+b.offsetWidth/2,
+   y:parseFloat(b.style.top)+b.offsetHeight/2
   };
-}
-function openBuilding(key,el){
-  const data=placeData[key];
-  if(!data)return;
-  const center=buildingCenter(el);
-  const distance=Math.hypot(state.x-center.x,state.y-center.y);
-  const close=distance<260;
-  document.getElementById("modalTitle").textContent=data.title;
+  const d=Math.hypot(state.x-c.x,state.y-c.y);
+  const data=places[key]||["Building","Building"];
+  document.getElementById("modalTitle").textContent=data[0];
   document.getElementById("modalText").textContent=
-    close
-    ? data.text+" You are close enough to enter."
-    : data.text+" Walk closer to the entrance to enter the building.";
-  const btns=document.getElementById("modalBtns");
-  btns.innerHTML="";
-  if(close){
-    const enter=document.createElement("button");
-    enter.className="enter";
-    enter.textContent="ENTER BUILDING";
-    enter.onclick=()=>enterBuilding(key);
-    btns.appendChild(enter);
+   d<270?"You are close enough to enter.":"Walk closer to the entrance.";
+  const box=document.getElementById("modalBtns");
+  box.innerHTML="";
+  if(d<270){
+   const enter=document.createElement("button");
+   enter.className="enter";
+   enter.textContent="ENTER BUILDING";
+   enter.onclick=()=>enterBuilding(key);
+   box.appendChild(enter);
   }
-  data.activities.forEach(a=>{
-    const btn=document.createElement("button");
-    btn.textContent=a;
-    btn.onclick=()=>{
-      activity(key,a);
-      closeModal();
-    };
-    btns.appendChild(btn);
-  });
   const close=document.createElement("button");
   close.className="close";
   close.textContent="CLOSE";
-  close.onclick=closeModal;
-  btns.appendChild(close);
-  modal.style.display="flex";
-}
-function closeModal(){
-  modal.style.display="none";
-}
-/* =========================
-   INTERIOR SYSTEM
-========================= */
-const interiorLayouts={
- home:{
-   name:"Home",
-   rooms:[
-    {x:80,y:80,w:680,h:380,label:"Living Room"},
-    {x:760,y:80,w:760,h:380,label:"Kitchen"},
-    {x:80,y:460,w:680,h:460,label:"Bedroom"},
-    {x:760,y:460,w:760,h:460,label:"Bathroom"}
-   ],
-   objects:[
-    ["sofa",170,180,"Sofa"],
-    ["tv",470,130,"TV"],
-    ["table",330,310,"Table"],
-    ["fridge",850,130,"Fridge"],
-    ["counter",1080,260,"Counter"],
-    ["bed",170,590,"Bed"],
-    ["wardrobe",520,600,"Wardrobe"],
-    ["shower",850,590,"Shower"],
-    ["sink",1100,590,"Sink"],
-    ["toilet",1300,700,"Toilet"]
-   ]
- },
- bank:{
-   name:"Bank",
-   rooms:[
-    {x:70,y:70,w:1460,h:850,label:"Bank Lobby"}
-   ],
-   objects:[
-    ["counter",180,180,"Teller"],
-    ["counter",500,180,"Teller"],
-    ["counter",820,180,"Teller"],
-    ["atm",1300,180,"ATM"],
-    ["seat",300,500,"Seats"],
-    ["seat",600,500,"Seats"],
-    ["seat",900,500,"Seats"]
-   ]
- },
- market:{
-   name:"Market",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Market Hall"}
-   ],
-   objects:[
-    ["stall",150,180,"Food Stall"],
-    ["stall",470,180,"Clothes"],
-    ["stall",790,180,"Phones"],
-    ["stall",1110,180,"Groceries"],
-    ["counter",500,570,"Checkout"]
-   ]
- },
- restaurant:{
-   name:"Restaurant",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Restaurant"}
-   ],
-   objects:[
-    ["counter",120,150,"Counter"],
-    ["table",420,180,"Table"],
-    ["table",800,180,"Table"],
-    ["table",1180,180,"Table"],
-    ["table",420,520,"Table"],
-    ["table",800,520,"Table"],
-    ["table",1180,520,"Table"],
-    ["counter",1240,720,"Kitchen"]
-   ]
- },
- church:{
-   name:"Church",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Main Hall"}
-   ],
-   objects:[
-    ["seat",220,200,"Pew"],
-    ["seat",220,350,"Pew"],
-    ["seat",220,500,"Pew"],
-    ["seat",600,200,"Pew"],
-    ["seat",600,350,"Pew"],
-    ["seat",600,500,"Pew"],
-    ["counter",1180,220,"Altar"],
-    ["counter",1180,520,"Pulpit"]
-   ]
- },
- hospital:{
-   name:"Hospital",
-   rooms:[
-    {x:60,y:60,w:650,h:860,label:"Reception"},
-    {x:710,y:60,w:830,h:860,label:"Ward"}
-   ],
-   objects:[
-    ["counter",160,180,"Reception"],
-    ["seat",180,400,"Waiting"],
-    ["seat",350,400,"Waiting"],
-    ["bed",850,180,"Bed"],
-    ["bed",850,450,"Bed"],
-    ["bed",1180,180,"Bed"],
-    ["bed",1180,450,"Bed"]
-   ]
- },
- gym:{
-   name:"Gym",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Training Floor"}
-   ],
-   objects:[
-    ["machine",200,180,"Treadmill"],
-    ["machine",520,180,"Weights"],
-    ["machine",840,180,"Bike"],
-    ["machine",1160,180,"Bench"],
-    ["machine",500,520,"Weights"],
-    ["machine",900,520,"Bench"]
-   ]
- },
- salon:{
-   name:"Salon",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Salon"}
-   ],
-   objects:[
-    ["seat",220,180,"Chair"],
-    ["seat",600,180,"Chair"],
-    ["seat",980,180,"Chair"],
-    ["counter",1250,200,"Mirror"],
-    ["counter",500,560,"Reception"]
-   ]
- },
- club:{
-   name:"Club",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Club"}
-   ],
-   objects:[
-    ["counter",120,150,"Bar"],
-    ["counter",1280,150,"DJ"],
-    ["dance",780,470,"Dance Floor"],
-    ["seat",250,600,"Seats"],
-    ["seat",1150,600,"Seats"]
-   ]
- },
- police:{
-   name:"Police Station",
-   rooms:[
-    {x:60,y:60,w:600,h:860,label:"Reception"},
-    {x:660,y:60,w:880,h:860,label:"Interview"}
-   ],
-   objects:[
-    ["counter",180,180,"Reception"],
-    ["seat",180,430,"Waiting"],
-    ["counter",880,200,"Desk"],
-    ["seat",1080,200,"Chair"],
-    ["table",1000,500,"Interview Table"]
-   ]
- },
- school:{
-   name:"School",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Classroom"}
-   ],
-   objects:[
-    ["counter",680,150,"Teacher Desk"],
-    ["seat",220,350,"Desk"],
-    ["seat",520,350,"Desk"],
-    ["seat",820,350,"Desk"],
-    ["seat",1120,350,"Desk"],
-    ["counter",700,650,"Board"]
-   ]
- },
- hotel:{
-   name:"Hotel",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Hotel Lobby"}
-   ],
-   objects:[
-    ["counter",620,180,"Reception"],
-    ["seat",300,350,"Lounge"],
-    ["seat",1050,350,"Lounge"],
-    ["counter",300,650,"Room Door"],
-    ["counter",1050,650,"Room Door"]
-   ]
- },
- shop:{
-   name:"Shop",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Shop"}
-   ],
-   objects:[
-    ["stall",180,170,"Shelf"],
-    ["stall",500,170,"Shelf"],
-    ["stall",820,170,"Shelf"],
-    ["stall",1140,170,"Shelf"],
-    ["counter",700,650,"Checkout"]
-   ]
- },
- fuel:{
-   name:"Fuel Station",
-   rooms:[
-    {x:60,y:60,w:1480,h:860,label:"Station Shop"}
-   ],
-   objects:[
-    ["counter",650,170,"Cashier"],
-    ["stall",220,400,"Drinks"],
-    ["stall",550,400,"Snacks"],
-    ["stall",880,400,"Products"],
-    ["counter",1200,400,"Exit"]
-   ]
- }
-};
+  close.onclick=()=>document.getElementById("modal").style.display="none";
+  box.appendChild(close);
+  document.getElementById("modal").style.display="flex";
+ };
+});
 function enterBuilding(key){
-  closeModal();
-  const layout=interiorLayouts[key];
-  if(!layout){
-    showToast("Interior coming soon");
-    return;
-  }
-  state.returnPoint={
-    x:state.x,
-    y:state.y
-  };
-  state.gameMode="interior";
-  state.interior=key;
-  world.style.display="none";
-  interior.style.display="block";
-  document.getElementById("interiorBar").style.display="flex";
-  document.getElementById("interiorTitle").textContent=layout.name;
-  renderInterior(layout);
-  state.x=800;
-  state.y=850;
-  document.getElementById("location").textContent=layout.name;
-  showToast("You entered "+layout.name);
+ if(!interiors[key]){
+  showToast("Interior coming soon");
+  return;
+ }
+ document.getElementById("modal").style.display="none";
+ state.returnPoint={x:state.x,y:state.y};
+ state.gameMode="interior";
+ state.interior=key;
+ world.style.display="none";
+ interior.style.display="block";
+ document.getElementById("interiorBar").style.display="flex";
+ document.getElementById("interiorTitle").textContent=interiors[key];
+ renderInterior(key);
+ state.x=800;
+ state.y=850;
 }
-function renderInterior(layout){
-  interior.innerHTML="";
-  let svg=`
-  <svg id="interiorSvg" width="1600" height="1000"
-       viewBox="0 0 1600 1000">
-    <rect x="0" y="0" width="1600" height="1000"
-          fill="#c8beae"/>
-  `;
-  layout.rooms.forEach(room=>{
-    svg+=`
-      <rect class="interiorFloor"
-        x="${room.x}" y="${room.y}"
-        width="${room.w}" height="${room.h}"
-        rx="12"/>
-      <text class="roomLabel"
-        x="${room.x+25}" y="${room.y+48}">
-        ${room.label}
-      </text>
-    `;
-  });
-  layout.objects.forEach((obj,i)=>{
-    const type=obj[0];
-    const x=obj[1];
-    const y=obj[2];
-    const label=obj[3];
-    let shape="";
-    if(type==="sofa"){
-      shape=`
-        <rect x="${x}" y="${y}" width="210" height="80"
-          rx="20" fill="#875f46"/>
-      `;
-    }else if(type==="bed"){
-      shape=`
-        <rect x="${x}" y="${y}" width="210" height="110"
-          rx="15" fill="#7890a8"/>
-        <rect x="${x+15}" y="${y+15}" width="180" height="35"
-          rx="10" fill="#e8e4dc"/>
-      `;
-    }else if(type==="table"){
-      shape=`
-        <circle cx="${x}" cy="${y}" r="70" fill="#8c6245"/>
-        <circle cx="${x}" cy="${y}" r="22" fill="#65452f"/>
-      `;
-    }else if(type==="seat"){
-      shape=`
-        <rect x="${x}" y="${y}" width="150" height="65"
-          rx="15" fill="#657b6b"/>
-      `;
-    }else if(type==="counter"){
-      shape=`
-        <rect x="${x}" y="${y}" width="230" height="85"
-          rx="10" fill="#71513d"/>
-      `;
-    }else if(type==="atm"){
-      shape=`
-        <rect x="${x}" y="${y}" width="110" height="145"
-          rx="12" fill="#44545a"/>
-        <rect x="${x+20}" y="${y+20}" width="70" height="40"
-          fill="#86b9b0"/>
-      `;
-    }else if(type==="stall"){
-      shape=`
-        <rect x="${x}" y="${y}" width="180" height="130"
-          rx="10" fill="#b16d3d"/>
-      `;
-    }else if(type==="machine"){
-      shape=`
-        <rect x="${x}" y="${y}" width="150" height="100"
-          rx="15" fill="#556a72"/>
-        <rect x="${x+25}" y="${y+20}" width="100" height="25"
-          fill="#9bc5b7"/>
-      `;
-    }else if(type==="dance"){
-      shape=`
-        <rect x="${x-180}" y="${y-120}" width="360" height="240"
-          rx="25" fill="#57447a"/>
-      `;
-    }else{
-      shape=`
-        <rect x="${x}" y="${y}" width="190" height="80"
-          rx="10" fill="#876346"/>
-      `;
-    }
-    svg+=`
-      <g class="furniture"
-         data-interact="${label}">
-        ${shape}
-        <text x="${x+8}" y="${y+125}">
-          ${label}
-        </text>
-      </g>
-    `;
-  });
-  svg+=`
-    <rect id="interiorDoor"
-      x="730" y="885" width="140" height="55"
-      rx="12" fill="#263e31"/>
-    <text x="755" y="920"
-      fill="white" font-size="24" font-weight="900">
-      EXIT
-    </text>
-  </svg>`;
-  interior.innerHTML=svg;
-  document.querySelectorAll(".furniture").forEach(obj=>{
-    obj.addEventListener("click",()=>{
-      interactFurniture(obj.dataset.interact);
-    });
-  });
-  document.getElementById("interiorDoor").addEventListener("click",exitBuilding);
+function renderInterior(key){
+ const title=interiors[key];
+ interior.innerHTML=`
+ <svg width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#c8beae"/>
+  <rect x="60" y="60" width="1480" height="860"
+    rx="15" fill="#d7cdbd" stroke="#756b5f" stroke-width="10"/>
+  <text x="90" y="110" font-size="34" font-weight="900" fill="#3a342e">${title}</text>
+  <rect x="120" y="180" width="230" height="100" rx="15" fill="#76513d"
+    class="furniture" data-action="object"/>
+  <text x="140" y="315" font-size="22" font-weight="900" fill="#302a25">
+   ${key==="home"?"Living Room":"Reception"}
+  </text>
+  <rect x="480" y="180" width="230" height="100" rx="15" fill="#657b6b"
+    class="furniture" data-action="object"/>
+  <text x="500" y="315" font-size="22" font-weight="900" fill="#302a25">
+   ${key==="gym"?"Training":"Seating"}
+  </text>
+  <rect x="840" y="180" width="230" height="100" rx="15" fill="#875f46"
+    class="furniture" data-action="object"/>
+  <text x="860" y="315" font-size="22" font-weight="900" fill="#302a25">
+   ${key==="bank"?"Teller":"Counter"}
+  </text>
+  <rect x="1200" y="180" width="230" height="100" rx="15" fill="#556a72"
+    class="furniture" data-action="object"/>
+  <text x="1220" y="315" font-size="22" font-weight="900" fill="#302a25">
+   ${key==="bank"?"ATM":"Equipment"}
+  </text>
+  <circle cx="400" cy="550" r="80" fill="#8c6245"
+    class="furniture" data-action="object"/>
+  <circle cx="800" cy="550" r="80" fill="#8c6245"
+    class="furniture" data-action="object"/>
+  <circle cx="1200" cy="550" r="80" fill="#8c6245"
+    class="furniture" data-action="object"/>
+  <text x="730" y="900" font-size="25" font-weight="900" fill="white">EXIT</text>
+  <rect id="interiorDoor" x="700" y="850" width="200" height="70"
+    rx="15" fill="#263e31"/>
+ </svg>`;
+ document.querySelectorAll(".furniture").forEach(o=>{
+  o.onclick=()=>interiorObject(key);
+ });
+ document.getElementById("interiorDoor").onclick=exitBuilding;
 }
-function interactFurniture(label){
-  const key=state.interior;
-  if(key==="home"){
-    if(label==="Bed"){
-      state.energy=Math.min(100,state.energy+35);
-      showToast("You rested in your bedroom.");
-    }else if(label==="Fridge"){
-      state.energy=Math.min(100,state.energy+15);
-      state.money=Math.max(0,state.money-800);
-      showToast("You ate at home.");
-    }else if(label==="Shower"){
-      showToast("You took a shower.");
-    }else if(label==="TV"){
-      showToast("You are watching TV.");
-    }else{
-      showToast("You interacted with "+label);
-    }
-    updateHUD();
-    return;
-  }
-  if(key==="bank" && label==="ATM"){
-    showToast("ATM balance: ₦"+state.money.toLocaleString());
-    return;
-  }
-  if(key==="restaurant" && label==="Table"){
-    if(state.money>=3000){
-      state.money-=3000;
-      state.energy=Math.min(100,state.energy+30);
-      showToast("You enjoyed your meal.");
-    }else showToast("Not enough money.");
-    updateHUD();
-    return;
-  }
-  if(key==="gym"){
-    state.energy=Math.max(0,state.energy-12);
-    state.level++;
-    showToast("Workout complete. Level increased.");
-    updateHUD();
-    return;
-  }
-  if(key==="salon"){
-    state.money=Math.max(0,state.money-5000);
-    showToast("Fresh haircut.");
-    updateHUD();
-    return;
-  }
-  if(key==="club" && label==="Dance Floor"){
-    state.energy=Math.max(0,state.energy-10);
-    showToast("You are dancing.");
-    updateHUD();
-    return;
-  }
-  if(key==="church"){
-    showToast("You spent some quiet time in church.");
-    return;
-  }
-  showToast("You interacted with "+label);
+function interiorObject(key){
+ if(key==="home"){
+  state.energy=Math.min(100,state.energy+20);
+  showToast("You relaxed at home.");
+ }
+ else if(key==="bank"){
+  showToast("Your balance is ₦"+state.money.toLocaleString());
+ }
+ else if(key==="restaurant"){
+  if(state.money>=2500){
+   state.money-=2500;
+   state.energy=Math.min(100,state.energy+25);
+   showToast("Meal purchased.");
+  }else showToast("Not enough money.");
+ }
+ else if(key==="gym"){
+  state.energy=Math.max(0,state.energy-12);
+  state.level++;
+  showToast("Workout completed.");
+ }
+ else if(key==="salon"){
+  state.money=Math.max(0,state.money-5000);
+  showToast("You got a haircut.");
+ }
+ else if(key==="club"){
+  state.energy=Math.max(0,state.energy-8);
+  showToast("You are enjoying the club.");
+ }
+ else if(key==="church"){
+  showToast("You spent time in church.");
+ }
+ else{
+  showToast("You interacted with the building.");
+ }
+ updateHUD();
 }
 function exitBuilding(){
-  state.gameMode="outdoor";
-  state.interior=null;
-  interior.style.display="none";
-  world.style.display="block";
-  document.getElementById("interiorBar").style.display="none";
-  if(state.returnPoint){
-    state.x=state.returnPoint.x;
-    state.y=state.returnPoint.y;
-  }
-  document.getElementById("location").textContent=state.city;
-  showToast("You left the building.");
+ state.gameMode="outdoor";
+ state.interior=null;
+ interior.style.display="none";
+ world.style.display="block";
+ document.getElementById("interiorBar").style.display="none";
+ if(state.returnPoint){
+  state.x=state.returnPoint.x;
+  state.y=state.returnPoint.y;
+ }
+ showToast("You left the building.");
 }
-/* =========================
-   MOVEMENT
-========================= */
-document.addEventListener("keydown",e=>{
-  keys[e.key.toLowerCase()]=true;
-});
-document.addEventListener("keyup",e=>{
-  keys[e.key.toLowerCase()]=false;
-});
-document.getElementById("runBtn").addEventListener("pointerdown",()=>{
-  state.running=true;
-});
-document.getElementById("runBtn").addEventListener("pointerup",()=>{
-  state.running=false;
-});
+/* MOVEMENT */
+document.addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true);
+document.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
 function movement(){
-  let dx=0;
-  let dy=0;
-  if(keys["w"]||keys["arrowup"])dy-=1;
-  if(keys["s"]||keys["arrowdown"])dy+=1;
-  if(keys["a"]||keys["arrowleft"])dx-=1;
-  if(keys["d"]||keys["arrowright"])dx+=1;
-  dx+=joystick.x;
-  dy+=joystick.y;
-  const len=Math.hypot(dx,dy);
-  if(len>0){
-    dx/=len;
-    dy/=len;
-    const speed=state.speed*(state.running?1.8:1);
-    state.x+=dx*speed;
-    state.y+=dy*speed;
-    state.energy=Math.max(0,state.energy-.003*(state.running?2:1));
-  }
-  if(state.gameMode==="outdoor"){
-    state.x=Math.max(30,Math.min(3570,state.x));
-    state.y=Math.max(30,Math.min(2570,state.y));
-  }else{
-    state.x=Math.max(45,Math.min(1555,state.x));
-    state.y=Math.max(45,Math.min(950,state.y));
-  }
+ let dx=0,dy=0;
+ if(keys.w||keys.arrowup)dy--;
+ if(keys.s||keys.arrowdown)dy++;
+ if(keys.a||keys.arrowleft)dx--;
+ if(keys.d||keys.arrowright)dx++;
+ dx+=joystick.x;
+ dy+=joystick.y;
+ const len=Math.hypot(dx,dy);
+ if(len){
+  dx/=len;dy/=len;
+  const speed=state.speed*(state.running?1.8:1);
+  state.x+=dx*speed;
+  state.y+=dy*speed;
+  state.energy=Math.max(0,state.energy-.003);
+ }
+ if(state.gameMode==="outdoor"){
+  state.x=Math.max(30,Math.min(3570,state.x));
+  state.y=Math.max(30,Math.min(2570,state.y));
+ }else{
+  state.x=Math.max(45,Math.min(1555,state.x));
+  state.y=Math.max(45,Math.min(950,state.y));
+ }
 }
-/* =========================
-   JOYSTICK
-========================= */
-const joystickEl=document.getElementById("joystick");
+const joy=document.getElementById("joystick");
 const stick=document.getElementById("stick");
-function joystickMove(clientX,clientY){
-  const r=joystickEl.getBoundingClientRect();
-  const cx=r.left+r.width/2;
-  const cy=r.top+r.height/2;
-  let dx=clientX-cx;
-  let dy=clientY-cy;
-  const max=42;
-  const d=Math.hypot(dx,dy);
-  if(d>max){
-    dx=dx/d*max;
-    dy=dy/d*max;
-  }
-  stick.style.transform=`translate(${dx}px,${dy}px)`;
-  joystick.x=dx/max;
-  joystick.y=dy/max;
+function moveJoy(x,y){
+ const r=joy.getBoundingClientRect();
+ let dx=x-(r.left+r.width/2);
+ let dy=y-(r.top+r.height/2);
+ const max=42;
+ const d=Math.hypot(dx,dy);
+ if(d>max){dx=dx/d*max;dy=dy/d*max}
+ stick.style.transform=`translate(${dx}px,${dy}px)`;
+ joystick.x=dx/max;
+ joystick.y=dy/max;
 }
-function joystickReset(){
-  stick.style.transform="translate(0,0)";
-  joystick.x=0;
-  joystick.y=0;
+function resetJoy(){
+ stick.style.transform="translate(0,0)";
+ joystick.x=0;joystick.y=0;
 }
-joystickEl.addEventListener("pointerdown",e=>{
-  joystickEl.setPointerCapture(e.pointerId);
-  joystickMove(e.clientX,e.clientY);
-});
-joystickEl.addEventListener("pointermove",e=>{
-  if(e.pressure>0)joystickMove(e.clientX,e.clientY);
-});
-joystickEl.addEventListener("pointerup",joystickReset);
-joystickEl.addEventListener("pointercancel",joystickReset);
-/* =========================
-   ACT BUTTON
-========================= */
+joy.onpointerdown=e=>{joy.setPointerCapture(e.pointerId);moveJoy(e.clientX,e.clientY)}
+joy.onpointermove=e=>{if(e.pressure>0)moveJoy(e.clientX,e.clientY)}
+joy.onpointerup=resetJoy;
+joy.onpointercancel=resetJoy;
+document.getElementById("runBtn").onpointerdown=()=>state.running=true;
+document.getElementById("runBtn").onpointerup=()=>state.running=false;
 document.getElementById("actBtn").onclick=()=>{
-  if(state.gameMode==="interior"){
-    if(state.y>820){
-      exitBuilding();
-    }else{
-      showToast("Tap furniture or objects to interact.");
-    }
-    return;
-  }
-  let nearest=null;
-  let nearestD=9999;
-  document.querySelectorAll(".building").forEach(b=>{
-    const c=buildingCenter(b);
-    const d=Math.hypot(state.x-c.x,state.y-c.y);
-    if(d<nearestD){
-      nearestD=d;
-      nearest=b;
-    }
-  });
-  if(nearest && nearestD<300){
-    const key=placeKeyMap[nearest.dataset.place]||nearest.dataset.place;
-    openBuilding(key,nearest);
-  }else{
-    showToast("Walk closer to a building.");
-  }
+ if(state.gameMode==="interior"){
+  showToast("Tap objects inside the building.");
+  return;
+ }
+ let nearest=null,dist=99999;
+ document.querySelectorAll(".building").forEach(b=>{
+  const x=parseFloat(b.style.left)+b.offsetWidth/2;
+  const y=parseFloat(b.style.top)+b.offsetHeight/2;
+  const d=Math.hypot(state.x-x,state.y-y);
+  if(d<dist){dist=d;nearest=b}
+ });
+ if(nearest&&dist<300)nearest.click();
+ else showToast("Walk closer to a building.");
 };
-/* =========================
-   PHONE
-========================= */
-document.getElementById("phoneBtn").onclick=()=>{
+/* CAMERA */
+function camera(){
+ const w=innerWidth,h=innerHeight;
+ const width=state.gameMode==="outdoor"?3600:1600;
+ const height=state.gameMode==="outdoor"?2600:1000;
+ let scale=Math.max(.55,Math.min(1.25,Math.min(w/width*2.1,h/height*2.1)));
+ let tx=w/2-state.x*scale;
+ let ty=h/2-state.y*scale;
+ tx=Math.min(0,Math.max(w-width*scale,tx));
+ ty=Math.min(0,Math.max(h-height*scale,ty));
+ const target=state.gameMode==="outdoor"?world:interior;
+ target.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
+ player.style.left=state.x+"px";
+ player.style.top=state.y+"px";
+}
+/* =========================================================
+   PHONE OPERATING SYSTEM
+========================================================= */
+const defaultApps={
+ whatsapp:true,
+ contacts:true,
+ phone:true,
+ maps:true,
+ bank:true,
+ camera:true,
+ settings:true,
+ store:true
+};
+let phoneData={
+ battery:100,
+ installed:{...defaultApps},
+ chats:{
+  Tunde:[
+   {from:"them",text:"How far?"},
+   {from:"me",text:"I dey alright bro."}
+  ],
+  Amaka:[
+   {from:"them",text:"Are you around Lagos today?"}
+  ],
+  Chinedu:[
+   {from:"them",text:"Let's meet later."}
+  ]
+ },
+ contacts:["Tunde","Amaka","Chinedu","Blessing","David","Joy"],
+ calls:[]
+};
+try{
+ const p=JSON.parse(localStorage.getItem("naijaPhone"));
+ if(p){
+  phoneData=p;
+  phoneData.installed={...defaultApps,...phoneData.installed};
+ }
+}catch(e){}
+function savePhone(){
+ localStorage.setItem("naijaPhone",JSON.stringify(phoneData));
+}
+function phoneBatteryDrain(amount=1){
+ phoneData.battery=Math.max(0,phoneData.battery-amount);
+ savePhone();
+ if(phoneData.battery<=0){
+  phoneOffline();
+ }
+}
+function chargePhone(amount=10){
+ phoneData.battery=Math.min(100,phoneData.battery+amount);
+ savePhone();
+ showToast("Phone charged to "+phoneData.battery+"%");
+ renderPhoneHome();
+}
+setInterval(()=>{
+ if(document.getElementById("phone").style.display==="flex"){
+  phoneBatteryDrain(.15);
+ }
+},10000);
+function phoneOffline(){
+ document.getElementById("phoneContent").innerHTML=`
+ <div class="offline">
+  <div style="font-size:50px">0%</div>
+  <h2>Battery Empty</h2>
+  <p>Your phone has died.</p>
+  <p>Charge it before using it again.</p>
+  <button onclick="chargePhone(20)">CHARGE +20%</button>
+ </div>`;
+}
+function openPhone(){
+ if(phoneData.battery<=0){
   document.getElementById("phone").style.display="flex";
+  phoneOffline();
+  return;
+ }
+ document.getElementById("phone").style.display="flex";
+ renderPhoneHome();
+}
+document.getElementById("phoneBtn").onclick=openPhone;
+function closePhone(){
+ document.getElementById("phone").style.display="none";
+}
+function appIcon(id,name,icon){
+ if(!phoneData.installed[id])return "";
+ return `
+ <div class="appIcon">
+  <button class="installed" onclick="openApp('${id}')">${icon}</button>
+  <div>${name}</div>
+ </div>`;
+}
+function renderPhoneHome(){
+ if(phoneData.battery<=0){
+  phoneOffline();
+  return;
+ }
+ const d=nigeriaTime();
+ document.getElementById("phoneContent").innerHTML=`
+ <div class="phoneHome">
+  <div style="text-align:right;font-size:11px">
+   ${phoneData.battery}% 🔋
+  </div>
+  <div class="phoneTime">
+   ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}
+  </div>
+  <div class="phoneDate">
+   ${d.toLocaleDateString("en-NG",{weekday:"long",month:"long",day:"numeric"})}
+  </div>
+  <div class="appGrid">
+   ${appIcon("whatsapp","WhatsApp","W")}
+   ${appIcon("contacts","Contacts","C")}
+   ${appIcon("phone","Phone","☎")}
+   ${appIcon("maps","Maps","M")}
+   ${appIcon("bank","NaijaBank","₦")}
+   ${appIcon("camera","Camera","◉")}
+   ${appIcon("settings","Settings","⚙")}
+   ${appIcon("store","App Store","A")}
+  </div>
+  <div class="phoneDock">
+   <button onclick="openApp('phone')">☎</button>
+   <button onclick="openApp('contacts')">C</button>
+   <button onclick="openApp('whatsapp')">W</button>
+   <button onclick="closePhone()">EXIT</button>
+  </div>
+ </div>`;
+ updatePhoneStatus();
+}
+function updatePhoneStatus(){
+ document.getElementById("signal").textContent=
+  phoneData.battery>0
+  ?"5G　▰▰▰　🔋"+Math.round(phoneData.battery)+"%"
+  :"OFFLINE";
+}
+function phonePage(title,body,back=true){
+ return `
+ <div class="appPage">
+  <div class="phoneHeader">
+   ${back?`<button class="backBtn" onclick="renderPhoneHome()">‹</button>`:""}
+   <strong>${title}</strong>
+   <span>${Math.round(phoneData.battery)}%</span>
+  </div>
+  ${body}
+ </div>`;
+}
+function openApp(id){
+ if(phoneData.battery<=0){
+  phoneOffline();
+  return;
+ }
+ phoneBatteryDrain(.7);
+ if(id==="whatsapp")openWhatsApp();
+ else if(id==="contacts")openContacts();
+ else if(id==="phone")openDialer();
+ else if(id==="maps")openMaps();
+ else if(id==="bank")openBank();
+ else if(id==="camera")openCamera();
+ else if(id==="settings")openSettings();
+ else if(id==="store")openStore();
+}
+/* WHATSAPP */
+function openWhatsApp(){
+ const names=Object.keys(phoneData.chats);
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("WhatsApp",`
+  <div class="appBody">
+   <div class="chatList">
+    ${names.map(n=>`
+     <button onclick="openChat('${n}')">
+      <div class="chatName">${n}</div>
+      <div class="chatPreview">
+       ${phoneData.chats[n].length?
+       phoneData.chats[n][phoneData.chats[n].length-1].text:"No messages"}
+      </div>
+     </button>`).join("")}
+   </div>
+  </div>`);
+}
+function openChat(name){
+ const messages=phoneData.chats[name]||[];
+ document.getElementById("phoneContent").innerHTML=`
+ <div class="chatPage">
+  <div class="phoneHeader">
+   <button class="backBtn" onclick="openWhatsApp()">‹</button>
+   <strong>${name}</strong>
+   <button onclick="makeCall('${name}')">☎</button>
+  </div>
+  <div class="messages" id="messages">
+   ${messages.map(m=>`
+    <div class="msg ${m.from==="me"?"me":""}">
+     ${m.text}
+    </div>`).join("")}
+  </div>
+  <div class="chatInput">
+   <input id="messageInput" placeholder="Message">
+   <button onclick="sendMessage('${name}')">➤</button>
+  </div>
+ </div>`;
+ const box=document.getElementById("messages");
+ box.scrollTop=box.scrollHeight;
+}
+function sendMessage(name){
+ const input=document.getElementById("messageInput");
+ const text=input.value.trim();
+ if(!text)return;
+ phoneBatteryDrain(.4);
+ if(!phoneData.chats[name])phoneData.chats[name]=[];
+ phoneData.chats[name].push({
+  from:"me",
+  text
+ });
+ savePhone();
+ openChat(name);
+ setTimeout(()=>{
+  const replies=[
+   "Okay.",
+   "No wahala.",
+   "I hear you.",
+   "Sure, let's do that.",
+   "Where are you now?",
+   "Alright, see you later.",
+   "Haha, that's true."
+  ];
+  phoneData.chats[name].push({
+   from:"them",
+   text:replies[Math.floor(Math.random()*replies.length)]
+  });
+  savePhone();
+  if(document.getElementById("phone").style.display==="flex"){
+   openChat(name);
+  }
+ },900);
+}
+/* CONTACTS */
+function openContacts(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("Contacts",`
+ <div class="appBody">
+  ${phoneData.contacts.map(n=>`
+   <div class="contactCard">
+    <strong>${n}</strong>
+    <div style="color:#6d786f;font-size:12px">Nigeria</div>
+    <button onclick="openChat('${n}')">MESSAGE</button>
+    <button onclick="makeCall('${n}')">CALL</button>
+   </div>`).join("")}
+ </div>`);
+}
+/* CALLS */
+function openDialer(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("Phone",`
+ <div class="appBody">
+  <input class="dial" id="dialNumber" readonly>
+  <div class="dialPad">
+   ${["1","2","3","4","5","6","7","8","9","*","0","#"]
+   .map(n=>`<button onclick="dial('${n}')">${n}</button>`).join("")}
+  </div>
+  <button style="width:100%;padding:15px;border-radius:15px;background:#087b50;color:white"
+    onclick="callNumber()">CALL</button>
+  <h3>Recent Calls</h3>
+  ${phoneData.calls.slice(-8).reverse().map(c=>`
+   <div class="contactCard">${c.name} — ${c.time}</div>`).join("")}
+ </div>`);
+}
+function dial(n){
+ const el=document.getElementById("dialNumber");
+ if(el)el.value+=n;
+ phoneBatteryDrain(.05);
+}
+function callNumber(){
+ const number=document.getElementById("dialNumber").value||"Unknown";
+ phoneData.calls.push({
+  name:number,
+  time:nigeriaTime().toLocaleTimeString("en-NG",{hour:"2-digit",minute:"2-digit"})
+ });
+ savePhone();
+ phoneBatteryDrain(2);
+ showToast("Calling "+number+"...");
+}
+function makeCall(name){
+ phoneData.calls.push({
+  name,
+  time:nigeriaTime().toLocaleTimeString("en-NG",{hour:"2-digit",minute:"2-digit"})
+ });
+ savePhone();
+ phoneBatteryDrain(2);
+ showToast("Calling "+name+"...");
+}
+/* MAPS */
+function openMaps(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("Maps",`
+ <div class="mapArea">
+  <div class="mapWater" style="left:55%;top:0;width:30%;height:55%"></div>
+  <div class="mapRoad" style="left:0;top:45%;width:100%;height:35px"></div>
+  <div class="mapRoad" style="left:40%;top:0;width:35px;height:100%"></div>
+  <div class="mapPlace" style="left:10%;top:20%">Ikeja</div>
+  <div class="mapPlace" style="left:30%;top:40%">Yaba</div>
+  <div class="mapPlace" style="left:58%;top:30%">Lagos Island</div>
+  <div class="mapPlace" style="left:68%;top:58%">Victoria Island</div>
+  <div class="mapPlace" style="left:80%;top:70%">Lekki</div>
+  <div style="position:absolute;left:48%;top:47%;
+   width:25px;height:25px;border-radius:50%;background:#e43d3d;
+   border:4px solid white"></div>
+ </div>`);
+ phoneBatteryDrain(.8);
+}
+/* BANK */
+function openBank(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("NaijaBank",`
+ <div class="appBody">
+  <div style="background:#087b50;color:white;padding:25px;border-radius:20px">
+   <small>Available Balance</small>
+   <h1>₦${state.money.toLocaleString()}</h1>
+  </div>
+  <button style="width:100%;margin-top:15px;padding:15px;border-radius:13px;background:white"
+    onclick="bankDeposit()">ADD GAME MONEY</button>
+  <button style="width:100%;margin-top:10px;padding:15px;border-radius:13px;background:white"
+    onclick="showToast('Transfers coming soon')">TRANSFER</button>
+ </div>`);
+ phoneBatteryDrain(.5);
+}
+function bankDeposit(){
+ state.money+=1000;
+ updateHUD();
+ showToast("₦1,000 added to your game balance.");
+}
+/* CAMERA */
+function openCamera(){
+ document.getElementById("phoneContent").innerHTML=`
+ <div class="cameraView">
+  <div class="cameraLens"></div>
+  <button class="cameraButton" onclick="takePhoto()"></button>
+  <button style="position:absolute;top:10px;left:10px;background:#0008;color:white;padding:10px;border-radius:10px"
+   onclick="renderPhoneHome()">BACK</button>
+ </div>`;
+ phoneBatteryDrain(1.5);
+}
+function takePhoto(){
+ phoneBatteryDrain(3);
+ showToast("Photo saved to your game gallery.");
+}
+/* SETTINGS */
+function openSettings(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("Settings",`
+ <div class="appBody">
+  <div class="setting">
+   <span>Battery</span>
+   <strong>${Math.round(phoneData.battery)}%</strong>
+  </div>
+  <div class="setting">
+   <span>Signal</span>
+   <strong>5G</strong>
+  </div>
+  <div class="setting">
+   <span>Notifications</span>
+   <strong>ON</strong>
+  </div>
+  <div class="setting">
+   <span>Dark Mode</span>
+   <strong>ON</strong>
+  </div>
+  <button style="width:100%;margin-top:15px;padding:15px;border-radius:13px;background:#087b50;color:white"
+    onclick="chargePhone(20)">
+    CHARGE PHONE +20%
+  </button>
+  <button style="width:100%;margin-top:10px;padding:15px;border-radius:13px;background:#a83c43;color:white"
+    onclick="phoneData.battery=100;savePhone();openSettings()">
+    DEBUG FULL CHARGE
+  </button>
+ </div>`);
+}
+/* APP STORE */
+const storeApps=[
+ {
+  id:"social",
+  name:"Naija Social",
+  icon:"S",
+  description:"Social feed and friends.",
+  installed:false
+ },
+ {
+  id:"music",
+  name:"Naija Music",
+  icon:"M",
+  description:"Listen to music around Nigeria.",
+  installed:false
+ },
+ {
+  id:"food",
+  name:"Food Delivery",
+  icon:"F",
+  description:"Order food to your home.",
+  installed:false
+ },
+ {
+  id:"ride",
+  name:"Naija Ride",
+  icon:"R",
+  description:"Request an in-game ride.",
+  installed:false
+ },
+ {
+  id:"news",
+  name:"Naija News",
+  icon:"N",
+  description:"Local game-world news.",
+  installed:false
+ },
+ {
+  id:"jobs",
+  name:"Job Finder",
+  icon:"J",
+  description:"Find jobs around the city.",
+  installed:false
+ }
+];
+function openStore(){
+ document.getElementById("phoneContent").innerHTML=
+ phonePage("App Store",`
+ <div class="appBody">
+  <p>Download apps for your phone.</p>
+  ${storeApps.map(app=>{
+   const installed=phoneData.installed[app.id];
+   return `
+   <div class="storeCard">
+    <div class="storeIcon">${app.icon}</div>
+    <div class="storeInfo">
+     <strong>${app.name}</strong>
+     <small>${app.description}</small>
+    </div>
+    <button class="${installed?"remove":""}"
+      onclick="toggleStoreApp('${app.id}')">
+      ${installed?"REMOVE":"GET"}
+    </button>
+   </div>`;
+  }).join("")}
+ </div>`);
+}
+function toggleStoreApp(id){
+ phoneBatteryDrain(1);
+ if(phoneData.installed[id]){
+  delete phoneData.installed[id];
+  showToast("App removed.");
+ }else{
+  phoneData.installed[id]=true;
+  showToast("App installed.");
+ }
+ savePhone();
+ openStore();
+}
+/* INSTALLED STORE APPS */
+function openInstalledExtra(id){
+ if(id==="social"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Naija Social",`
+   <div class="appBody">
+    <div class="contactCard"><strong>${state.name}</strong><p>Living life in Nigeria.</p></div>
+    <div class="contactCard"><strong>Tunde</strong><p>Just arrived at the club.</p></div>
+    <div class="contactCard"><strong>Amaka</strong><p>Beautiful day in Lagos.</p></div>
+   </div>`);
+ }
+ if(id==="music"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Naija Music",`
+   <div class="appBody">
+    <div class="contactCard"><strong>Music Player</strong><p>Game music library</p>
+     <button onclick="showToast('Playing music...')">PLAY</button>
+    </div>
+   </div>`);
+ }
+ if(id==="food"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Food Delivery",`
+   <div class="appBody">
+    <div class="storeCard"><div class="storeIcon">F</div>
+     <div class="storeInfo"><strong>Jollof Rice</strong><small>₦3,500</small></div>
+     <button onclick="buyFood()">ORDER</button>
+    </div>
+    <div class="storeCard"><div class="storeIcon">F</div>
+     <div class="storeInfo"><strong>Chicken & Chips</strong><small>₦4,000</small></div>
+     <button onclick="buyFood()">ORDER</button>
+    </div>
+   </div>`);
+ }
+ if(id==="ride"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Naija Ride",`
+   <div class="appBody">
+    <div class="contactCard">
+     <h2>Request a Ride</h2>
+     <p>Your driver will pick you up nearby.</p>
+     <button onclick="requestRide()">REQUEST RIDE</button>
+    </div>
+   </div>`);
+ }
+ if(id==="news"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Naija News",`
+   <div class="appBody">
+    <div class="contactCard"><strong>Lagos Traffic Update</strong><p>Traffic is heavy around major roads.</p></div>
+    <div class="contactCard"><strong>City Life</strong><p>More businesses are opening around the city.</p></div>
+   </div>`);
+ }
+ if(id==="jobs"){
+  document.getElementById("phoneContent").innerHTML=
+  phonePage("Job Finder",`
+   <div class="appBody">
+    <div class="contactCard">
+     <strong>Office Worker</strong>
+     <p>Salary: ₦5,000</p>
+     <button onclick="takeJob()">ACCEPT JOB</button>
+    </div>
+    <div class="contactCard">
+     <strong>Restaurant Worker</strong>
+     <p>Salary: ₦3,500</p>
+     <button onclick="takeJob()">ACCEPT JOB</button>
+    </div>
+   </div>`);
+ }
+}
+function buyFood(){
+ if(state.money<3500){
+  showToast("Not enough money.");
+  return;
+ }
+ state.money-=3500;
+ state.energy=Math.min(100,state.energy+30);
+ updateHUD();
+ showToast("Food delivered.");
+}
+function requestRide(){
+ phoneBatteryDrain(2);
+ showToast("Your driver is on the way.");
+}
+function takeJob(){
+ state.money+=5000;
+ state.level++;
+ updateHUD();
+ showToast("Job completed. You earned ₦5,000.");
+}
+/* PATCH EXTRA APP OPENING */
+const originalOpenApp=openApp;
+openApp=function(id){
+ if(storeApps.some(a=>a.id===id)){
+  if(!phoneData.installed[id]){
+   showToast("Install this app first.");
+   return;
+  }
+  phoneBatteryDrain(.8);
+  openInstalledExtra(id);
+  return;
+ }
+ originalOpenApp(id);
 };
-document.getElementById("closePhone").onclick=()=>{
-  document.getElementById("phone").style.display="none";
-};
-function phoneMessage(){
-  showToast("Messages will appear here.");
-}
-function phoneFriends(){
-  showToast("Friends list opened.");
-}
-function phoneCalls(){
-  showToast("Call history opened.");
-}
-/* =========================
-   ACTIVITIES
-========================= */
-function activity(key,action){
-  if(action==="WORK"){
-    state.money+=5000;
-    state.energy=Math.max(0,state.energy-15);
-    state.level++;
-    showToast("You finished work and earned ₦5,000.");
-  }
-  if(action==="EAT" || action==="ORDER FOOD"){
-    if(state.money>=2500){
-      state.money-=2500;
-      state.energy=Math.min(100,state.energy+30);
-      showToast("You had a good meal.");
-    }else{
-      showToast("Not enough money.");
-    }
-  }
-  if(action==="SLEEP"){
-    state.energy=100;
-    showToast("You slept and restored your energy.");
-  }
-  if(action==="ATM" || action==="CHECK BALANCE"){
-    showToast("Balance: ₦"+state.money.toLocaleString());
-  }
-  if(action==="WORKOUT" || action==="TRAIN"){
-    state.energy=Math.max(0,state.energy-15);
-    state.level++;
-    showToast("Workout complete.");
-  }
-  if(action==="HAIRCUT"){
-    state.money=Math.max(0,state.money-5000);
-    showToast("You got a haircut.");
-  }
-  if(action==="DANCE"){
-    state.energy=Math.max(0,state.energy-10);
-    showToast("You danced at the club.");
-  }
-  updateHUD();
-}
-/* =========================
-   HUD
-========================= */
+/* PHONE CLOSE */
+document.getElementById("phone").addEventListener("click",e=>{
+ if(e.target.id==="phone")closePhone();
+});
+/* HUD */
 function updateHUD(){
-  document.getElementById("money").textContent=state.money.toLocaleString();
-  document.getElementById("energy").textContent=Math.round(state.energy);
-  document.getElementById("level").textContent=state.level;
+ document.getElementById("money").textContent=state.money.toLocaleString();
+ document.getElementById("energy").textContent=Math.round(state.energy);
+ document.getElementById("level").textContent=state.level;
+ document.getElementById("location").textContent=
+  state.gameMode==="interior"?interiors[state.interior]:state.city;
 }
 function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+ const t=document.getElementById("toast");
+ t.textContent=msg;
+ t.classList.add("show");
+ setTimeout(()=>t.classList.remove("show"),2200);
 }
-/* =========================
-   CAMERA
-========================= */
-function camera(){
-  const w=innerWidth;
-  const h=innerHeight;
-  let targetX=state.x;
-  let targetY=state.y;
-  let worldWidth=state.gameMode==="outdoor"?3600:1600;
-  let worldHeight=state.gameMode==="outdoor"?2600:1000;
-  let scale=Math.min(
-    w/worldWidth*2.1,
-    h/worldHeight*2.1
-  );
-  scale=Math.max(.55,Math.min(1.25,scale));
-  let tx=w/2-targetX*scale;
-  let ty=h/2-targetY*scale;
-  tx=Math.min(0,Math.max(w-worldWidth*scale,tx));
-  ty=Math.min(0,Math.max(h-worldHeight*scale,ty));
-  const target=state.gameMode==="outdoor"?world:interior;
-  target.style.transform=
-    `translate(${tx}px,${ty}px) scale(${scale})`;
-  player.style.left=state.x+"px";
-  player.style.top=state.y+"px";
-}
-/* =========================
-   GAME LOOP
-========================= */
+/* GAME LOOP */
 function loop(now){
-  const dt=Math.min(40,now-lastTime);
-  lastTime=now;
-  movement();
-  if(state.gameMode==="outdoor"){
-    updateNPCs();
-  }
-  camera();
-  updateHUD();
-  requestAnimationFrame(loop);
+ movement();
+ if(state.gameMode==="outdoor")updateNPCs();
+ camera();
+ updateHUD();
+ updatePhoneStatus();
+ requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-/* =========================
-   MAP BUTTON
-========================= */
 document.getElementById("mapBtn").onclick=()=>{
-  if(state.gameMode==="interior"){
-    showToast("You are inside "+interiorLayouts[state.interior].name);
-  }else{
-    showToast("You are exploring "+state.city);
-  }
+ if(state.gameMode==="interior"){
+  showToast("Open Maps from your phone.");
+ }else{
+  openPhone();
+  setTimeout(()=>openApp("maps"),100);
+ }
 };
-/* =========================
-   SAVE
-========================= */
+document.getElementById("exitBuilding").onclick=exitBuilding;
 setInterval(()=>{
-  if(state.name){
-    localStorage.setItem("naijaLifeCharacter",JSON.stringify(state));
-  }
+ localStorage.setItem("naijaLifeCharacter",JSON.stringify(state));
+ savePhone();
 },3000);
-updateHUD();
 updateClock();
+updateHUD();
 </script>
 </body>
 </html>
