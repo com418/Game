@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Naija Life Admin</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Naija Life — Admin Panel</title>
 
   <style>
     * {
@@ -13,52 +15,63 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #07130f;
-      color: white;
+      background: #06110d;
+      color: #fff;
     }
 
     header {
-      padding: 20px;
-      background: #0d2a20;
-      border-bottom: 1px solid #1c4a38;
+      background: #0b261c;
+      border-bottom: 1px solid #1d4937;
+      padding: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     header h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
     }
 
     header p {
       margin: 6px 0 0;
-      color: #9fb8ad;
-      font-size: 14px;
+      color: #9ab4a8;
+      font-size: 13px;
     }
 
     main {
-      padding: 20px;
       max-width: 1100px;
       margin: auto;
+      padding: 16px;
     }
 
     .card {
-      background: #0d2119;
-      border: 1px solid #1d4435;
+      background: #0b1f17;
+      border: 1px solid #1b4031;
       border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
     }
 
     .status {
       padding: 12px;
       border-radius: 10px;
-      background: #102d22;
-      color: #7ff0bd;
-      margin-bottom: 15px;
+      background: #103426;
+      color: #7df0b9;
+      margin-bottom: 16px;
+      font-size: 14px;
     }
 
     .error {
-      background: #3a1515;
+      background: #3a1717;
       color: #ff9d9d;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
     button {
@@ -67,46 +80,202 @@
       padding: 10px 14px;
       font-weight: bold;
       cursor: pointer;
-      margin: 3px;
+    }
+
+    .refresh {
+      background: #1677ff;
+      color: white;
     }
 
     .logout {
-      background: #b52b2b;
+      background: #b72c2c;
       color: white;
     }
 
     .ban {
-      background: #e0a800;
+      background: #d79c00;
       color: #111;
     }
 
     .unban {
-      background: #28a745;
+      background: #1ca95a;
       color: white;
     }
 
-    .player {
-      padding: 15px;
-      margin-top: 12px;
-      border-radius: 12px;
-      background: #091912;
-      border: 1px solid #1c3c30;
+    .money {
+      background: #00a86b;
+      color: white;
     }
 
-    .player strong {
-      font-size: 17px;
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #315847;
+      background: #07150f;
+      color: white;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #22c77d;
+    }
+
+    .search {
+      margin-bottom: 15px;
+    }
+
+    .player {
+      background: #071711;
+      border: 1px solid #1c3b2e;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .player-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .player-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .badge {
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .active {
+      background: #123f2b;
+      color: #70e8ae;
+    }
+
+    .banned {
+      background: #451919;
+      color: #ff9292;
     }
 
     .details {
-      color: #a9c2b7;
-      font-size: 13px;
-      line-height: 1.7;
-      margin-top: 8px;
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
 
-    #players {
-      max-height: 600px;
-      overflow-y: auto;
+    .stat {
+      background: #0c2118;
+      padding: 9px;
+      border-radius: 9px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #87a397;
+    }
+
+    .stat-value {
+      margin-top: 3px;
+      font-weight: bold;
+    }
+
+    .player-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .small {
+      font-size: 12px;
+    }
+
+    .empty {
+      color: #8fa69c;
+      text-align: center;
+      padding: 25px 5px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+      background: #0b2018;
+      border: 1px solid #25533e;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .modal-box h2 {
+      margin-top: 0;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cancel {
+      background: #333;
+      color: white;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 9px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .success {
+      display: block;
+      background: #123e2a;
+      color: #7beab0;
+    }
+
+    .danger {
+      display: block;
+      background: #401818;
+      color: #ff9b9b;
+    }
+
+    @media (max-width: 600px) {
+
+      .details {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .player-head {
+        align-items: flex-start;
+      }
+
+      button {
+        padding: 9px 11px;
+      }
     }
   </style>
 </head>
@@ -114,49 +283,119 @@
 <body>
 
 <header>
-  <h1>Naija Life — Admin Panel</h1>
-  <p>Game administration dashboard</p>
+  <h1>Naija Life — Admin</h1>
+  <p>Game management dashboard</p>
 </header>
 
 <main>
 
   <div id="status" class="status">
-    Checking admin access...
+    Checking administrator access...
   </div>
 
+  <div id="message" class="message"></div>
+
   <div class="card">
+
     <h2>Admin Account</h2>
 
     <div id="adminInfo">
       Loading...
     </div>
 
-    <button class="logout" id="logoutBtn">
-      Logout
-    </button>
+    <div class="top-actions">
+
+      <button class="refresh" id="refreshBtn">
+        Refresh Players
+      </button>
+
+      <button class="logout" id="logoutBtn">
+        Logout
+      </button>
+
+    </div>
+
   </div>
 
   <div class="card">
-    <h2>Players</h2>
+
+    <h2>Player Management</h2>
+
+    <input
+      id="searchInput"
+      class="search"
+      type="search"
+      placeholder="Search by name, UID, city or job..."
+    >
+
+    <div id="playerCount"
+         class="small"
+         style="color:#8fa69c;margin-bottom:12px;">
+      Loading...
+    </div>
 
     <div id="players">
       Loading players...
     </div>
+
   </div>
 
 </main>
 
+
+<!-- MONEY MODAL -->
+
+<div class="modal" id="moneyModal">
+
+  <div class="modal-box">
+
+    <h2>Adjust Game Money</h2>
+
+    <p id="moneyPlayer"
+       style="color:#9ab4a8;">
+    </p>
+
+    <input
+      id="moneyAmount"
+      type="number"
+      placeholder="Example: 5000 or -5000"
+    >
+
+    <input
+      id="moneyReason"
+      type="text"
+      maxlength="100"
+      placeholder="Reason"
+    >
+
+    <div class="modal-buttons">
+
+      <button class="money" id="confirmMoney">
+        Apply
+      </button>
+
+      <button class="cancel" id="cancelMoney">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 import {
   getAuth,
   onAuthStateChanged,
   signOut
-}
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 import {
   getFirestore,
@@ -164,20 +403,36 @@ import {
   getDocs,
   doc,
   getDoc
-}
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+import {
+  getFunctions,
+  httpsCallable
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
 
-/* FIREBASE */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
-  authDomain: "game-97f37.firebaseapp.com",
-  projectId: "game-97f37",
-  storageBucket: "game-97f37.firebasestorage.app",
-  messagingSenderId: "584626250832",
-  appId: "1:584626250832:web:57f076e095174ccd74dd55",
-  databaseURL: "https://game-97f37-default-rtdb.firebaseio.com"
+
+  apiKey:
+    "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
+
+  authDomain:
+    "game-97f37.firebaseapp.com",
+
+  projectId:
+    "game-97f37",
+
+  storageBucket:
+    "game-97f37.firebasestorage.app",
+
+  messagingSenderId:
+    "584626250832",
+
+  appId:
+    "1:584626250832:web:57f076e095174ccd74dd55",
+
+  databaseURL:
+    "https://game-97f37-default-rtdb.firebaseio.com"
 };
 
 
@@ -187,78 +442,155 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
+const functions = getFunctions(app);
+
 
 /* ELEMENTS */
 
-const statusBox = document.getElementById("status");
-const adminInfo = document.getElementById("adminInfo");
-const playersBox = document.getElementById("players");
-const logoutBtn = document.getElementById("logoutBtn");
+const statusBox =
+  document.getElementById("status");
+
+const adminInfo =
+  document.getElementById("adminInfo");
+
+const playersBox =
+  document.getElementById("players");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const playerCount =
+  document.getElementById("playerCount");
+
+const messageBox =
+  document.getElementById("message");
+
+const refreshBtn =
+  document.getElementById("refreshBtn");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const moneyModal =
+  document.getElementById("moneyModal");
+
+const moneyPlayer =
+  document.getElementById("moneyPlayer");
+
+const moneyAmount =
+  document.getElementById("moneyAmount");
+
+const moneyReason =
+  document.getElementById("moneyReason");
+
+const confirmMoney =
+  document.getElementById("confirmMoney");
+
+const cancelMoney =
+  document.getElementById("cancelMoney");
 
 
-/* AUTH CHECK */
+let currentUser = null;
+
+let players = [];
+
+let selectedMoneyPlayer = null;
+
+
+/* MESSAGE */
+
+function showMessage(text, type = "success") {
+
+  messageBox.textContent = text;
+
+  messageBox.className =
+    "message " + type;
+
+  setTimeout(() => {
+
+    messageBox.className =
+      "message";
+
+  }, 4000);
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+/* ADMIN AUTH */
 
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
 
-    statusBox.textContent = "You are not logged in.";
+    statusBox.textContent =
+      "You are not logged in.";
+
     statusBox.classList.add("error");
 
-    adminInfo.innerHTML = `
-      <p>Please log into Naija Life first.</p>
-    `;
+    adminInfo.innerHTML =
+      "<p>Log into Naija Life first.</p>";
 
-    playersBox.innerHTML = `
-      <p>Admin login required.</p>
-    `;
+    playersBox.innerHTML =
+      "<div class='empty'>Admin login required.</div>";
 
     return;
   }
 
+  currentUser = user;
 
   try {
 
-    const adminRef = doc(db, "admins", user.uid);
+    const adminRef =
+      doc(db, "admins", user.uid);
 
-    const adminSnap = await getDoc(adminRef);
-
+    const adminSnap =
+      await getDoc(adminRef);
 
     if (!adminSnap.exists()) {
 
-      statusBox.textContent = "Access denied — you are not an admin.";
-      statusBox.classList.add("error");
-
-      adminInfo.innerHTML = `
-        <p>Admin account not found.</p>
-      `;
-
-      return;
+      throw new Error(
+        "This account is not registered as an admin."
+      );
     }
 
-
-    const adminData = adminSnap.data();
-
+    const adminData =
+      adminSnap.data();
 
     if (adminData.active !== true) {
 
-      statusBox.textContent = "Admin account is inactive.";
-      statusBox.classList.add("error");
-
-      return;
+      throw new Error(
+        "This admin account is inactive."
+      );
     }
 
-
-    /* ADMIN VERIFIED */
-
-    statusBox.textContent = "Admin access granted.";
+    statusBox.textContent =
+      "Admin access granted.";
 
     adminInfo.innerHTML = `
-      <p><strong>Email:</strong> ${escapeHtml(user.email || "")}</p>
-      <p><strong>UID:</strong> ${escapeHtml(user.uid)}</p>
-      <p><strong>Role:</strong> ${escapeHtml(adminData.role || "admin")}</p>
-    `;
 
+      <div>
+        <strong>Email:</strong>
+        ${escapeHtml(user.email)}
+      </div>
+
+      <div style="margin-top:5px;">
+        <strong>Role:</strong>
+        ${escapeHtml(adminData.role || "admin")}
+      </div>
+
+    `;
 
     await loadPlayers();
 
@@ -267,9 +599,13 @@ onAuthStateChanged(auth, async (user) => {
     console.error(error);
 
     statusBox.textContent =
-      "Error: " + error.message;
+      "Admin access denied.";
 
     statusBox.classList.add("error");
+
+    adminInfo.innerHTML =
+      `<p>${escapeHtml(error.message)}</p>`;
+
   }
 
 });
@@ -279,17 +615,81 @@ onAuthStateChanged(auth, async (user) => {
 
 async function loadPlayers() {
 
-  playersBox.innerHTML = "Loading players...";
+  playersBox.innerHTML =
+    "<div class='empty'>Loading players...</div>";
 
-  const snapshot = await getDocs(
-    collection(db, "players")
-  );
+  try {
 
+    const snapshot =
+      await getDocs(
+        collection(db, "players")
+      );
 
-  if (snapshot.empty) {
+    players = [];
+
+    snapshot.forEach((item) => {
+
+      players.push({
+        id: item.id,
+        ...item.data()
+      });
+
+    });
+
+    playerCount.textContent =
+      `${players.length} player${players.length === 1 ? "" : "s"} found`;
+
+    renderPlayers();
+
+  } catch (error) {
+
+    console.error(error);
 
     playersBox.innerHTML =
-      "<p>No players found.</p>";
+      `<div class="empty">
+        ${escapeHtml(error.message)}
+      </div>`;
+
+  }
+
+}
+
+
+/* RENDER PLAYERS */
+
+function renderPlayers() {
+
+  const query =
+    searchInput.value.trim().toLowerCase();
+
+  const filtered =
+    players.filter((p) => {
+
+      const text = [
+
+        p.name,
+        p.uid,
+        p.city,
+        p.job,
+        p.email
+
+      ]
+      .join(" ")
+      .toLowerCase();
+
+      return text.includes(query);
+
+    });
+
+
+  playerCount.textContent =
+    `${filtered.length} player${filtered.length === 1 ? "" : "s"} shown`;
+
+
+  if (!filtered.length) {
+
+    playersBox.innerHTML =
+      "<div class='empty'>No players found.</div>";
 
     return;
   }
@@ -298,49 +698,99 @@ async function loadPlayers() {
   playersBox.innerHTML = "";
 
 
-  snapshot.forEach((playerDoc) => {
+  filtered.forEach((p) => {
 
-    const p = playerDoc.data();
-
-    const div = document.createElement("div");
+    const div =
+      document.createElement("div");
 
     div.className = "player";
 
 
+    const banned =
+      p.banned === true;
+
+
     div.innerHTML = `
 
-      <strong>
-        ${escapeHtml(p.name || "Unknown Player")}
-      </strong>
+      <div class="player-head">
+
+        <div class="player-name">
+          ${escapeHtml(p.name || "Unknown Player")}
+        </div>
+
+        <span class="badge ${banned ? "banned" : "active"}">
+          ${banned ? "BANNED" : "ACTIVE"}
+        </span>
+
+      </div>
+
 
       <div class="details">
 
-        UID:
-        ${escapeHtml(p.uid || playerDoc.id)}
-        <br>
+        ${stat("UID", p.uid || p.id)}
 
-        Email:
-        ${escapeHtml(p.email || "Not available")}
-        <br>
+        ${stat("Email", p.email || "Not available")}
 
-        City:
-        ${escapeHtml(p.city || "Unknown")}
-        <br>
+        ${stat("City", p.city || "Unknown")}
 
-        Level:
-        ${Number(p.level || 1)}
-        <br>
+        ${stat("Job", p.job || "Unemployed")}
 
-        XP:
-        ${Number(p.xp || 0)}
-        <br>
+        ${stat("Level", p.level ?? 1)}
 
-        Money:
-        ₦${Number(p.money || 0).toLocaleString()}
-        <br>
+        ${stat("XP", p.xp ?? 0)}
 
-        Status:
-        ${p.banned ? "BANNED" : "ACTIVE"}
+        ${stat(
+          "Money",
+          "₦" + Number(p.money || 0).toLocaleString()
+        )}
+
+        ${stat("Health", p.health ?? 100)}
+
+        ${stat("Energy", p.energy ?? 100)}
+
+        ${stat("Hunger", p.hunger ?? 100)}
+
+        ${stat("Hygiene", p.hygiene ?? 100)}
+
+        ${stat("Happiness", p.happiness ?? 100)}
+
+      </div>
+
+
+      <div class="player-actions">
+
+        <button
+          class="money"
+          data-action="money"
+          data-uid="${escapeHtml(p.uid || p.id)}"
+          data-name="${escapeHtml(p.name || "Player")}"
+        >
+          Adjust Money
+        </button>
+
+        ${
+          banned
+
+          ?
+
+          `<button
+            class="unban"
+            data-action="unban"
+            data-uid="${escapeHtml(p.uid || p.id)}"
+          >
+            Unban Player
+          </button>`
+
+          :
+
+          `<button
+            class="ban"
+            data-action="ban"
+            data-uid="${escapeHtml(p.uid || p.id)}"
+          >
+            Ban Player
+          </button>`
+        }
 
       </div>
 
@@ -354,29 +804,292 @@ async function loadPlayers() {
 }
 
 
+/* STAT */
+
+function stat(label, value) {
+
+  return `
+
+    <div class="stat">
+
+      <div class="stat-label">
+        ${escapeHtml(label)}
+      </div>
+
+      <div class="stat-value">
+        ${escapeHtml(value)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* SEARCH */
+
+searchInput.addEventListener(
+  "input",
+  renderPlayers
+);
+
+
+/* REFRESH */
+
+refreshBtn.addEventListener(
+  "click",
+  async () => {
+
+    await loadPlayers();
+
+    showMessage(
+      "Player list refreshed."
+    );
+
+  }
+);
+
+
+/* PLAYER ACTIONS */
+
+playersBox.addEventListener(
+  "click",
+  async (event) => {
+
+    const button =
+      event.target.closest("button");
+
+    if (!button) return;
+
+    const action =
+      button.dataset.action;
+
+    const uid =
+      button.dataset.uid;
+
+
+    if (!uid) return;
+
+
+    if (action === "money") {
+
+      selectedMoneyPlayer = uid;
+
+      moneyPlayer.textContent =
+        "Player: " +
+        (button.dataset.name || uid);
+
+      moneyAmount.value = "";
+
+      moneyReason.value = "";
+
+      moneyModal.classList.add("show");
+
+      return;
+    }
+
+
+    if (action === "ban") {
+
+      const ok =
+        confirm(
+          "Ban this player?"
+        );
+
+      if (!ok) return;
+
+      await setBan(uid, true);
+
+      return;
+    }
+
+
+    if (action === "unban") {
+
+      const ok =
+        confirm(
+          "Unban this player?"
+        );
+
+      if (!ok) return;
+
+      await setBan(uid, false);
+
+    }
+
+  }
+);
+
+
+/* BAN / UNBAN */
+
+async function setBan(uid, banned) {
+
+  try {
+
+    const callable =
+      httpsCallable(
+        functions,
+        "setPlayerBan"
+      );
+
+    await callable({
+      uid,
+      banned
+    });
+
+    showMessage(
+      banned
+        ? "Player banned successfully."
+        : "Player unbanned successfully."
+    );
+
+    await loadPlayers();
+
+  } catch (error) {
+
+    console.error(error);
+
+    showMessage(
+      error.message || "Action failed.",
+      "danger"
+    );
+
+  }
+
+}
+
+
+/* MONEY MODAL */
+
+cancelMoney.addEventListener(
+  "click",
+  () => {
+
+    moneyModal.classList.remove("show");
+
+    selectedMoneyPlayer = null;
+
+  }
+);
+
+
+/* APPLY MONEY */
+
+confirmMoney.addEventListener(
+  "click",
+  async () => {
+
+    if (!selectedMoneyPlayer) return;
+
+
+    const amount =
+      Number(moneyAmount.value);
+
+
+    const reason =
+      moneyReason.value.trim();
+
+
+    if (!Number.isFinite(amount) ||
+        amount === 0) {
+
+      alert(
+        "Enter a valid non-zero amount."
+      );
+
+      return;
+
+    }
+
+
+    if (Math.abs(amount) > 100000000) {
+
+      alert(
+        "Maximum adjustment is ₦100,000,000."
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      confirmMoney.disabled = true;
+
+      const callable =
+        httpsCallable(
+          functions,
+          "addGameMoney"
+        );
+
+
+      const result =
+        await callable({
+
+          uid:
+            selectedMoneyPlayer,
+
+          amount,
+
+          reason:
+            reason || "Admin adjustment"
+
+        });
+
+
+      const data =
+        result.data;
+
+
+      moneyModal.classList.remove(
+        "show"
+      );
+
+      selectedMoneyPlayer = null;
+
+      showMessage(
+        `Money updated. New balance: ₦${Number(
+          data.after
+        ).toLocaleString()}`
+      );
+
+      await loadPlayers();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showMessage(
+        error.message ||
+        "Money adjustment failed.",
+        "danger"
+      );
+
+    } finally {
+
+      confirmMoney.disabled = false;
+
+    }
+
+  }
+);
+
+
 /* LOGOUT */
 
-logoutBtn.addEventListener("click", async () => {
+logoutBtn.addEventListener(
+  "click",
+  async () => {
 
-  await signOut(auth);
+    await signOut(auth);
 
-  location.reload();
+    location.reload();
 
-});
-
-
-/* SECURITY */
-
-function escapeHtml(value) {
-
-  return String(value)
-
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+  }
+);
 
 </script>
 
