@@ -7,947 +7,1210 @@
 <title>Naija Life</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  font-family:Arial,sans-serif;background:#07120f;color:white
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
-button,input{font:inherit}
-button{border:0;cursor:pointer}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+  background:#07120f;
+  color:white;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
 
 .screen{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,#06120f,#0d2920);
-  z-index:100
+  position:fixed;
+  inset:0;
+  display:none;
 }
 
-.card{
+.screen.active{
+  display:flex;
+}
+
+/* MENU */
+#menu{
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 50% 20%,#159463 0,#07120f 45%);
+}
+
+.menuBox{
+  width:min(92%,430px);
+  padding:28px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:28px;
+  background:rgba(7,18,15,.92);
+  box-shadow:0 25px 80px #0008;
+  text-align:center;
+}
+
+.logo{
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:-2px;
+}
+
+.sub{
+  opacity:.65;
+  margin:7px 0 25px;
+}
+
+.cityBtn{
+  width:100%;
+  margin:8px 0;
+  padding:18px;
+  border-radius:17px;
+  color:white;
+  background:#0d6f4c;
+  font-weight:800;
+}
+
+.cityBtn:active{
+  transform:scale(.98);
+}
+
+/* CREATOR */
+#creator{
+  align-items:center;
+  justify-content:center;
+  background:#08140f;
+}
+
+.creatorBox{
   width:min(94%,480px);
   max-height:94vh;
   overflow:auto;
   padding:22px;
-  border:1px solid #285342;
-  border-radius:24px;
-  background:rgba(10,25,21,.96);
-  box-shadow:0 20px 60px #0009
-}
-
-.logo{
-  text-align:center;
-  font-size:32px;
-  font-weight:900;
-  color:#5dffae;
-  letter-spacing:1px
-}
-
-.sub{
-  text-align:center;
-  color:#9eb8ad;
-  margin:6px 0 20px
-}
-
-.sectionTitle{
-  font-weight:800;
-  margin:17px 0 9px
-}
-
-.cityGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px
-}
-
-.city{
-  min-height:110px;
-  border:1px solid #315b4b;
-  border-radius:18px;
-  background:#10251f;
-  color:white;
-  padding:12px
-}
-.city.active{
-  border-color:#5dffae;
-  box-shadow:0 0 0 2px #5dffae33
-}
-.city svg{width:54px;height:54px}
-.city b{display:block;margin-top:5px}
-
-.primary{
-  width:100%;
-  margin-top:18px;
-  padding:15px;
-  border-radius:15px;
-  background:#11a967;
-  color:white;
-  font-weight:900
-}
-.primary:active{transform:scale(.98)}
-
-.secondary{
-  width:100%;
-  padding:13px;
-  border-radius:14px;
-  background:#172f27;
-  color:white;
-  margin-top:8px
-}
-
-/* CREATOR */
-.creatorCard{
-  width:min(95%,520px);
-  max-height:96vh;
-  overflow:auto;
-  padding:18px
+  border-radius:25px;
+  background:#102019;
 }
 
 .preview{
+  height:220px;
   display:flex;
-  align-items:center;
   justify-content:center;
-  min-height:245px;
+  align-items:center;
   border-radius:20px;
-  background:
-    radial-gradient(circle at 50% 20%,#2c5546,#0d211b 65%);
-  border:1px solid #315a4b;
-  position:relative
+  background:#07110d;
+  margin-bottom:15px;
 }
 
-.preview svg{width:180px;height:225px}
-
-.namePreview{
-  position:absolute;
-  bottom:12px;
-  background:#07120fcc;
-  border:1px solid #4b7565;
-  border-radius:20px;
-  padding:6px 14px;
-  font-weight:800
+label{
+  display:block;
+  margin:12px 0 6px;
+  font-size:13px;
+  opacity:.7;
 }
 
-.nameInput{
+input,select{
   width:100%;
-  padding:14px;
-  border-radius:13px;
-  border:1px solid #355c4d;
-  background:#091913;
+  padding:13px;
+  border:1px solid #ffffff18;
+  border-radius:12px;
+  outline:none;
   color:white;
-  outline:none
+  background:#07130f;
 }
 
-.options{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:3px
+.primary{
+  width:100%;
+  margin-top:16px;
+  padding:15px;
+  border-radius:14px;
+  color:white;
+  background:#0b8b5d;
+  font-weight:800;
 }
-
-.option{
-  flex:0 0 auto;
-  min-width:64px;
-  padding:9px;
-  border:1px solid #315547;
-  border-radius:13px;
-  background:#10251f;
-  color:white
-}
-.option.active{
-  border-color:#5dffae;
-  box-shadow:0 0 0 2px #5dffae44
-}
-.option svg{width:35px;height:35px}
-.option small{display:block;margin-top:4px}
 
 /* GAME */
 #game{
   display:none;
-  position:fixed;
-  inset:0;
-  background:#75a977;
-  overflow:hidden
+  background:#080d0b;
 }
 
 #world{
   position:absolute;
   width:3000px;
   height:2200px;
-  left:0;top:0;
+  overflow:hidden;
   background:
-    linear-gradient(#0000 0 100%),
-    #68a46d
+    linear-gradient(#b8d69d 0 100%);
 }
 
 .road{
   position:absolute;
-  background:#3b4142
+  background:#373c3b;
 }
+
 .road.h{
-  left:0;width:3000px;height:130px
+  width:3000px;
+  height:105px;
 }
+
 .road.v{
-  top:0;width:130px;height:2200px
+  width:105px;
+  height:2200px;
 }
-.line{
+
+.roadLine{
   position:absolute;
-  background:#e9d56b;
-  opacity:.8
-}
-.line.h{
-  left:0;width:3000px;height:4px
-}
-.line.v{
-  top:0;width:4px;height:2200px
+  background:#d8bd58;
 }
 
 .building{
   position:absolute;
-  width:220px;height:145px;
-  border-radius:15px;
+  width:170px;
+  height:130px;
+  border-radius:18px;
   overflow:hidden;
-  filter:drop-shadow(0 8px 8px #0005)
+  box-shadow:0 12px 20px #0003;
 }
-.building svg{width:100%;height:100%}
 
-#player{
+.building svg{
+  width:100%;
+  height:100%;
+}
+
+#player,
+.npc{
   position:absolute;
-  width:78px;height:115px;
-  transform:translate(-50%,-50%);
+  width:70px;
+  height:100px;
+  transform-origin:center bottom;
   z-index:20;
-  pointer-events:none
 }
 
 .npc{
-  position:absolute;
-  width:72px;height:110px;
-  transform:translate(-50%,-50%);
-  z-index:15;
-  pointer-events:none
+  transition:transform .4s linear;
 }
 
-.npc svg,#player svg{width:100%;height:100%}
-
-.npcShadow,.playerShadow{
-  position:absolute;
-  left:50%;bottom:2px;
-  transform:translateX(-50%);
-  width:46px;height:12px;
-  border-radius:50%;
-  background:#0004;
-  filter:blur(2px)
+.shadow{
+  fill:#0003;
 }
 
-#clock{
-  position:fixed;
-  top:12px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:50;
-  padding:9px 15px;
-  border:1px solid #ffffff35;
-  border-radius:20px;
-  background:#07120fd9;
-  font-weight:900;
-  white-space:nowrap
-}
-
+/* HUD */
 #hud{
   position:fixed;
-  top:12px;left:12px;
-  z-index:50;
+  top:12px;
+  left:12px;
+  right:12px;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  pointer-events:none;
+}
+
+.hudLeft,.hudRight{
   display:flex;
   gap:7px;
-  flex-wrap:wrap;
-  max-width:calc(100% - 110px)
+  pointer-events:auto;
 }
 
-.stat{
-  padding:8px 10px;
-  border-radius:12px;
-  background:#07120fd9;
-  border:1px solid #ffffff20;
-  font-size:12px
+.hudCard{
+  padding:9px 12px;
+  border-radius:13px;
+  background:#07130ed9;
+  border:1px solid #ffffff15;
+  backdrop-filter:blur(10px);
+  font-size:12px;
 }
 
-#profileBtn{
+.hudButton{
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  color:white;
+  background:#07130ed9;
+  border:1px solid #ffffff15;
+}
+
+.hudButton svg{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+/* CLOCK */
+#clock{
   position:fixed;
-  right:12px;top:12px;
-  z-index:55;
-  width:44px;height:44px;
-  border-radius:50%;
-  background:#07120fd9;
-  border:1px solid #ffffff25;
-  color:white
-}
-
-#profileBtn svg{width:23px}
-
-#mission{
-  position:fixed;
-  left:50%;bottom:120px;
+  top:67px;
+  left:50%;
   transform:translateX(-50%);
-  z-index:45;
-  width:min(88%,360px);
-  padding:12px 15px;
-  background:#07120fe8;
-  border:1px solid #ffffff20;
-  border-radius:16px;
-  text-align:center;
-  font-size:13px
+  z-index:100;
+  padding:7px 12px;
+  border-radius:12px;
+  background:#07130ed9;
+  font-size:12px;
 }
 
-#controls{
+/* ACTION */
+#action{
   position:fixed;
-  inset:0;
-  z-index:40;
-  pointer-events:none
+  left:50%;
+  bottom:30px;
+  transform:translateX(-50%);
+  z-index:100;
+  padding:13px 22px;
+  border-radius:16px;
+  color:white;
+  background:#0b8b5d;
+  display:none;
+  font-weight:800;
 }
 
+/* JOYSTICK */
 #joystick{
-  position:absolute;
-  left:22px;bottom:24px;
-  width:120px;height:120px;
+  position:fixed;
+  bottom:25px;
+  left:20px;
+  width:125px;
+  height:125px;
   border-radius:50%;
-  background:#ffffff18;
-  border:2px solid #ffffff28;
-  pointer-events:auto
+  background:#07130e99;
+  border:1px solid #ffffff15;
+  z-index:100;
+  touch-action:none;
 }
+
 #stick{
   position:absolute;
-  width:54px;height:54px;
-  left:31px;top:31px;
+  width:55px;
+  height:55px;
   border-radius:50%;
-  background:#ffffff45;
-  border:2px solid #ffffff55
+  background:#0b8b5d;
+  left:35px;
+  top:35px;
 }
 
-.actions{
-  position:absolute;
-  right:20px;bottom:24px;
-  display:grid;
-  grid-template-columns:58px 58px;
-  gap:9px;
-  pointer-events:auto
-}
-
-.action{
-  width:58px;height:58px;
-  border-radius:18px;
-  background:#07120fd9;
-  border:1px solid #ffffff28;
-  color:white
-}
-.action svg{width:25px;height:25px}
-
-#interact{
-  position:fixed;
-  right:20px;
-  bottom:170px;
-  z-index:45;
-  display:none;
-  padding:12px 17px;
-  border-radius:15px;
-  background:#11a967;
-  color:white;
-  font-weight:900
-}
-
-#shade{
+/* PHONE */
+#phone{
   position:fixed;
   inset:0;
-  z-index:30;
-  pointer-events:none;
-  background:#06102a;
-  opacity:0;
-  transition:opacity 1s
+  z-index:500;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:#0008;
 }
 
+#phone.active{
+  display:flex;
+}
+
+.phoneShell{
+  width:min(100%,430px);
+  height:min(88vh,760px);
+  border-radius:30px 30px 0 0;
+  overflow:hidden;
+  background:#101714;
+  box-shadow:0 -20px 80px #0009;
+  display:flex;
+  flex-direction:column;
+}
+
+.phoneTop{
+  padding:17px;
+  background:#0b8b5d;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.phoneTitle{
+  font-size:20px;
+  font-weight:900;
+}
+
+.phoneContent{
+  flex:1;
+  overflow:auto;
+  padding:15px;
+}
+
+.phoneNav{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-top:1px solid #ffffff12;
+  background:#0b110f;
+}
+
+.phoneNav button{
+  padding:13px 5px;
+  color:#aebbb6;
+  background:none;
+  font-size:11px;
+}
+
+.phoneNav button.active{
+  color:#50d99f;
+}
+
+.phoneNav svg{
+  width:20px;
+  height:20px;
+  display:block;
+  margin:auto auto 4px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.phoneClose{
+  color:white;
+  background:#ffffff18;
+  border-radius:10px;
+  padding:7px 10px;
+}
+
+/* CONTACTS */
+.contact{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  margin-bottom:8px;
+  border-radius:16px;
+  background:#17211d;
+}
+
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#0b8b5d;
+  font-weight:900;
+}
+
+.contactMain{
+  flex:1;
+}
+
+.contactName{
+  font-weight:800;
+}
+
+.contactStatus{
+  margin-top:4px;
+  font-size:11px;
+  opacity:.55;
+}
+
+.smallBtn{
+  padding:9px 11px;
+  border-radius:10px;
+  color:white;
+  background:#0b8b5d;
+  font-size:11px;
+}
+
+/* CHAT */
+.chatHeader{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.backBtn{
+  color:white;
+  background:#ffffff10;
+  padding:9px 12px;
+  border-radius:10px;
+}
+
+.messages{
+  min-height:350px;
+}
+
+.msg{
+  max-width:78%;
+  padding:10px 12px;
+  border-radius:15px;
+  margin:7px 0;
+  font-size:13px;
+  line-height:1.35;
+}
+
+.msg.you{
+  margin-left:auto;
+  background:#0b8b5d;
+  border-bottom-right-radius:4px;
+}
+
+.msg.friend{
+  background:#202a26;
+  border-bottom-left-radius:4px;
+}
+
+.chatInput{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.chatInput input{
+  flex:1;
+}
+
+.send{
+  width:48px;
+  border-radius:12px;
+  background:#0b8b5d;
+  color:white;
+}
+
+/* CALL */
+#callOverlay{
+  position:fixed;
+  inset:0;
+  z-index:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:#06120ddd;
+}
+
+#callOverlay.active{
+  display:flex;
+}
+
+.callBox{
+  width:90%;
+  max-width:350px;
+  text-align:center;
+  padding:30px;
+  border-radius:28px;
+  background:#102019;
+}
+
+.callAvatar{
+  width:90px;
+  height:90px;
+  margin:auto;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#0b8b5d;
+  font-size:30px;
+  font-weight:900;
+}
+
+.callName{
+  margin-top:17px;
+  font-size:24px;
+  font-weight:900;
+}
+
+.callState{
+  margin-top:7px;
+  opacity:.65;
+}
+
+.callButtons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:28px;
+}
+
+.callButton{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:white;
+  background:#202b26;
+}
+
+.callButton.end{
+  background:#c93636;
+}
+
+.callButton svg{
+  width:25px;
+  height:25px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+/* LOCATION MODAL */
+#locationModal{
+  position:fixed;
+  inset:0;
+  z-index:450;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:#0007;
+}
+
+#locationModal.active{
+  display:flex;
+}
+
+.locationBox{
+  width:min(100%,430px);
+  padding:20px;
+  border-radius:28px 28px 0 0;
+  background:#102019;
+}
+
+.locationTitle{
+  font-size:22px;
+  font-weight:900;
+}
+
+.locationDescription{
+  margin:7px 0 15px;
+  opacity:.65;
+  font-size:13px;
+}
+
+.locationActions{
+  display:grid;
+  gap:8px;
+}
+
+.locationActions button{
+  padding:14px;
+  border-radius:13px;
+  color:white;
+  background:#173029;
+  text-align:left;
+}
+
+.locationActions button.primaryAction{
+  background:#0b8b5d;
+}
+
+/* TOAST */
 #toast{
   position:fixed;
   left:50%;
-  top:80px;
-  transform:translateX(-50%) translateY(-15px);
-  z-index:90;
+  bottom:165px;
+  transform:translateX(-50%) translateY(20px);
+  z-index:900;
+  padding:12px 17px;
+  border-radius:13px;
+  background:#07130ef2;
   opacity:0;
-  padding:10px 15px;
-  border-radius:14px;
-  background:#07120fee;
-  border:1px solid #ffffff22;
+  pointer-events:none;
   transition:.25s;
-  pointer-events:none
-}
-#toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0)
+  font-size:12px;
+  white-space:nowrap;
 }
 
-@media(max-height:650px){
-  .preview{min-height:180px}
-  .preview svg{height:165px}
-  .mission{bottom:105px}
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* NIGHT */
+#night{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  pointer-events:none;
+  background:#061329;
+  opacity:0;
+  transition:opacity 1s;
+  mix-blend-mode:multiply;
+}
+
+/* MOBILE */
+@media(max-width:500px){
+  .hudCard{
+    font-size:11px;
+    padding:8px;
+  }
+
+  .logo{
+    font-size:36px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- CITY SELECT -->
-<section id="menu" class="screen">
-  <div class="card">
+<!-- MENU -->
+<section id="menu" class="screen active">
+  <div class="menuBox">
     <div class="logo">NAIJA LIFE</div>
-    <div class="sub">Your city. Your story. Your life.</div>
+    <div class="sub">Your life. Your city. Your choices.</div>
 
-    <div class="sectionTitle">Choose your city</div>
+    <button class="cityBtn" onclick="chooseCity('Lagos')">
+      ENTER LAGOS
+    </button>
 
-    <div class="cityGrid">
-
-      <button class="city active" data-city="Lagos">
-        <svg viewBox="0 0 80 80" fill="none">
-          <rect x="12" y="30" width="18" height="38" rx="2" fill="#39c987"/>
-          <rect x="34" y="18" width="18" height="50" rx="2" fill="#67e5aa"/>
-          <rect x="56" y="37" width="13" height="31" rx="2" fill="#219765"/>
-          <path d="M8 70h64" stroke="#fff" stroke-width="4"/>
-          <path d="M17 39h8M39 27h8M60 46h5" stroke="#092018" stroke-width="3"/>
-        </svg>
-        <b>Lagos</b>
-        <small>City of hustle</small>
-      </button>
-
-      <button class="city" data-city="Warri">
-        <svg viewBox="0 0 80 80" fill="none">
-          <path d="M10 58h60" stroke="#fff" stroke-width="5"/>
-          <path d="M16 58V30h48v28" fill="#2eae78"/>
-          <path d="M23 30V20h34v10" fill="#55d99b"/>
-          <path d="M29 40h8v18h-8zM43 40h8v18h-8z" fill="#092018"/>
-          <path d="M10 65h60" stroke="#e8d56b" stroke-width="3"/>
-        </svg>
-        <b>Warri</b>
-        <small>South-South life</small>
-      </button>
-
-    </div>
-
-    <button id="chooseBtn" class="primary">CREATE CHARACTER</button>
+    <button class="cityBtn" onclick="chooseCity('Warri')">
+      ENTER WARRI
+    </button>
   </div>
 </section>
-
 
 <!-- CHARACTER CREATOR -->
-<section id="creator" class="screen" style="display:none">
-  <div class="card creatorCard">
+<section id="creator" class="screen">
+  <div class="creatorBox">
 
-    <div class="logo" style="font-size:25px">CREATE YOUR CHARACTER</div>
-    <div class="sub">Make your character look the way you want.</div>
+    <h2>Create Your Character</h2>
 
     <div class="preview">
-      <svg id="previewSvg" viewBox="0 0 180 225" fill="none">
-
-        <!-- name plate -->
-        <rect x="35" y="8" width="110" height="25"
-              rx="12" fill="#07120f" opacity=".9"/>
-        <text id="previewSvgName"
-              x="90" y="25"
-              text-anchor="middle"
-              font-size="10"
-              fill="white"
-              font-weight="bold">Player</text>
-
-        <!-- hair back -->
-        <path id="previewHairBack"
-              d="M55 72c0-34 70-38 70 4v18H55V72Z"
-              fill="#17120f"/>
-
-        <!-- neck -->
-        <path d="M77 91h26v23H77z" fill="var(--skin)"/>
-
-        <!-- face -->
-        <ellipse cx="90" cy="73" rx="35" ry="39"
-                 fill="var(--skin)"/>
-
-        <!-- ears -->
-        <circle cx="55" cy="75" r="7" fill="var(--skin)"/>
-        <circle cx="125" cy="75" r="7" fill="var(--skin)"/>
-
-        <!-- hair front -->
-        <path id="previewHair"
-              d="M56 69c4-31 62-40 69-2-13-10-43-12-69 2Z"
-              fill="#17120f"/>
-
-        <!-- eyes -->
-        <circle cx="77" cy="75" r="3" fill="#111"/>
-        <circle cx="103" cy="75" r="3" fill="#111"/>
-
-        <!-- nose -->
-        <path d="M90 76l-4 13h8"
-              stroke="#603c2b" stroke-width="3"
-              stroke-linecap="round"/>
-
-        <!-- mouth -->
-        <path d="M81 96q9 7 18 0"
-              stroke="#6d2727" stroke-width="3"
-              stroke-linecap="round"/>
-
-        <!-- body -->
-        <path id="previewShirt"
-              d="M48 116q42-22 84 0l18 68H30l18-68Z"
-              fill="#0b7a50"/>
-
-        <!-- shirt detail -->
-        <path d="M90 116v68"
-              stroke="#ffffff35" stroke-width="3"/>
-
-        <!-- arms -->
-        <path d="M49 122l-20 53"
-              stroke="var(--skin)" stroke-width="16"
-              stroke-linecap="round"/>
-        <path d="M131 122l20 53"
-              stroke="var(--skin)" stroke-width="16"
-              stroke-linecap="round"/>
-
-        <!-- pants -->
-        <path id="previewPants"
-              d="M57 184h66l8 35H98l-8-26-8 26H49l8-35Z"
-              fill="#20252a"/>
-
-        <!-- shoes -->
-        <path d="M48 217h42v8H44q-2-5 4-8Z"
-              fill="#111"/>
-        <path d="M90 217h42q6 3 4 8H90v-8Z"
-              fill="#111"/>
-      </svg>
-
-      <div id="previewName" class="namePreview">Player</div>
+      <svg id="creatorPreview"
+           viewBox="0 0 100 140"
+           width="130"
+           height="180"></svg>
     </div>
 
-    <div class="sectionTitle">Your name</div>
-    <input id="charName" class="nameInput"
-           maxlength="16"
-           placeholder="Enter your name"
-           value="Player">
+    <label>Name</label>
+    <input id="charName" maxlength="18" placeholder="Your name">
 
-    <div class="sectionTitle">Skin tone</div>
-    <div id="skinOptions" class="options">
+    <label>Skin</label>
+    <select id="charSkin">
+      <option value="#6b422d">Deep Brown</option>
+      <option value="#8b5a3c">Brown</option>
+      <option value="#a86f4c">Warm Brown</option>
+      <option value="#c58a62">Light Brown</option>
+    </select>
 
-      <button class="option active" data-type="skin" data-value="#6b422d">
-        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#6b422d"/></svg>
-        <small>Deep</small>
-      </button>
+    <label>Hair</label>
+    <select id="charHair">
+      <option value="#17120f">Black</option>
+      <option value="#3b2418">Dark Brown</option>
+      <option value="#5a321e">Brown</option>
+    </select>
 
-      <button class="option" data-type="skin" data-value="#8b5a3c">
-        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#8b5a3c"/></svg>
-        <small>Brown</small>
-      </button>
+    <label>Shirt</label>
+    <select id="charShirt">
+      <option value="#0b8b5d">Green</option>
+      <option value="#2764d8">Blue</option>
+      <option value="#c83b3b">Red</option>
+      <option value="#eeeeee">White</option>
+      <option value="#171717">Black</option>
+    </select>
 
-      <button class="option" data-type="skin" data-value="#a86f4c">
-        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#a86f4c"/></svg>
-        <small>Warm</small>
-      </button>
+    <label>Pants</label>
+    <select id="charPants">
+      <option value="#20252a">Black</option>
+      <option value="#315b91">Denim</option>
+      <option value="#6d482d">Brown</option>
+      <option value="#d0c5a8">Light</option>
+    </select>
 
-      <button class="option" data-type="skin" data-value="#c58a62">
-        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#c58a62"/></svg>
-        <small>Light</small>
-      </button>
-
-    </div>
-
-    <div class="sectionTitle">Hair</div>
-    <div id="hairOptions" class="options">
-
-      <button class="option active" data-type="hair" data-value="short">
-        <svg viewBox="0 0 40 40">
-          <circle cx="20" cy="23" r="12" fill="#17120f"/>
-          <path d="M10 22q10-20 20 0" fill="#17120f"/>
-        </svg>
-        <small>Short</small>
-      </button>
-
-      <button class="option" data-type="hair" data-value="fade">
-        <svg viewBox="0 0 40 40">
-          <circle cx="20" cy="23" r="12" fill="#17120f"/>
-          <path d="M11 19q9-15 18 0" fill="#17120f"/>
-        </svg>
-        <small>Fade</small>
-      </button>
-
-      <button class="option" data-type="hair" data-value="afro">
-        <svg viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="15" fill="#17120f"/>
-        </svg>
-        <small>Afro</small>
-      </button>
-
-      <button class="option" data-type="hair" data-value="buzz">
-        <svg viewBox="0 0 40 40">
-          <circle cx="20" cy="22" r="12" fill="#17120f"/>
-          <path d="M11 18q9-9 18 0" fill="#17120f"/>
-        </svg>
-        <small>Buzz</small>
-      </button>
-
-    </div>
-
-    <div class="sectionTitle">Shirt</div>
-    <div id="shirtOptions" class="options">
-
-      <button class="option active" data-type="shirt" data-value="#0b7a50">
-        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#0b7a50"/></svg>
-        <small>Green</small>
-      </button>
-
-      <button class="option" data-type="shirt" data-value="#1659a8">
-        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#1659a8"/></svg>
-        <small>Blue</small>
-      </button>
-
-      <button class="option" data-type="shirt" data-value="#a62635">
-        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#a62635"/></svg>
-        <small>Red</small>
-      </button>
-
-      <button class="option" data-type="shirt" data-value="#e7e7e7">
-        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#e7e7e7"/></svg>
-        <small>White</small>
-      </button>
-
-      <button class="option" data-type="shirt" data-value="#171717">
-        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#171717"/></svg>
-        <small>Black</small>
-      </button>
-
-    </div>
-
-    <div class="sectionTitle">Trousers</div>
-    <div id="pantsOptions" class="options">
-
-      <button class="option active" data-type="pants" data-value="#20252a">
-        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#20252a"/></svg>
-        <small>Dark</small>
-      </button>
-
-      <button class="option" data-type="pants" data-value="#183d70">
-        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#183d70"/></svg>
-        <small>Denim</small>
-      </button>
-
-      <button class="option" data-type="pants" data-value="#6d4c31">
-        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#6d4c31"/></svg>
-        <small>Brown</small>
-      </button>
-
-      <button class="option" data-type="pants" data-value="#e2e0d8">
-        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#e2e0d8"/></svg>
-        <small>Light</small>
-      </button>
-
-    </div>
-
-    <button id="enterCity" class="primary">ENTER CITY</button>
-    <button id="backCity" class="secondary">BACK TO CITY</button>
-
+    <button class="primary" onclick="startGame()">
+      ENTER CITY
+    </button>
   </div>
 </section>
 
-
 <!-- GAME -->
-<div id="game">
+<section id="game" class="screen">
 
   <div id="world">
 
     <!-- ROADS -->
-    <div class="road h" style="top:700px"></div>
-    <div class="road h" style="top:1400px"></div>
+    <div class="road h" style="top:550px"></div>
+    <div class="road h" style="top:1450px"></div>
     <div class="road v" style="left:700px"></div>
-    <div class="road v" style="left:1400px"></div>
-    <div class="road v" style="left:2150px"></div>
+    <div class="road v" style="left:2050px"></div>
 
-    <div class="line h" style="top:763px"></div>
-    <div class="line h" style="top:1463px"></div>
-    <div class="line v" style="left:763px"></div>
-    <div class="line v" style="left:1463px"></div>
-    <div class="line v" style="left:2213px"></div>
+    <div class="roadLine"
+         style="top:599px;left:0;width:3000px;height:5px"></div>
 
-    <!-- BUILDING 1 -->
-    <div class="building" style="left:300px;top:380px">
-      <svg viewBox="0 0 220 145">
-        <rect width="220" height="145" rx="15" fill="#bd734d"/>
-        <rect y="0" width="220" height="34" fill="#8f4f39"/>
-        <path d="M0 34h220" stroke="#f2c15d" stroke-width="5"/>
-        <rect x="25" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
-        <rect x="89" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
-        <rect x="153" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
-        <text x="110" y="25" text-anchor="middle" fill="white"
-              font-size="15" font-weight="bold">BANK</text>
+    <div class="roadLine"
+         style="top:1499px;left:0;width:3000px;height:5px"></div>
+
+    <div class="roadLine"
+         style="top:0;left:750px;width:5px;height:2200px"></div>
+
+    <div class="roadLine"
+         style="top:0;left:2100px;width:5px;height:2200px"></div>
+
+    <!-- LOCATIONS -->
+
+    <div class="building"
+         data-location="Home"
+         style="left:270px;top:250px"
+         onclick="openLocation('Home')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#d7a46d"/>
+        <path d="M20 65 L85 15 L150 65" fill="#9e3f32"/>
+        <rect x="45" y="65" width="80" height="60" fill="#f0d0a2"/>
+        <rect x="75" y="88" width="20" height="37" fill="#70472d"/>
+        <rect x="53" y="75" width="15" height="15" fill="#8fd1dc"/>
+        <rect x="102" y="75" width="15" height="15" fill="#8fd1dc"/>
       </svg>
     </div>
 
-    <!-- SHOP -->
-    <div class="building" style="left:1000px;top:350px">
-      <svg viewBox="0 0 220 145">
-        <rect width="220" height="145" rx="15" fill="#d6a43b"/>
-        <path d="M0 45h220" stroke="#fff" stroke-width="18"/>
-        <path d="M20 36v25M55 36v25M90 36v25M125 36v25M160 36v25M195 36v25"
-              stroke="#b63838" stroke-width="15"/>
-        <rect x="68" y="73" width="84" height="58" fill="#172c28"/>
-        <text x="110" y="28" text-anchor="middle" fill="#18231f"
-              font-size="14" font-weight="bold">MARKET</text>
+    <div class="building"
+         data-location="Bank"
+         style="left:870px;top:250px"
+         onclick="openLocation('Bank')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#edf4ef"/>
+        <path d="M20 45 L85 12 L150 45 Z" fill="#0b8b5d"/>
+        <g fill="#0b8b5d">
+          <rect x="32" y="52" width="15" height="60"/>
+          <rect x="60" y="52" width="15" height="60"/>
+          <rect x="88" y="52" width="15" height="60"/>
+          <rect x="116" y="52" width="15" height="60"/>
+        </g>
+        <rect x="20" y="112" width="130" height="8" fill="#15352a"/>
       </svg>
     </div>
 
-    <!-- RESTAURANT -->
-    <div class="building" style="left:1750px;top:390px">
-      <svg viewBox="0 0 220 145">
-        <rect width="220" height="145" rx="15" fill="#9d3e48"/>
-        <path d="M0 35h220" stroke="#f1c14e" stroke-width="8"/>
-        <circle cx="110" cy="80" r="29" fill="#172b27"/>
-        <path d="M93 80h34M110 63v34" stroke="#f1c14e" stroke-width="5"/>
-        <text x="110" y="128" text-anchor="middle" fill="white"
-              font-size="14" font-weight="bold">RESTAURANT</text>
+    <div class="building"
+         data-location="Market"
+         style="left:1110px;top:690px"
+         onclick="openLocation('Market')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#e8d09d"/>
+        <path d="M0 45 Q20 20 40 45 Q60 20 80 45 Q100 20 120 45 Q140 20 170 45 V70 H0Z"
+              fill="#c64a3b"/>
+        <rect x="25" y="72" width="120" height="48" fill="#7b4b2c"/>
+        <circle cx="50" cy="88" r="8" fill="#e54d42"/>
+        <circle cx="75" cy="88" r="8" fill="#edb52f"/>
+        <circle cx="100" cy="88" r="8" fill="#62a84f"/>
       </svg>
     </div>
 
-    <!-- HOUSE -->
-    <div class="building" style="left:250px;top:1030px">
-      <svg viewBox="0 0 220 145">
-        <path d="M15 68L110 10l95 58v62H15V68Z" fill="#b77d52"/>
-        <path d="M10 68L110 5l100 63" stroke="#512f27" stroke-width="12"/>
-        <rect x="88" y="84" width="44" height="46" fill="#38261f"/>
-        <rect x="35" y="83" width="34" height="28" fill="#183d3a"/>
-        <rect x="151" y="83" width="34" height="28" fill="#183d3a"/>
+    <div class="building"
+         data-location="Restaurant"
+         style="left:1670px;top:700px"
+         onclick="openLocation('Restaurant')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#d05a43"/>
+        <rect x="15" y="15" width="140" height="30" rx="5" fill="#fff1db"/>
+        <rect x="35" y="62" width="100" height="50" rx="8" fill="#633c2d"/>
+        <circle cx="60" cy="87" r="9" fill="#e3b95f"/>
+        <circle cx="110" cy="87" r="9" fill="#e3b95f"/>
       </svg>
     </div>
 
-    <!-- OFFICE -->
-    <div class="building" style="left:1550px;top:1000px">
-      <svg viewBox="0 0 220 145">
-        <rect width="220" height="145" rx="12" fill="#607c83"/>
-        <rect x="18" y="18" width="184" height="110" fill="#273d43"/>
-        <path d="M35 34h150M35 59h150M35 84h150M35 109h150"
-              stroke="#8ed8d0" stroke-width="8"/>
-        <path d="M65 18v110M110 18v110M155 18v110"
-              stroke="#8ed8d0" stroke-width="8"/>
+    <div class="building"
+         data-location="Work"
+         style="left:2350px;top:250px"
+         onclick="openLocation('Work')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#66747d"/>
+        <rect x="20" y="15" width="130" height="100" fill="#a8c4cf"/>
+        <g fill="#526a73">
+          <rect x="30" y="25" width="25" height="20"/>
+          <rect x="70" y="25" width="25" height="20"/>
+          <rect x="110" y="25" width="25" height="20"/>
+          <rect x="30" y="55" width="25" height="20"/>
+          <rect x="70" y="55" width="25" height="20"/>
+          <rect x="110" y="55" width="25" height="20"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Church"
+         style="left:280px;top:800px"
+         onclick="openLocation('Church')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#dcdcdc"/>
+        <path d="M85 5 L95 25 H110 V35 H95 L85 55 L75 35 H60 V25 H75Z"
+              fill="#b99c50"/>
+        <path d="M25 55 L85 20 L145 55 V120 H25Z" fill="#eee"/>
+        <rect x="70" y="78" width="30" height="42" fill="#75513c"/>
+        <circle cx="50" cy="70" r="10" fill="#8fcbd2"/>
+        <circle cx="120" cy="70" r="10" fill="#8fcbd2"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Club"
+         style="left:2150px;top:800px"
+         onclick="openLocation('Club')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#21142f"/>
+        <circle cx="45" cy="55" r="30" fill="#7b3fb2"/>
+        <circle cx="125" cy="55" r="30" fill="#c43c80"/>
+        <rect x="25" y="90" width="120" height="25" rx="8" fill="#111"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Hospital"
+         style="left:850px;top:1250px"
+         onclick="openLocation('Hospital')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#edf4f5"/>
+        <rect x="67" y="22" width="36" height="75" fill="#dcebed"/>
+        <rect x="47" y="42" width="76" height="35" fill="#dcebed"/>
+        <path d="M76 29 H94 V48 H113 V66 H94 V86 H76 V66 H57 V48 H76Z"
+              fill="#c73838"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Gym"
+         style="left:1500px;top:1300px"
+         onclick="openLocation('Gym')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#4d5960"/>
+        <rect x="25" y="20" width="120" height="80" fill="#263237"/>
+        <path d="M48 70 H122" stroke="#e5e5e5" stroke-width="7"/>
+        <path d="M40 52 V88 M130 52 V88"
+              stroke="#e5e5e5" stroke-width="10"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Salon"
+         style="left:2250px;top:1300px"
+         onclick="openLocation('Salon')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#d18bb0"/>
+        <circle cx="85" cy="52" r="27" fill="#8b5a3c"/>
+        <path d="M52 48 Q85 8 118 48" fill="#20150f"/>
+        <rect x="48" y="88" width="74" height="20" rx="5" fill="#fff"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Fuel"
+         style="left:350px;top:1700px"
+         onclick="openLocation('Fuel')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#e9e0c9"/>
+        <rect x="25" y="25" width="120" height="75" fill="#c53e34"/>
+        <rect x="45" y="40" width="30" height="25" fill="#e5e5e5"/>
+        <rect x="95" y="40" width="30" height="25" fill="#e5e5e5"/>
+        <rect x="70" y="70" width="30" height="30" fill="#e5e5e5"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="Police"
+         style="left:1300px;top:1740px"
+         onclick="openLocation('Police')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#5479a0"/>
+        <rect x="25" y="25" width="120" height="90" fill="#dbe6ef"/>
+        <path d="M85 25 L110 40 L105 65 Q85 82 65 65 L60 40Z"
+              fill="#5479a0"/>
+        <circle cx="85" cy="48" r="8" fill="#fff"/>
+      </svg>
+    </div>
+
+    <div class="building"
+         data-location="School"
+         style="left:2000px;top:1740px"
+         onclick="openLocation('School')">
+      <svg viewBox="0 0 170 130">
+        <rect width="170" height="130" fill="#d9b86d"/>
+        <path d="M20 45 L85 15 L150 45Z" fill="#a44938"/>
+        <rect x="35" y="50" width="100" height="65" fill="#f1dfad"/>
+        <rect x="72" y="78" width="25" height="37" fill="#73503a"/>
+        <g fill="#78aab2">
+          <rect x="45" y="62" width="15" height="15"/>
+          <rect x="108" y="62" width="15" height="15"/>
+        </g>
       </svg>
     </div>
 
     <!-- PLAYER -->
     <div id="player">
-      <div class="playerShadow"></div>
-      <svg id="playerSvg" viewBox="0 0 90 125" fill="none">
-
-        <rect x="18" y="0" width="54" height="20"
-              rx="10" fill="#07120f" opacity=".9"/>
-        <text id="playerNameSvg" x="45" y="14"
-              text-anchor="middle"
-              fill="white" font-size="8"
-              font-weight="bold">Player</text>
-
-        <path id="pHairBack"
-              d="M22 51c0-30 46-34 46 3v18H22V51Z"
-              fill="#17120f"/>
-
-        <path id="pNeck" d="M35 68h20v18H35z" fill="#8b5a3c"/>
-
-        <ellipse id="pFace"
-                 cx="45" cy="54" rx="23" ry="27"
-                 fill="#8b5a3c"/>
-
-        <circle cx="23" cy="56" r="5" fill="#8b5a3c"/>
-        <circle cx="67" cy="56" r="5" fill="#8b5a3c"/>
-
+      <svg viewBox="0 0 70 100">
+        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
+        <circle id="pHead" cx="35" cy="25" r="16" fill="#8b5a3c"/>
         <path id="pHair"
-              d="M23 50c4-24 39-31 46-2-10-8-30-9-46 2Z"
+              d="M19 25 Q20 5 35 6 Q51 6 52 25 Q46 16 35 18 Q25 17 19 25"
               fill="#17120f"/>
-
-        <circle cx="36" cy="55" r="2.5" fill="#111"/>
-        <circle cx="54" cy="55" r="2.5" fill="#111"/>
-
-        <path d="M45 57l-3 9h6"
-              stroke="#603c2b" stroke-width="2"
-              stroke-linecap="round"/>
-
-        <path d="M38 72q7 5 14 0"
-              stroke="#722b2b" stroke-width="2.5"
-              stroke-linecap="round"/>
-
-        <path id="pShirt"
-              d="M17 83q28-17 56 0l10 40H7l10-40Z"
-              fill="#0b7a50"/>
-
-        <path d="M17 88L6 113"
-              stroke="#8b5a3c" stroke-width="11"
-              stroke-linecap="round"/>
-        <path d="M73 88l11 25"
-              stroke="#8b5a3c" stroke-width="11"
-              stroke-linecap="round"/>
-
-        <path id="pPants"
-              d="M25 123h40l6 2-5 0-7-2-5-1-5 1-7 2H20l5-2Z"
-              fill="#20252a"/>
-
-        <path d="M31 121v4M59 121v4"
-              stroke="#20252a" stroke-width="8"
-              stroke-linecap="round"/>
-
+        <rect id="pShirt" x="19" y="41" width="32" height="32" rx="8" fill="#0b8b5d"/>
+        <path id="pLeftArm" d="M20 45 L9 68 L15 71 L27 53Z" fill="#8b5a3c"/>
+        <path id="pRightArm" d="M50 45 L61 68 L55 71 L43 53Z" fill="#8b5a3c"/>
+        <path id="pLeftLeg" d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
+        <path id="pRightLeg" d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
       </svg>
     </div>
 
-    <!-- NPC 1 -->
-    <div class="npc" id="npc1">
-      <div class="npcShadow"></div>
-      <svg viewBox="0 0 90 125" fill="none">
-        <ellipse cx="45" cy="52" rx="22" ry="27" fill="#70442f"/>
-        <path d="M23 49q2-29 22-29t23 29c-14-11-31-11-45 0Z"
-              fill="#141414"/>
-        <circle cx="37" cy="54" r="2.5" fill="#111"/>
-        <circle cx="53" cy="54" r="2.5" fill="#111"/>
-        <path d="M39 70q6 4 12 0" stroke="#612727" stroke-width="2.5"/>
-        <path d="M19 81q26-16 52 0l10 42H9l10-42Z" fill="#e0a629"/>
-        <path d="M19 88L7 114" stroke="#70442f" stroke-width="11" stroke-linecap="round"/>
-        <path d="M71 88l12 26" stroke="#70442f" stroke-width="11" stroke-linecap="round"/>
-        <path d="M28 121v4M62 121v4" stroke="#263c6b" stroke-width="9"/>
+    <!-- NPCs -->
+    <div class="npc" id="npc1" style="left:500px;top:500px">
+      <svg viewBox="0 0 70 100">
+        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
+        <circle cx="35" cy="25" r="16" fill="#8b5a3c"/>
+        <path d="M19 25 Q20 5 35 6 Q51 6 52 25 Q46 16 35 18 Q25 17 19 25"
+              fill="#17120f"/>
+        <rect x="19" y="41" width="32" height="32" rx="8" fill="#e1b22c"/>
+        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#315b91"/>
+        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#315b91"/>
       </svg>
     </div>
 
-    <!-- NPC 2 -->
-    <div class="npc" id="npc2">
-      <div class="npcShadow"></div>
-      <svg viewBox="0 0 90 125" fill="none">
-        <path d="M20 51q0-32 25-32t25 32v20H20V51Z" fill="#17120f"/>
-        <ellipse cx="45" cy="54" rx="21" ry="26" fill="#9a6545"/>
-        <path d="M23 47q22-13 44 0v8H23v-8Z" fill="#17120f"/>
-        <circle cx="37" cy="55" r="2.5" fill="#111"/>
-        <circle cx="53" cy="55" r="2.5" fill="#111"/>
-        <path d="M38 70q7 5 14 0" stroke="#702f2f" stroke-width="2"/>
-        <path d="M18 82q27-18 54 0l9 41H9l9-41Z" fill="#8c3e68"/>
-        <path d="M18 89L7 113" stroke="#9a6545" stroke-width="11" stroke-linecap="round"/>
-        <path d="M72 89l11 24" stroke="#9a6545" stroke-width="11" stroke-linecap="round"/>
-        <path d="M29 122v3M61 122v3" stroke="#151515" stroke-width="9"/>
+    <div class="npc" id="npc2" style="left:1250px;top:500px">
+      <svg viewBox="0 0 70 100">
+        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
+        <circle cx="35" cy="25" r="16" fill="#a86f4c"/>
+        <circle cx="35" cy="15" r="16" fill="#24170f"/>
+        <rect x="19" y="41" width="32" height="32" rx="8" fill="#803f9b"/>
+        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
+        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
       </svg>
     </div>
 
-    <!-- NPC 3 -->
-    <div class="npc" id="npc3">
-      <div class="npcShadow"></div>
-      <svg viewBox="0 0 90 125" fill="none">
-        <circle cx="45" cy="51" r="30" fill="#17120f"/>
-        <ellipse cx="45" cy="57" rx="21" ry="25" fill="#b47751"/>
-        <path d="M27 47q18-10 36 0" fill="#17120f"/>
-        <circle cx="37" cy="57" r="2.5" fill="#111"/>
-        <circle cx="53" cy="57" r="2.5" fill="#111"/>
-        <path d="M39 71q6 4 12 0" stroke="#733232" stroke-width="2"/>
-        <path d="M19 83q26-17 52 0l10 40H9l10-40Z" fill="#3f69a6"/>
-        <path d="M19 90L7 114" stroke="#b47751" stroke-width="11" stroke-linecap="round"/>
-        <path d="M71 90l12 24" stroke="#b47751" stroke-width="11" stroke-linecap="round"/>
-        <path d="M29 122v3M61 122v3" stroke="#222" stroke-width="9"/>
+    <div class="npc" id="npc3" style="left:1850px;top:1150px">
+      <svg viewBox="0 0 70 100">
+        <ellipse class="shadow" cx="35" cy="95" rx="23" ry="5"/>
+        <circle cx="35" cy="25" r="16" fill="#c58a62"/>
+        <path d="M20 22 Q25 5 35 7 Q48 6 51 22"
+              fill="#5a321e"/>
+        <rect x="19" y="41" width="32" height="32" rx="8" fill="#2869b5"/>
+        <path d="M23 72 L22 94 L31 94 L35 73Z" fill="#20252a"/>
+        <path d="M35 73 L39 94 L48 94 L47 72Z" fill="#20252a"/>
       </svg>
     </div>
 
   </div>
 
-  <div id="shade"></div>
+  <div id="night"></div>
 
-  <div id="clock">--:-- --</div>
-
+  <!-- HUD -->
   <div id="hud">
-    <div class="stat" id="cityHud">Lagos</div>
-    <div class="stat" id="nameHud">Player</div>
-    <div class="stat" id="moneyHud">₦5,000</div>
-    <div class="stat" id="energyHud">Energy 100</div>
-    <div class="stat" id="levelHud">LV 1</div>
+
+    <div class="hudLeft">
+      <div class="hudCard" id="money">₦5,000</div>
+      <div class="hudCard" id="energy">Energy 100</div>
+      <div class="hudCard" id="level">Lv 1</div>
+    </div>
+
+    <div class="hudRight">
+
+      <button class="hudButton" onclick="openPhone()" aria-label="Phone">
+        <svg viewBox="0 0 24 24">
+          <rect x="7" y="2" width="10" height="20" rx="3"/>
+          <path d="M10 18h4"/>
+        </svg>
+      </button>
+
+      <button class="hudButton" onclick="openCreatorEdit()" aria-label="Profile">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 22 Q4 15 12 15 Q20 15 20 22"/>
+        </svg>
+      </button>
+
+    </div>
   </div>
 
-  <button id="profileBtn" title="Character">
-    <svg viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2"/>
-      <path d="M4 21c1-5 4-7 8-7s7 2 8 7"
-            stroke="white" stroke-width="2"
-            stroke-linecap="round"/>
-    </svg>
+  <div id="clock">--:--:--</div>
+
+  <button id="action" onclick="currentAction()">
+    INTERACT
   </button>
 
-  <div id="mission">
-    Find a job and earn money.
+  <div id="joystick">
+    <div id="stick"></div>
   </div>
+</section>
 
-  <button id="interact">INTERACT</button>
-
-  <div id="controls">
-
-    <div id="joystick">
-      <div id="stick"></div>
-    </div>
-
-    <div class="actions">
-
-      <button class="action" id="foodBtn" title="Food">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 4v7M8 4v7M5 8h3M6.5 11v9"
-                stroke="white" stroke-width="2"
-                stroke-linecap="round"/>
-          <path d="M15 4v16M15 4q5 4 0 9"
-                stroke="white" stroke-width="2"
-                stroke-linecap="round"/>
-        </svg>
-      </button>
-
-      <button class="action" id="saveBtn" title="Save">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 4h12l3 3v13H5z"
-                stroke="white" stroke-width="2"/>
-          <path d="M8 4v6h8V4M8 20v-6h8v6"
-                stroke="white" stroke-width="2"/>
-        </svg>
-      </button>
-
-      <button class="action" id="carBtn" title="Transport">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 16l2-7h10l2 7"
-                stroke="white" stroke-width="2"/>
-          <path d="M4 16h16v4H4z"
-                stroke="white" stroke-width="2"/>
-          <circle cx="8" cy="20" r="1.5" fill="white"/>
-          <circle cx="16" cy="20" r="1.5" fill="white"/>
-        </svg>
-      </button>
-
-      <button class="action" id="jobBtn" title="Job">
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="4" y="7" width="16" height="13" rx="2"
-                stroke="white" stroke-width="2"/>
-          <path d="M9 7V5h6v2M8 12h8"
-                stroke="white" stroke-width="2"
-                stroke-linecap="round"/>
-        </svg>
-      </button>
-
-    </div>
+<!-- LOCATION -->
+<div id="locationModal">
+  <div class="locationBox">
+    <div class="locationTitle" id="locationTitle"></div>
+    <div class="locationDescription" id="locationDescription"></div>
+    <div class="locationActions" id="locationActions"></div>
+    <button class="primary"
+            onclick="closeLocation()">
+      CLOSE
+    </button>
   </div>
-
-  <div id="toast"></div>
 </div>
 
+<!-- PHONE -->
+<div id="phone">
+
+  <div class="phoneShell">
+
+    <div class="phoneTop">
+      <div class="phoneTitle">PHONE</div>
+      <button class="phoneClose" onclick="closePhone()">Close</button>
+    </div>
+
+    <div class="phoneContent" id="phoneContent"></div>
+
+    <div class="phoneNav">
+
+      <button id="navHome"
+              class="active"
+              onclick="phonePage('home')">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 11 L12 3 L21 11 V21 H3Z"/>
+        </svg>
+        Home
+      </button>
+
+      <button id="navFriends"
+              onclick="phonePage('friends')">
+        <svg viewBox="0 0 24 24">
+          <circle cx="9" cy="8" r="4"/>
+          <circle cx="17" cy="10" r="3"/>
+          <path d="M2 21 Q2 14 9 14 Q16 14 16 21"/>
+          <path d="M15 15 Q21 15 22 21"/>
+        </svg>
+        Friends
+      </button>
+
+      <button id="navMessages"
+              onclick="phonePage('messages')">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 5 H20 V17 H9 L4 21Z"/>
+        </svg>
+        Messages
+      </button>
+
+      <button id="navCalls"
+              onclick="phonePage('calls')">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 4 L4 6 Q4 15 18 20 L20 17 L14 13 L11 15 Q8 13 7 10 L9 8Z"/>
+        </svg>
+        Calls
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- CALL SCREEN -->
+<div id="callOverlay">
+
+  <div class="callBox">
+
+    <div class="callAvatar" id="callAvatar">A</div>
+
+    <div class="callName" id="callName">Friend</div>
+
+    <div class="callState" id="callState">
+      Calling...
+    </div>
+
+    <div class="callButtons">
+
+      <button class="callButton" onclick="toggleMute()">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2 V13"/>
+          <path d="M6 10 V12 A6 6 0 0 0 18 12 V10"/>
+          <path d="M12 18 V22"/>
+          <path d="M8 22 H16"/>
+        </svg>
+      </button>
+
+      <button class="callButton end"
+              onclick="endCall()">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 9 Q12 3 19 9 L17 14 Q12 11 7 14Z"/>
+        </svg>
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
-/* ================================
-   NAIJA LIFE GAME
-   ================================ */
+/* =========================================================
+   NAija LIFE
+   PHONE + FRIENDS + MESSAGES + CALLS
+========================================================= */
 
-const menu = document.getElementById("menu");
-const creator = document.getElementById("creator");
-const game = document.getElementById("game");
-const world = document.getElementById("world");
-
-let selectedCity = "Lagos";
-let editingCharacter = false;
+const SAVE_KEY = "naijaLifeSaveV4";
 
 const defaultCharacter = {
-  name:"Player",
+  name:"Maro",
   skin:"#8b5a3c",
   hair:"#17120f",
-  hairStyle:"short",
-  shirt:"#0b7a50",
+  shirt:"#0b8b5d",
   pants:"#20252a"
 };
 
-const defaultState = {
+const defaultFriends = [
+  {
+    id:"ada",
+    name:"Ada",
+    city:"Lagos",
+    location:"Work",
+    relationship:72,
+    avatar:"A",
+    messages:[
+      {
+        from:"friend",
+        text:"Hey! How are you doing?"
+      }
+    ]
+  },
+  {
+    id:"emeka",
+    name:"Emeka",
+    city:"Lagos",
+    location:"Home",
+    relationship:58,
+    avatar:"E",
+    messages:[
+      {
+        from:"friend",
+        text:"Bro, where you dey?"
+      }
+    ]
+  },
+  {
+    id:"tunde",
+    name:"Tunde",
+    city:"Warri",
+    location:"Club",
+    relationship:81,
+    avatar:"T",
+    messages:[
+      {
+        from:"friend",
+        text:"We dey link up tonight?"
+      }
+    ]
+  },
+  {
+    id:"amaka",
+    name:"Amaka",
+    city:"Warri",
+    location:"Market",
+    relationship:64,
+    avatar:"A",
+    messages:[
+      {
+        from:"friend",
+        text:"I just reach the market."
+      }
+    ]
+  }
+];
+
+let state = JSON.parse(localStorage.getItem(SAVE_KEY)) || {
   city:"Lagos",
   x:500,
   y:450,
@@ -955,392 +1218,1307 @@ const defaultState = {
   energy:100,
   level:1,
   xp:0,
-  transport:false,
-  missionDone:false,
-  character:{...defaultCharacter}
+  character:{...defaultCharacter},
+  friends:defaultFriends,
+  callHistory:[]
 };
 
-let saved = null;
+if(!state.friends){
+  state.friends=defaultFriends;
+}
 
-try{
-  saved = JSON.parse(localStorage.getItem("naijaLifeSave"));
-}catch(e){}
+let selectedFriend=null;
+let currentPhonePage="home";
+let currentLocation=null;
+let callTimer=null;
+let callSeconds=0;
+let muted=false;
 
-let state = {
-  ...defaultState,
-  ...(saved || {}),
-  character:{
-    ...defaultCharacter,
-    ...(saved?.character || {})
+/* =========================
+   BASIC HELPERS
+========================= */
+
+function save(){
+  localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+}
+
+function toast(text){
+  const el=document.getElementById("toast");
+  el.textContent=text;
+  el.classList.add("show");
+
+  setTimeout(()=>{
+    el.classList.remove("show");
+  },2200);
+}
+
+function money(){
+  document.getElementById("money").textContent=
+    "₦"+Number(state.money).toLocaleString();
+}
+
+function updateHUD(){
+  money();
+
+  document.getElementById("energy").textContent=
+    "Energy "+Math.round(state.energy);
+
+  document.getElementById("level").textContent=
+    "Lv "+state.level;
+}
+
+function addXP(amount){
+  state.xp+=amount;
+
+  while(state.xp>=100){
+    state.xp-=100;
+    state.level++;
+    toast("Level up! You are now level "+state.level);
   }
-};
 
-selectedCity = state.city;
+  save();
+  updateHUD();
+}
 
+/* =========================
+   CITY
+========================= */
 
-/* ================================
-   CITY SELECT
-   ================================ */
+function chooseCity(city){
+  state.city=city;
 
-document.querySelectorAll(".city").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".city")
-      .forEach(x=>x.classList.remove("active"));
+  document.getElementById("menu").classList.remove("active");
+  document.getElementById("creator").classList.add("active");
 
-    btn.classList.add("active");
-    selectedCity = btn.dataset.city;
-  });
+  loadCreator();
+}
+
+function loadCreator(){
+  document.getElementById("charName").value=
+    state.character.name;
+
+  document.getElementById("charSkin").value=
+    state.character.skin;
+
+  document.getElementById("charHair").value=
+    state.character.hair;
+
+  document.getElementById("charShirt").value=
+    state.character.shirt;
+
+  document.getElementById("charPants").value=
+    state.character.pants;
+
+  updateCreatorPreview();
+}
+
+function updateCreatorPreview(){
+
+  const skin=document.getElementById("charSkin").value;
+  const hair=document.getElementById("charHair").value;
+  const shirt=document.getElementById("charShirt").value;
+  const pants=document.getElementById("charPants").value;
+
+  document.getElementById("creatorPreview").innerHTML=`
+    <ellipse cx="50" cy="130" rx="22" ry="5"
+             fill="#0003"/>
+    <circle cx="50" cy="30" r="18"
+            fill="${skin}"/>
+    <path d="M32 30 Q34 8 50 10 Q67 8 68 30
+             Q61 20 50 22 Q39 20 32 30"
+          fill="${hair}"/>
+    <rect x="31" y="49" width="38" height="38"
+          rx="9" fill="${shirt}"/>
+    <path d="M34 86 L32 122 L43 122 L50 87Z"
+          fill="${pants}"/>
+    <path d="M50 87 L57 122 L68 122 L66 86Z"
+          fill="${pants}"/>
+    <path d="M33 52 L18 79 L25 82 L39 61Z"
+          fill="${skin}"/>
+    <path d="M67 52 L82 79 L75 82 L61 61Z"
+          fill="${skin}"/>
+  `;
+}
+
+[
+  "charName",
+  "charSkin",
+  "charHair",
+  "charShirt",
+  "charPants"
+].forEach(id=>{
+  document.getElementById(id)
+    .addEventListener("input",updateCreatorPreview);
+  document.getElementById(id)
+    .addEventListener("change",updateCreatorPreview);
 });
-
-document.getElementById("chooseBtn").onclick=()=>{
-  openCreator(false);
-};
-
-
-/* ================================
-   CHARACTER CREATOR
-   ================================ */
-
-const charName = document.getElementById("charName");
-
-function loadCreatorValues(){
-
-  charName.value = state.character.name || "Player";
-
-  document.querySelectorAll(".option").forEach(b=>{
-    const type = b.dataset.type;
-    const value = b.dataset.value;
-
-    if(!type)return;
-
-    let current =
-      type==="skin" ? state.character.skin :
-      type==="hair" ? state.character.hairStyle :
-      type==="shirt" ? state.character.shirt :
-      type==="pants" ? state.character.pants : "";
-
-    b.classList.toggle("active", value===current);
-  });
-
-  updatePreview();
-}
-
-function openCreator(fromGame){
-
-  editingCharacter = fromGame;
-
-  loadCreatorValues();
-
-  creator.style.display="flex";
-
-  if(fromGame){
-    game.style.display="block";
-  }else{
-    menu.style.display="none";
-  }
-}
-
-function closeCreator(){
-
-  creator.style.display="none";
-
-  if(editingCharacter){
-    game.style.display="block";
-  }else{
-    menu.style.display="flex";
-  }
-}
-
-document.getElementById("backCity").onclick=closeCreator;
-
-
-document.querySelectorAll(".option").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-
-    const type = btn.dataset.type;
-    const value = btn.dataset.value;
-
-    document
-      .querySelectorAll('.option[data-type="'+type+'"]')
-      .forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    if(type==="skin") state.character.skin=value;
-    if(type==="hair") state.character.hairStyle=value;
-    if(type==="shirt") state.character.shirt=value;
-    if(type==="pants") state.character.pants=value;
-
-    updatePreview();
-  });
-});
-
-
-charName.addEventListener("input",()=>{
-  state.character.name =
-    charName.value.trim().slice(0,16) || "Player";
-
-  updatePreview();
-});
-
-
-function hairPath(style){
-
-  if(style==="afro"){
-    return "M20 52c-4-29 10-48 25-48s29 19 25 48c-14-11-36-11-50 0Z";
-  }
-
-  if(style==="fade"){
-    return "M23 50c3-23 39-30 46-2-10-7-31-9-46 2Z";
-  }
-
-  if(style==="buzz"){
-    return "M25 49c3-17 37-22 40-1-11-5-29-6-40 1Z";
-  }
-
-  return "M23 50c4-24 39-31 46-2-10-8-30-9-46 2Z";
-}
-
-
-function updatePreview(){
-
-  const c = state.character;
-
-  document.documentElement.style.setProperty("--skin",c.skin);
-
-  document.getElementById("previewSvgName").textContent =
-    c.name || "Player";
-
-  document.getElementById("previewName").textContent =
-    c.name || "Player";
-
-  document.getElementById("previewHair").setAttribute(
-    "d",
-    hairPath(c.hairStyle)
-  );
-
-  document.getElementById("previewHair").setAttribute(
-    "fill",c.hair
-  );
-
-  document.getElementById("previewHairBack").setAttribute(
-    "fill",c.hair
-  );
-
-  document.getElementById("previewShirt").setAttribute(
-    "fill",c.shirt
-  );
-
-  document.getElementById("previewPants").setAttribute(
-    "fill",c.pants
-  );
-}
-
-
-document.getElementById("enterCity").onclick=()=>{
-
-  state.character.name =
-    charName.value.trim().slice(0,16) || "Player";
-
-  const oldCity = state.city;
-
-  state.city = selectedCity;
-
-  if(oldCity !== selectedCity){
-    state.x=500;
-    state.y=450;
-    state.transport=false;
-  }
-
-  saveGame();
-  startGame();
-};
-
-
-/* ================================
-   PLAYER
-   ================================ */
-
-function updatePlayer(){
-
-  const p = document.getElementById("player");
-
-  p.style.left = state.x+"px";
-  p.style.top = state.y+"px";
-
-  const c = state.character;
-
-  document.getElementById("pFace")
-    .setAttribute("fill",c.skin);
-
-  document.getElementById("pNeck")
-    .setAttribute("fill",c.skin);
-
-  document.getElementById("pHair")
-    .setAttribute("fill",c.hair);
-
-  document.getElementById("pHairBack")
-    .setAttribute("fill",c.hair);
-
-  document.getElementById("pShirt")
-    .setAttribute("fill",c.shirt);
-
-  document.getElementById("pPants")
-    .setAttribute("fill",c.pants);
-
-  document.getElementById("playerNameSvg").textContent =
-    c.name;
-
-  document.getElementById("nameHud").textContent =
-    c.name;
-}
-
-
-/* ================================
-   GAME START
-   ================================ */
 
 function startGame(){
 
-  menu.style.display="none";
-  creator.style.display="none";
-  game.style.display="block";
+  state.character={
+    name:document.getElementById("charName").value.trim()
+      || "Maro",
+    skin:document.getElementById("charSkin").value,
+    hair:document.getElementById("charHair").value,
+    shirt:document.getElementById("charShirt").value,
+    pants:document.getElementById("charPants").value
+  };
 
-  updatePlayer();
+  save();
+
+  document.getElementById("creator").classList.remove("active");
+  document.getElementById("game").style.display="block";
+
+  updatePlayerSVG();
   updateHUD();
   updateClock();
 
-  if(!npcStarted){
-    startNPCs();
-    npcStarted=true;
-  }
-
-  centerCamera();
+  toast(
+    "Welcome to "+state.city+", "+state.character.name
+  );
 }
 
-
-/* ================================
-   HUD
-   ================================ */
-
-function updateHUD(){
-
-  document.getElementById("cityHud").textContent =
-    state.city;
-
-  document.getElementById("moneyHud").textContent =
-    "₦"+state.money.toLocaleString();
-
-  document.getElementById("energyHud").textContent =
-    "Energy "+Math.round(state.energy);
-
-  document.getElementById("levelHud").textContent =
-    "LV "+state.level;
-
-  document.getElementById("mission").textContent =
-    state.missionDone
-    ? "Mission complete. Keep exploring the city."
-    : "Find a job and earn money.";
+function openCreatorEdit(){
+  document.getElementById("game").style.display="none";
+  document.getElementById("creator").classList.add("active");
+  loadCreator();
 }
 
+/* =========================
+   PLAYER
+========================= */
 
-/* ================================
+function updatePlayerSVG(){
+
+  document.getElementById("pHead")
+    .setAttribute("fill",state.character.skin);
+
+  document.getElementById("pHair")
+    .setAttribute("fill",state.character.hair);
+
+  document.getElementById("pShirt")
+    .setAttribute("fill",state.character.shirt);
+
+  document.getElementById("pLeftArm")
+    .setAttribute("fill",state.character.skin);
+
+  document.getElementById("pRightArm")
+    .setAttribute("fill",state.character.skin);
+
+  document.getElementById("pLeftLeg")
+    .setAttribute("fill",state.character.pants);
+
+  document.getElementById("pRightLeg")
+    .setAttribute("fill",state.character.pants);
+}
+
+/* =========================
    REAL NIGERIAN TIME
-   ================================ */
+========================= */
 
-function getNigeriaTime(){
+function nigeriaDate(){
 
   return new Date(
-    new Date().toLocaleString("en-US",{
-      timeZone:"Africa/Lagos"
-    })
+    new Date().toLocaleString(
+      "en-US",
+      {timeZone:"Africa/Lagos"}
+    )
   );
 }
 
 function updateClock(){
 
-  const now = getNigeriaTime();
+  const d=nigeriaDate();
 
-  let h = now.getHours();
-  const m = now.getMinutes();
+  let h=d.getHours();
+  const m=d.getMinutes().toString().padStart(2,"0");
+  const s=d.getSeconds().toString().padStart(2,"0");
 
-  const ampm = h >= 12 ? "PM" : "AM";
+  const suffix=h>=12?"PM":"AM";
 
-  let displayHour = h % 12;
-  if(displayHour===0)displayHour=12;
+  let hh=h%12;
+  if(hh===0) hh=12;
 
-  const mm = String(m).padStart(2,"0");
+  document.getElementById("clock").textContent=
+    `${hh}:${m}:${s} ${suffix} • ${state.city}`;
 
-  document.getElementById("clock").textContent =
-    displayHour+":"+mm+" "+ampm+" • Nigeria";
+  let nightOpacity=0;
 
-  updateLighting(h);
-}
-
-
-/* ================================
-   DAY / NIGHT
-   ================================ */
-
-function updateLighting(hour){
-
-  let darkness=0;
-
-  if(hour>=6 && hour<17){
-    darkness=0;
-  }else if(hour>=17 && hour<19){
-    darkness=(hour-17)/2*.55;
-  }else if(hour>=19 || hour<5){
-    darkness=.72;
-  }else if(hour>=5 && hour<6){
-    darkness=.72-(hour-5)*.72;
+  if(h>=20 || h<5){
+    nightOpacity=.62;
+  }else if(h>=18){
+    nightOpacity=.25;
+  }else if(h<7){
+    nightOpacity=.12;
   }
 
-  document.getElementById("shade").style.opacity =
-    darkness;
+  document.getElementById("night")
+    .style.opacity=nightOpacity;
 
-  /* Make the world slightly darker at night */
-  world.style.filter =
-    darkness>.5 ? "brightness(.72)" :
-    darkness>.2 ? "brightness(.88)" :
-    "brightness(1)";
+  updateFriendSchedules(d);
 }
 
-
-/* Update every second so the game clock follows real life. */
 setInterval(updateClock,1000);
 
+/* =========================
+   FRIEND SCHEDULES
+========================= */
 
-/* ================================
-   CAMERA
-   ================================ */
+function updateFriendSchedules(d){
 
-function centerCamera(){
+  const h=d.getHours();
 
-  const maxX =
-    world.offsetWidth-window.innerWidth;
+  state.friends.forEach(friend=>{
 
-  const maxY =
-    world.offsetHeight-window.innerHeight;
+    if(h>=8 && h<17){
+      friend.location="Work";
+    }else if(h>=17 && h<19){
+      friend.location="Restaurant";
+    }else if(h>=20 && h<24){
+      friend.location="Club";
+    }else{
+      friend.location="Home";
+    }
 
-  const cx =
-    Math.max(0,
-      Math.min(maxX,state.x-window.innerWidth/2)
-    );
-
-  const cy =
-    Math.max(0,
-      Math.min(maxY,state.y-window.innerHeight/2)
-    );
-
-  world.style.transform =
-    "translate("+(-cx)+"px,"+(-cy)+"px)";
+    if(d.getDay()===0 && h>=8 && h<13){
+      friend.location="Church";
+    }
+  });
 }
 
+/* =========================
+   PHONE
+========================= */
 
-/* ================================
-   MOVEMENT
-   ================================ */
+function openPhone(){
+  document.getElementById("phone").classList.add("active");
+  phonePage("home");
+}
+
+function closePhone(){
+  document.getElementById("phone").classList.remove("active");
+}
+
+function phonePage(page){
+
+  currentPhonePage=page;
+
+  document.querySelectorAll(".phoneNav button")
+    .forEach(b=>b.classList.remove("active"));
+
+  const nav={
+    home:"navHome",
+    friends:"navFriends",
+    messages:"navMessages",
+    calls:"navCalls"
+  };
+
+  document.getElementById(nav[page])
+    .classList.add("active");
+
+  if(page==="home") renderPhoneHome();
+  if(page==="friends") renderFriends();
+  if(page==="messages") renderMessages();
+  if(page==="calls") renderCalls();
+}
+
+function renderPhoneHome(){
+
+  const d=nigeriaDate();
+
+  document.getElementById("phoneContent").innerHTML=`
+    <h2>Good ${d.getHours()<12?"morning":
+               d.getHours()<18?"afternoon":"evening"},
+        ${escapeHTML(state.character.name)}</h2>
+
+    <p style="opacity:.6;font-size:13px">
+      ${state.city} • Your phone is connected to your life.
+    </p>
+
+    <div class="contact">
+      <div class="avatar">₦</div>
+      <div class="contactMain">
+        <div class="contactName">Wallet</div>
+        <div class="contactStatus">
+          ₦${Number(state.money).toLocaleString()}
+        </div>
+      </div>
+    </div>
+
+    <div class="contact">
+      <div class="avatar">F</div>
+      <div class="contactMain">
+        <div class="contactName">Friends</div>
+        <div class="contactStatus">
+          ${state.friends.length} contacts
+        </div>
+      </div>
+      <button class="smallBtn"
+              onclick="phonePage('friends')">
+        Open
+      </button>
+    </div>
+
+    <div class="contact">
+      <div class="avatar">M</div>
+      <div class="contactMain">
+        <div class="contactName">Messages</div>
+        <div class="contactStatus">
+          Chat with your friends
+        </div>
+      </div>
+      <button class="smallBtn"
+              onclick="phonePage('messages')">
+        Open
+      </button>
+    </div>
+
+    <div class="contact">
+      <div class="avatar">C</div>
+      <div class="contactMain">
+        <div class="contactName">Calls</div>
+        <div class="contactStatus">
+          Call history
+        </div>
+      </div>
+      <button class="smallBtn"
+              onclick="phonePage('calls')">
+        Open
+      </button>
+    </div>
+  `;
+}
+
+function renderFriends(){
+
+  let html=`<h2>Friends</h2>`;
+
+  state.friends.forEach(friend=>{
+
+    html+=`
+      <div class="contact">
+
+        <div class="avatar">${friend.avatar}</div>
+
+        <div class="contactMain">
+          <div class="contactName">
+            ${escapeHTML(friend.name)}
+          </div>
+
+          <div class="contactStatus">
+            ${escapeHTML(friend.location)}
+            • Friendship ${friend.relationship}%
+          </div>
+        </div>
+
+        <button class="smallBtn"
+                onclick="openFriend('${friend.id}')">
+          View
+        </button>
+
+      </div>
+    `;
+  });
+
+  document.getElementById("phoneContent").innerHTML=html;
+}
+
+function openFriend(id){
+
+  selectedFriend=state.friends.find(f=>f.id===id);
+
+  if(!selectedFriend) return;
+
+  document.getElementById("phoneContent").innerHTML=`
+
+    <div class="chatHeader">
+
+      <button class="backBtn"
+              onclick="phonePage('friends')">
+        Back
+      </button>
+
+      <div>
+        <strong>${escapeHTML(selectedFriend.name)}</strong>
+        <div style="font-size:11px;opacity:.55">
+          ${escapeHTML(selectedFriend.location)}
+        </div>
+      </div>
+
+    </div>
+
+    <button class="smallBtn"
+            onclick="startCall('${selectedFriend.id}')">
+      Call ${escapeHTML(selectedFriend.name)}
+    </button>
+
+    <button class="smallBtn"
+            onclick="inviteFriend('${selectedFriend.id}')">
+      Invite to meet
+    </button>
+
+    <div class="messages"
+         id="messagesBox">
+      ${renderMessageHTML(selectedFriend)}
+    </div>
+
+    <div class="chatInput">
+      <input id="messageInput"
+             placeholder="Type a message..."
+             maxlength="150"
+             onkeydown="if(event.key==='Enter')sendMessage()">
+
+      <button class="send"
+              onclick="sendMessage()">
+        Send
+      </button>
+    </div>
+  `;
+}
+
+function renderMessageHTML(friend){
+
+  return friend.messages.map(m=>`
+    <div class="msg ${m.from==="you"?"you":"friend"}">
+      ${escapeHTML(m.text)}
+    </div>
+  `).join("");
+}
+
+function sendMessage(){
+
+  if(!selectedFriend) return;
+
+  const input=document.getElementById("messageInput");
+
+  if(!input) return;
+
+  const text=input.value.trim();
+
+  if(!text) return;
+
+  selectedFriend.messages.push({
+    from:"you",
+    text:text
+  });
+
+  selectedFriend.relationship=
+    Math.min(100,selectedFriend.relationship+1);
+
+  save();
+
+  input.value="";
+
+  openFriend(selectedFriend.id);
+
+  setTimeout(()=>{
+    friendReply(selectedFriend.id,text);
+  },900);
+}
+
+/* =========================
+   SMART FRIEND REPLIES
+========================= */
+
+function friendReply(id,text){
+
+  const friend=state.friends.find(f=>f.id===id);
+
+  if(!friend) return;
+
+  const lower=text.toLowerCase();
+
+  let reply="Nice one bro.";
+
+  if(
+    lower.includes("where") ||
+    lower.includes("dey") ||
+    lower.includes("where are")
+  ){
+    reply=`I dey ${friend.location.toLowerCase()} now.`;
+  }
+  else if(
+    lower.includes("club") ||
+    lower.includes("tonight")
+  ){
+    reply="Sure. We fit link up tonight.";
+  }
+  else if(
+    lower.includes("church")
+  ){
+    reply="Okay. I fit meet you there.";
+  }
+  else if(
+    lower.includes("restaurant") ||
+    lower.includes("food")
+  ){
+    reply="Food sounds good. Make we go.";
+  }
+  else if(
+    lower.includes("love") ||
+    lower.includes("miss")
+  ){
+    reply="Aww, that's nice to hear.";
+  }
+  else if(
+    lower.includes("hello") ||
+    lower.includes("hi")
+  ){
+    reply="Hey! Good to hear from you.";
+  }
+  else{
+    const replies=[
+      "Yeah, I understand.",
+      "No wahala.",
+      "That sounds good.",
+      "Okay, I hear you.",
+      "We go sort am out.",
+      "Definitely."
+    ];
+
+    reply=replies[
+      Math.floor(Math.random()*replies.length)
+    ];
+  }
+
+  friend.messages.push({
+    from:"friend",
+    text:reply
+  });
+
+  save();
+
+  if(
+    currentPhonePage==="friends" &&
+    selectedFriend &&
+    selectedFriend.id===id
+  ){
+    openFriend(id);
+  }
+}
+
+/* =========================
+   MESSAGE LIST
+========================= */
+
+function renderMessages(){
+
+  let html=`<h2>Messages</h2>`;
+
+  state.friends.forEach(friend=>{
+
+    const last=
+      friend.messages[friend.messages.length-1];
+
+    html+=`
+      <div class="contact"
+           onclick="openFriend('${friend.id}')">
+
+        <div class="avatar">${friend.avatar}</div>
+
+        <div class="contactMain">
+          <div class="contactName">
+            ${escapeHTML(friend.name)}
+          </div>
+
+          <div class="contactStatus">
+            ${escapeHTML(last?.text || "No messages")}
+          </div>
+        </div>
+
+      </div>
+    `;
+  });
+
+  document.getElementById("phoneContent").innerHTML=html;
+}
+
+/* =========================
+   CALLING
+========================= */
+
+function startCall(id){
+
+  const friend=state.friends.find(f=>f.id===id);
+
+  if(!friend) return;
+
+  closePhone();
+
+  document.getElementById("callOverlay")
+    .classList.add("active");
+
+  document.getElementById("callAvatar")
+    .textContent=friend.avatar;
+
+  document.getElementById("callName")
+    .textContent=friend.name;
+
+  document.getElementById("callState")
+    .textContent="Calling...";
+
+  callSeconds=0;
+  muted=false;
+
+  clearInterval(callTimer);
+
+  setTimeout(()=>{
+    if(
+      document.getElementById("callOverlay")
+        .classList.contains("active")
+    ){
+      document.getElementById("callState")
+        .textContent="Connected";
+
+      callTimer=setInterval(()=>{
+        callSeconds++;
+
+        const min=Math.floor(callSeconds/60);
+        const sec=(callSeconds%60)
+          .toString()
+          .padStart(2,"0");
+
+        document.getElementById("callState")
+          .textContent=
+          `Connected • ${min}:${sec}`;
+      },1000);
+    }
+  },1200);
+}
+
+function toggleMute(){
+
+  muted=!muted;
+
+  toast(muted ? "Microphone muted" : "Microphone on");
+}
+
+function endCall(){
+
+  clearInterval(callTimer);
+
+  const name=
+    document.getElementById("callName").textContent;
+
+  state.callHistory.unshift({
+    name:name,
+    duration:callSeconds,
+    time:new Date().toISOString()
+  });
+
+  state.callHistory=
+    state.callHistory.slice(0,30);
+
+  save();
+
+  document.getElementById("callOverlay")
+    .classList.remove("active");
+
+  toast("Call ended");
+
+  callSeconds=0;
+}
+
+function renderCalls(){
+
+  let html=`<h2>Calls</h2>`;
+
+  if(!state.callHistory.length){
+
+    html+=`
+      <p style="opacity:.55">
+        No calls yet.
+      </p>
+    `;
+
+  }else{
+
+    state.callHistory.forEach(call=>{
+
+      const min=Math.floor(call.duration/60);
+      const sec=(call.duration%60)
+        .toString()
+        .padStart(2,"0");
+
+      html+=`
+        <div class="contact">
+
+          <div class="avatar">↗</div>
+
+          <div class="contactMain">
+            <div class="contactName">
+              ${escapeHTML(call.name)}
+            </div>
+
+            <div class="contactStatus">
+              ${min}:${sec}
+            </div>
+          </div>
+
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById("phoneContent").innerHTML=html;
+}
+
+/* =========================
+   INVITE FRIEND
+========================= */
+
+function inviteFriend(id){
+
+  const friend=state.friends.find(f=>f.id===id);
+
+  if(!friend) return;
+
+  const places=[
+    "Restaurant",
+    "Club",
+    "Park",
+    "Market"
+  ];
+
+  const place=places[
+    Math.floor(Math.random()*places.length)
+  ];
+
+  friend.messages.push({
+    from:"friend",
+    text:`Sure! Let's meet at the ${place.toLowerCase()}.`
+  });
+
+  friend.relationship=
+    Math.min(100,friend.relationship+3);
+
+  save();
+
+  toast(
+    friend.name+" agreed to meet you!"
+  );
+
+  openFriend(id);
+}
+
+/* =========================
+   LOCATIONS
+========================= */
+
+const locations={
+
+  Home:{
+    description:"Your home. Rest, eat, shower and change clothes.",
+    actions:[
+      ["Sleep","sleepAtHome"],
+      ["Eat at home","eatAtHome"],
+      ["Take a shower","shower"],
+      ["Change clothes","changeClothes"]
+    ]
+  },
+
+  Work:{
+    description:"Go to work and earn money.",
+    actions:[
+      ["Start work shift","workShift"],
+      ["Check job options","jobs"]
+    ]
+  },
+
+  Bank:{
+    description:"Manage your game finances.",
+    actions:[
+      ["Check balance","bankBalance"],
+      ["Deposit ₦500","depositMoney"],
+      ["Withdraw ₦500","withdrawMoney"]
+    ]
+  },
+
+  Market:{
+    description:"Buy food and everyday items.",
+    actions:[
+      ["Buy food — ₦200","buyFood"],
+      ["Buy groceries — ₦500","buyGroceries"]
+    ]
+  },
+
+  Restaurant:{
+    description:"Grab a meal and relax.",
+    actions:[
+      ["Eat meal — ₦500","restaurantEat"],
+      ["Meet friends","openPhone"]
+    ]
+  },
+
+  Church:{
+    description:"Attend church and socialize.",
+    actions:[
+      ["Attend service","churchService"],
+      ["Talk to people","churchTalk"]
+    ]
+  },
+
+  Club:{
+    description:"Music, dancing and nightlife.",
+    actions:[
+      ["Enter club","clubEnter"],
+      ["Dance","clubDance"],
+      ["Meet people","meetPeople"]
+    ]
+  },
+
+  Hospital:{
+    description:"Take care of your character.",
+    actions:[
+      ["Visit doctor — ₦300","doctor"],
+      ["Rest","hospitalRest"]
+    ]
+  },
+
+  Gym:{
+    description:"Work on your fitness.",
+    actions:[
+      ["Workout","workout"],
+      ["Train hard","hardWorkout"]
+    ]
+  },
+
+  Salon:{
+    description:"Change your hairstyle.",
+    actions:[
+      ["Get haircut — ₦300","haircut"],
+      ["Style hair — ₦500","hairStyle"]
+    ]
+  },
+
+  Fuel:{
+    description:"Refuel your vehicle.",
+    actions:[
+      ["Buy fuel — ₦1,000","fuel"]
+    ]
+  },
+
+  Police:{
+    description:"Police station.",
+    actions:[
+      ["Ask for help","policeHelp"],
+      ["Report an issue","policeReport"]
+    ]
+  },
+
+  School:{
+    description:"Study and improve your skills.",
+    actions:[
+      ["Attend class","schoolClass"],
+      ["Study","study"]
+    ]
+  }
+};
+
+function openLocation(name){
+
+  currentLocation=name;
+
+  const loc=locations[name];
+
+  if(!loc) return;
+
+  document.getElementById("locationTitle")
+    .textContent=name;
+
+  document.getElementById("locationDescription")
+    .textContent=loc.description;
+
+  const box=document.getElementById("locationActions");
+
+  box.innerHTML="";
+
+  loc.actions.forEach(action=>{
+
+    const btn=document.createElement("button");
+
+    btn.textContent=action[0];
+
+    if(
+      action[1]==="workShift" ||
+      action[1]==="churchService" ||
+      action[1]==="clubEnter"
+    ){
+      btn.classList.add("primaryAction");
+    }
+
+    btn.onclick=()=>{
+      window[action[1]]();
+    };
+
+    box.appendChild(btn);
+  });
+
+  document.getElementById("locationModal")
+    .classList.add("active");
+}
+
+function closeLocation(){
+  document.getElementById("locationModal")
+    .classList.remove("active");
+}
+
+/* =========================
+   LOCATION ACTIONS
+========================= */
+
+function sleepAtHome(){
+
+  state.energy=Math.min(100,state.energy+50);
+
+  addXP(5);
+
+  toast("You rested at home.");
+
+  closeLocation();
+  updateHUD();
+  save();
+}
+
+function eatAtHome(){
+
+  if(state.money<100){
+    toast("Not enough money.");
+    return;
+  }
+
+  state.money-=100;
+  state.energy=Math.min(100,state.energy+35);
+
+  addXP(5);
+
+  toast("You ate at home.");
+
+  closeLocation();
+  updateHUD();
+  save();
+}
+
+function shower(){
+
+  addXP(3);
+
+  toast("Fresh and clean.");
+
+  closeLocation();
+}
+
+function changeClothes(){
+
+  openCreatorEdit();
+  closeLocation();
+}
+
+function workShift(){
+
+  const h=nigeriaDate().getHours();
+
+  if(h<7 || h>=19){
+    toast("Your workplace is closed right now.");
+    return;
+  }
+
+  toast("You started your work shift.");
+
+  closeLocation();
+
+  setTimeout(()=>{
+
+    state.money+=1500;
+    state.energy=Math.max(0,state.energy-20);
+
+    addXP(25);
+
+    updateHUD();
+    save();
+
+    toast("Work finished. +₦1,500");
+
+  },5000);
+}
+
+function jobs(){
+  toast("Available: Office Worker • Driver • Shop Worker");
+}
+
+function bankBalance(){
+  toast("Balance: ₦"+Number(state.money).toLocaleString());
+}
+
+function depositMoney(){
+
+  toast("Money is already represented in your game wallet.");
+}
+
+function withdrawMoney(){
+
+  toast("Your available balance is ₦"+
+        Number(state.money).toLocaleString());
+}
+
+function buyFood(){
+
+  if(state.money<200){
+    toast("Not enough money.");
+    return;
+  }
+
+  state.money-=200;
+  state.energy=Math.min(100,state.energy+25);
+
+  addXP(5);
+  updateHUD();
+  save();
+
+  toast("Food purchased.");
+}
+
+function buyGroceries(){
+
+  if(state.money<500){
+    toast("Not enough money.");
+    return;
+  }
+
+  state.money-=500;
+  state.energy=Math.min(100,state.energy+40);
+
+  addXP(8);
+  updateHUD();
+  save();
+
+  toast("Groceries purchased.");
+}
+
+function restaurantEat(){
+
+  if(state.money<500){
+    toast("You need ₦500.");
+    return;
+  }
+
+  state.money-=500;
+  state.energy=Math.min(100,state.energy+50);
+
+  addXP(8);
+  updateHUD();
+  save();
+
+  toast("That meal was good.");
+}
+
+function churchService(){
+
+  const d=nigeriaDate();
+
+  if(d.getDay()!==0){
+    toast("Main church service is on Sunday.");
+    return;
+  }
+
+  state.energy=Math.max(0,state.energy-5);
+
+  addXP(15);
+
+  toast("You attended church service.");
+
+  closeLocation();
+  updateHUD();
+  save();
+}
+
+function churchTalk(){
+
+  addXP(4);
+
+  toast("You met people at church.");
+}
+
+function clubEnter(){
+
+  const h=nigeriaDate().getHours();
+
+  if(h<18){
+    toast("The club opens later.");
+    return;
+  }
+
+  toast("Welcome to the club.");
+
+  closeLocation();
+}
+
+function clubDance(){
+
+  const h=nigeriaDate().getHours();
+
+  if(h<18){
+    toast("Come back tonight.");
+    return;
+  }
+
+  state.energy=Math.max(0,state.energy-10);
+
+  addXP(10);
+
+  toast("You danced with the crowd.");
+
+  updateHUD();
+  save();
+}
+
+function meetPeople(){
+
+  addXP(8);
+
+  toast("You met new people.");
+
+  phonePage("friends");
+  openPhone();
+}
+
+function doctor(){
+
+  if(state.money<300){
+    toast("Doctor visit costs ₦300.");
+    return;
+  }
+
+  state.money-=300;
+  state.energy=Math.min(100,state.energy+25);
+
+  addXP(5);
+
+  updateHUD();
+  save();
+
+  toast("You feel better.");
+}
+
+function hospitalRest(){
+
+  state.energy=Math.min(100,state.energy+30);
+
+  updateHUD();
+
+  toast("You rested at the hospital.");
+}
+
+function workout(){
+
+  state.energy=Math.max(0,state.energy-15);
+
+  addXP(12);
+
+  updateHUD();
+  save();
+
+  toast("Workout completed.");
+}
+
+function hardWorkout(){
+
+  state.energy=Math.max(0,state.energy-25);
+
+  addXP(20);
+
+  updateHUD();
+  save();
+
+  toast("Hard workout completed.");
+}
+
+function haircut(){
+
+  if(state.money<300){
+    toast("You need ₦300.");
+    return;
+  }
+
+  state.money-=300;
+
+  addXP(5);
+
+  updateHUD();
+  save();
+
+  toast("Fresh haircut.");
+}
+
+function hairStyle(){
+
+  if(state.money<500){
+    toast("You need ₦500.");
+    return;
+  }
+
+  state.money-=500;
+
+  addXP(8);
+
+  updateHUD();
+  save();
+
+  toast("New hairstyle.");
+}
+
+function fuel(){
+
+  if(state.money<1000){
+    toast("You need ₦1,000.");
+    return;
+  }
+
+  state.money-=1000;
+
+  addXP(5);
+
+  updateHUD();
+  save();
+
+  toast("Vehicle refueled.");
+}
+
+function policeHelp(){
+  toast("The police are available.");
+}
+
+function policeReport(){
+  toast("Report recorded.");
+}
+
+function schoolClass(){
+
+  state.energy=Math.max(0,state.energy-10);
+
+  addXP(15);
+
+  updateHUD();
+  save();
+
+  toast("Class completed.");
+}
+
+function study(){
+
+  state.energy=Math.max(0,state.energy-7);
+
+  addXP(10);
+
+  updateHUD();
+  save();
+
+  toast("You studied.");
+}
+
+/* =========================
+   SIMPLE MOVEMENT
+========================= */
 
 let keys={
   up:false,
@@ -1349,474 +2527,251 @@ let keys={
   right:false
 };
 
+let joystick={
+  active:false,
+  x:0,
+  y:0
+};
+
+const speed=2.5;
+
 function movePlayer(){
 
-  let dx=0,dy=0;
+  let dx=0;
+  let dy=0;
 
   if(keys.up)dy-=1;
   if(keys.down)dy+=1;
   if(keys.left)dx-=1;
   if(keys.right)dx+=1;
 
-  if(dx!==0 || dy!==0){
+  if(joystick.active){
+    dx+=joystick.x;
+    dy+=joystick.y;
+  }
 
-    const len=Math.hypot(dx,dy);
+  const len=Math.hypot(dx,dy);
+
+  if(len>0){
 
     dx/=len;
     dy/=len;
 
-    const speed=state.transport ? 6 : 3;
-
     state.x+=dx*speed;
     state.y+=dy*speed;
 
-    state.x=Math.max(70,Math.min(2930,state.x));
-    state.y=Math.max(70,Math.min(2130,state.y));
+    state.x=Math.max(20,Math.min(2930,state.x));
+    state.y=Math.max(20,Math.min(2130,state.y));
 
     state.energy=Math.max(
       0,
-      state.energy-.006
+      state.energy-.002
     );
-
-    updatePlayer();
-    centerCamera();
-    checkInteraction();
   }
+
+  const player=document.getElementById("player");
+
+  player.style.left=state.x+"px";
+  player.style.top=state.y+"px";
+
+  cameraFollow();
 
   requestAnimationFrame(movePlayer);
 }
 
-requestAnimationFrame(movePlayer);
+function cameraFollow(){
 
+  const world=document.getElementById("world");
 
-/* ================================
-   KEYBOARD
-   ================================ */
+  const screenW=innerWidth;
+  const screenH=innerHeight;
+
+  let left=
+    screenW/2-state.x-35;
+
+  let top=
+    screenH/2-state.y-70;
+
+  left=Math.min(0,Math.max(screenW-3000,left));
+  top=Math.min(0,Math.max(screenH-2200,top));
+
+  world.style.transform=
+    `translate(${left}px,${top}px)`;
+}
 
 document.addEventListener("keydown",e=>{
 
-  if(e.key==="ArrowUp" || e.key==="w")
+  if(e.key==="ArrowUp"||e.key==="w")
     keys.up=true;
 
-  if(e.key==="ArrowDown" || e.key==="s")
+  if(e.key==="ArrowDown"||e.key==="s")
     keys.down=true;
 
-  if(e.key==="ArrowLeft" || e.key==="a")
+  if(e.key==="ArrowLeft"||e.key==="a")
     keys.left=true;
 
-  if(e.key==="ArrowRight" || e.key==="d")
+  if(e.key==="ArrowRight"||e.key==="d")
     keys.right=true;
 });
 
 document.addEventListener("keyup",e=>{
 
-  if(e.key==="ArrowUp" || e.key==="w")
+  if(e.key==="ArrowUp"||e.key==="w")
     keys.up=false;
 
-  if(e.key==="ArrowDown" || e.key==="s")
+  if(e.key==="ArrowDown"||e.key==="s")
     keys.down=false;
 
-  if(e.key==="ArrowLeft" || e.key==="a")
+  if(e.key==="ArrowLeft"||e.key==="a")
     keys.left=false;
 
-  if(e.key==="ArrowRight" || e.key==="d")
+  if(e.key==="ArrowRight"||e.key==="d")
     keys.right=false;
 });
 
-
-/* ================================
+/* =========================
    MOBILE JOYSTICK
-   ================================ */
+========================= */
 
-const joystick =
-  document.getElementById("joystick");
+const joystickEl=document.getElementById("joystick");
+const stick=document.getElementById("stick");
 
-const stick =
-  document.getElementById("stick");
+function joystickMove(e){
 
-let joyActive=false;
+  const rect=joystickEl.getBoundingClientRect();
 
-function joystickMove(clientX,clientY){
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top+rect.height/2;
 
-  const r=joystick.getBoundingClientRect();
+  let x=e.clientX-cx;
+  let y=e.clientY-cy;
 
-  let dx=clientX-(r.left+r.width/2);
-  let dy=clientY-(r.top+r.height/2);
+  const max=40;
 
-  const max=35;
-
-  const dist=Math.hypot(dx,dy);
+  const dist=Math.hypot(x,y);
 
   if(dist>max){
-    dx=dx/dist*max;
-    dy=dy/dist*max;
+    x=x/dist*max;
+    y=y/dist*max;
   }
 
-  stick.style.transform =
-    "translate("+dx+"px,"+dy+"px)";
+  stick.style.left=
+    (35+x)+"px";
 
-  keys.up=dy<-8;
-  keys.down=dy>8;
-  keys.left=dx<-8;
-  keys.right=dx>8;
+  stick.style.top=
+    (35+y)+"px";
+
+  joystick.x=x/max;
+  joystick.y=y/max;
 }
 
-joystick.addEventListener("touchstart",e=>{
-  joyActive=true;
-  const t=e.touches[0];
-  joystickMove(t.clientX,t.clientY);
-},{passive:true});
-
-joystick.addEventListener("touchmove",e=>{
-  if(!joyActive)return;
-  const t=e.touches[0];
-  joystickMove(t.clientX,t.clientY);
-},{passive:true});
-
-joystick.addEventListener("touchend",()=>{
-  joyActive=false;
-  keys.up=keys.down=keys.left=keys.right=false;
-  stick.style.transform="translate(0,0)";
+joystickEl.addEventListener("pointerdown",e=>{
+  joystick.active=true;
+  joystickEl.setPointerCapture(e.pointerId);
+  joystickMove(e);
 });
 
+joystickEl.addEventListener("pointermove",e=>{
+  if(joystick.active)joystickMove(e);
+});
 
-/* ================================
-   NPC SYSTEM
-   ================================ */
+function resetJoystick(){
 
-let npcStarted=false;
+  joystick.active=false;
+  joystick.x=0;
+  joystick.y=0;
 
-const npcs=[
+  stick.style.left="35px";
+  stick.style.top="35px";
+}
+
+joystickEl.addEventListener("pointerup",resetJoystick);
+joystickEl.addEventListener("pointercancel",resetJoystick);
+
+/* =========================
+   NPC MOVEMENT
+========================= */
+
+const npcData=[
   {
-    el:document.getElementById("npc1"),
-    x:850,y:500,
-    tx:850,ty:500,
-    speed:1.3
+    id:"npc1",
+    x:500,
+    y:500,
+    dx:0,
+    dy:0
   },
   {
-    el:document.getElementById("npc2"),
-    x:1200,y:900,
-    tx:1200,ty:900,
-    speed:1.05
+    id:"npc2",
+    x:1250,
+    y:500,
+    dx:0,
+    dy:0
   },
   {
-    el:document.getElementById("npc3"),
-    x:1900,y:800,
-    tx:1900,ty:800,
-    speed:1.2
+    id:"npc3",
+    x:1850,
+    y:1150,
+    dx:0,
+    dy:0
   }
 ];
 
-function chooseNPCDestination(n){
+function moveNPCs(){
 
-  /* NPCs choose random destinations around the city. */
-  n.tx=150+Math.random()*2700;
-  n.ty=150+Math.random()*1900;
-}
+  npcData.forEach(n=>{
 
-function updateNPC(n){
+    if(Math.random()<.025){
 
-  const dx=n.tx-n.x;
-  const dy=n.ty-n.y;
-  const dist=Math.hypot(dx,dy);
+      n.dx=
+        Math.random()-.5;
 
-  if(dist<8){
-    chooseNPCDestination(n);
-    return;
-  }
+      n.dy=
+        Math.random()-.5;
+    }
 
-  n.x+=(dx/dist)*n.speed;
-  n.y+=(dy/dist)*n.speed;
+    n.x+=n.dx*.7;
+    n.y+=n.dy*.7;
 
-  n.el.style.left=n.x+"px";
-  n.el.style.top=n.y+"px";
+    n.x=Math.max(50,Math.min(2900,n.x));
+    n.y=Math.max(50,Math.min(2100,n.y));
 
-  /* Simple walking animation */
-  const walk=
-    Math.sin(Date.now()/100 + n.x)*2;
+    const el=document.getElementById(n.id);
 
-  n.el.style.transform=
-    "translate(-50%,-50%) rotate("+walk+"deg)";
-}
-
-function startNPCs(){
-
-  npcs.forEach(chooseNPCDestination);
-
-  function loop(){
-
-    npcs.forEach(updateNPC);
-
-    requestAnimationFrame(loop);
-  }
-
-  requestAnimationFrame(loop);
-}
-
-
-/* ================================
-   INTERACTIONS
-   ================================ */
-
-function distance(a,b){
-
-  return Math.hypot(
-    a.x-b.x,
-    a.y-b.y
-  );
-}
-
-function checkInteraction(){
-
-  const buildings=[
-    {x:410,y:450,type:"bank"},
-    {x:1110,y:420,type:"shop"},
-    {x:1860,y:460,type:"restaurant"},
-    {x:360,y:1100,type:"house"},
-    {x:1660,y:1070,type:"office"}
-  ];
-
-  let nearest=null;
-  let closest=999999;
-
-  buildings.forEach(b=>{
-
-    const d=distance(state,b);
-
-    if(d<closest){
-      closest=d;
-      nearest=b;
+    if(el){
+      el.style.left=n.x+"px";
+      el.style.top=n.y+"px";
     }
   });
 
-  const btn=document.getElementById("interact");
-
-  if(nearest && closest<220){
-
-    btn.style.display="block";
-
-    btn.textContent =
-      nearest.type==="bank" ? "BANK" :
-      nearest.type==="shop" ? "SHOP" :
-      nearest.type==="restaurant" ? "EAT" :
-      nearest.type==="office" ? "WORK" :
-      "ENTER";
-
-    btn.dataset.type=nearest.type;
-
-  }else{
-
-    btn.style.display="none";
-  }
+  setTimeout(moveNPCs,50);
 }
 
+/* =========================
+   ESCAPE
+========================= */
 
-document.getElementById("interact").onclick=()=>{
+function escapeHTML(value){
 
-  const type=
-    document.getElementById("interact").dataset.type;
-
-  if(type==="shop"){
-
-    if(state.money>=200){
-
-      state.money-=200;
-      state.energy=Math.min(100,state.energy+25);
-      state.xp+=5;
-
-      toast("You bought food. Energy restored.");
-    }else{
-      toast("You need ₦200.");
-    }
-  }
-
-  if(type==="restaurant"){
-
-    if(state.money>=500){
-
-      state.money-=500;
-      state.energy=Math.min(100,state.energy+50);
-      state.xp+=10;
-
-      toast("You enjoyed a meal.");
-    }else{
-      toast("You need ₦500.");
-    }
-  }
-
-  if(type==="office"){
-    startJob();
-  }
-
-  if(type==="bank"){
-    toast("Welcome to the city bank.");
-  }
-
-  levelCheck();
-  updateHUD();
-  saveGame();
-};
-
-
-/* ================================
-   JOB SYSTEM
-   ================================ */
-
-function startJob(){
-
-  if(state.energy<15){
-    toast("You are too tired. Get some food.");
-    return;
-  }
-
-  if(state.jobRunning){
-    toast("You already have a job.");
-    return;
-  }
-
-  state.jobRunning=true;
-  state.energy-=15;
-
-  toast("Delivery job started...");
-
-  setTimeout(()=>{
-
-    state.money+=1000;
-    state.xp+=25;
-    state.jobRunning=false;
-    state.missionDone=true;
-
-    levelCheck();
-    updateHUD();
-    saveGame();
-
-    toast("Job complete! +₦1,000");
-  },5000);
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
+/* =========================
+   START
+========================= */
 
-document.getElementById("jobBtn").onclick=()=>{
-  startJob();
-};
+updateCreatorPreview();
+moveNPCs();
+movePlayer();
 
-
-/* ================================
-   FOOD
-   ================================ */
-
-document.getElementById("foodBtn").onclick=()=>{
-
-  if(state.money<200){
-    toast("You need ₦200 for food.");
-    return;
-  }
-
-  state.money-=200;
-
-  state.energy=
-    Math.min(100,state.energy+25);
-
-  state.xp+=5;
-
-  levelCheck();
-  updateHUD();
-  saveGame();
-
-  toast("Food bought. +25 Energy");
-};
-
-
-/* ================================
-   TRANSPORT
-   ================================ */
-
-document.getElementById("carBtn").onclick=()=>{
-
-  state.transport=!state.transport;
-
-  toast(
-    state.transport
-    ? "You are now using transport."
-    : "You left the vehicle."
-  );
-
-  saveGame();
-};
-
-
-/* ================================
-   LEVEL SYSTEM
-   ================================ */
-
-function levelCheck(){
-
-  while(state.xp>=100){
-
-    state.xp-=100;
-    state.level++;
-
-    toast("LEVEL UP! You are now level "+state.level);
-  }
+if(localStorage.getItem(SAVE_KEY)){
+  state=JSON.parse(localStorage.getItem(SAVE_KEY));
 }
 
-
-/* ================================
-   SAVE
-   ================================ */
-
-function saveGame(){
-
-  localStorage.setItem(
-    "naijaLifeSave",
-    JSON.stringify(state)
-  );
-}
-
-document.getElementById("saveBtn").onclick=()=>{
-  saveGame();
-  toast("Game saved.");
-};
-
-
-/* ================================
-   CHARACTER EDIT
-   ================================ */
-
-document.getElementById("profileBtn").onclick=()=>{
-
-  editingCharacter=true;
-  openCreator(true);
-};
-
-
-/* ================================
-   TOAST
-   ================================ */
-
-let toastTimer;
-
-function toast(message){
-
-  const t=document.getElementById("toast");
-
-  t.textContent=message;
-  t.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    t.classList.remove("show");
-  },2200);
-}
-
-
-/* ================================
-   INITIAL SETUP
-   ================================ */
-
-loadCreatorValues();
-updateClock();
-updateHUD();
 </script>
 
 </body>
