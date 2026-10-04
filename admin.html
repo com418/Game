@@ -41,9 +41,11 @@ svg{
   stroke-linejoin:round
 }
 
-/* PASSWORD */
+/* =========================
+   AUTH SCREEN
+========================= */
 
-#passwordScreen{
+#authScreen{
   position:fixed;
   inset:0;
   z-index:99999;
@@ -52,50 +54,58 @@ svg{
   justify-content:center;
   padding:20px;
   background:
-    radial-gradient(circle at top,#123626 0,#07110d 48%)
+    radial-gradient(circle at top,#123626 0,#07110d 50%)
 }
 
-.login-box{
+.auth-box{
   width:100%;
-  max-width:390px;
+  max-width:410px;
   padding:28px;
-  background:rgba(12,27,21,.97);
+  background:rgba(12,27,21,.98);
   border:1px solid #28513e;
   border-radius:24px;
-  box-shadow:0 25px 70px rgba(0,0,0,.5)
+  box-shadow:0 25px 70px rgba(0,0,0,.55)
 }
 
-.login-logo{
+.auth-logo{
   width:58px;
   height:58px;
   border-radius:17px;
   background:#18ad68;
   display:grid;
   place-items:center;
-  margin-bottom:20px
+  margin-bottom:18px
 }
 
-.login-logo svg{
+.auth-logo svg{
   width:30px;
   height:30px;
   color:white
 }
 
-.login-box h1{
+.auth-box h1{
   margin:0;
   font-size:22px
 }
 
-.login-box p{
+.auth-box p{
   color:var(--muted);
   font-size:12px;
   line-height:1.5
 }
 
-.password-input{
+.step{
+  display:none
+}
+
+.step.active{
+  display:block
+}
+
+.input{
   width:100%;
-  padding:14px;
-  margin-top:12px;
+  padding:13px;
+  margin-top:8px;
   border-radius:11px;
   border:1px solid var(--line);
   background:#06110b;
@@ -103,14 +113,22 @@ svg{
   outline:none
 }
 
-.password-input:focus{
+.input:focus{
   border-color:var(--green)
 }
 
-.login-button{
+label{
+  display:block;
+  color:#8fa79c;
+  font-size:10px;
+  margin-top:15px;
+  text-transform:uppercase
+}
+
+.primary{
   width:100%;
-  padding:14px;
-  margin-top:12px;
+  padding:13px;
+  margin-top:15px;
   border:0;
   border-radius:11px;
   background:#18ad68;
@@ -118,17 +136,47 @@ svg{
   font-weight:bold
 }
 
-.login-error{
+.primary:disabled{
+  opacity:.6;
+  cursor:not-allowed
+}
+
+.error{
   display:none;
   margin-top:12px;
   padding:10px;
   border-radius:10px;
   background:#391919;
-  color:#ff9a9a;
+  border:1px solid #5b2929;
+  color:#ff9b9b;
+  font-size:11px;
+  line-height:1.4
+}
+
+.success{
+  display:none;
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#103522;
+  border:1px solid #1d5b3d;
+  color:#79e9ad;
   font-size:11px
 }
 
-/* SIDEBAR */
+.back{
+  width:100%;
+  padding:11px;
+  margin-top:8px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#091811;
+  color:#9bb1a7
+}
+
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar{
   position:fixed;
@@ -203,7 +251,9 @@ svg{
   color:#6ff0ae
 }
 
-/* MAIN */
+/* =========================
+   MAIN
+========================= */
 
 .main{
   margin-left:240px;
@@ -281,7 +331,9 @@ svg{
   border-color:#552525
 }
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 
 .stats{
   display:grid;
@@ -319,7 +371,9 @@ svg{
   font-weight:bold
 }
 
-/* PANEL */
+/* =========================
+   PANEL
+========================= */
 
 .panel{
   background:var(--panel);
@@ -371,7 +425,9 @@ svg{
   outline:none
 }
 
-.search:focus{border-color:var(--green)}
+.search:focus{
+  border-color:var(--green)
+}
 
 .select{
   padding:10px;
@@ -381,9 +437,13 @@ svg{
   color:white
 }
 
-/* PLAYERS */
+/* =========================
+   PLAYERS
+========================= */
 
-.players{padding:9px}
+.players{
+  padding:9px
+}
 
 .player{
   display:grid;
@@ -394,7 +454,9 @@ svg{
   border-bottom:1px solid #142b22
 }
 
-.player:hover{background:#0d2118}
+.player:hover{
+  background:#0d2118
+}
 
 .player-main{
   display:flex;
@@ -480,7 +542,6 @@ svg{
 .action.money:hover{color:#6be8a7}
 .action.arrest:hover{color:#ffc95d}
 .action.release:hover{color:#6be8a7}
-.action.ban:hover{color:#ff9999}
 
 .empty{
   padding:40px;
@@ -488,7 +549,9 @@ svg{
   color:#71887d
 }
 
-/* MODALS */
+/* =========================
+   MODALS
+========================= */
 
 .modal{
   position:fixed;
@@ -502,7 +565,9 @@ svg{
   z-index:1000
 }
 
-.modal.show{display:flex}
+.modal.show{
+  display:flex
+}
 
 .modal-box{
   width:100%;
@@ -540,36 +605,6 @@ svg{
   font-size:12px
 }
 
-label{
-  display:block;
-  color:#8fa79c;
-  font-size:10px;
-  margin:12px 0 6px
-}
-
-.input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:#07140e;
-  color:white;
-  outline:none
-}
-
-.input:focus{border-color:var(--green)}
-
-.primary{
-  width:100%;
-  border:0;
-  border-radius:10px;
-  padding:12px;
-  margin-top:15px;
-  background:#18ad68;
-  color:white;
-  font-weight:bold
-}
-
 .warning{
   background:#c58b1e;
   color:#111
@@ -586,9 +621,13 @@ label{
     transform:translateX(0)
   }
 
-  .main{margin-left:0}
+  .main{
+    margin-left:0
+  }
 
-  #menuBtn{display:grid!important}
+  #menuBtn{
+    display:grid!important
+  }
 
   .stats{
     grid-template-columns:repeat(2,1fr)
@@ -606,67 +645,150 @@ label{
     align-items:stretch
   }
 
-  .controls{width:100%}
+  .controls{
+    width:100%
+  }
 
-  .search{width:100%}
+  .search{
+    width:100%
+  }
 }
 
 @media(max-width:520px){
 
-  .content{padding:13px}
+  .content{
+    padding:13px
+  }
 
-  .topbar{padding:0 13px}
+  .topbar{
+    padding:0 13px
+  }
 
-  .stats{gap:8px}
+  .stats{
+    gap:8px
+  }
 
-  .stat{padding:12px}
+  .stat{
+    padding:12px
+  }
 
-  .topbar h1{font-size:17px}
+  .topbar h1{
+    font-size:17px
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- PASSWORD SCREEN -->
+<!-- =========================
+     FIREBASE LOGIN SCREEN
+========================= -->
 
-<div id="passwordScreen">
+<div id="authScreen">
 
-  <div class="login-box">
+  <div class="auth-box">
 
-    <div class="login-logo">
-
+    <div class="auth-logo">
       <svg viewBox="0 0 24 24">
-        <rect x="5" y="10" width="14" height="11" rx="2"/>
-        <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
+        <path d="M8.5 12l2.3 2.3 4.7-5"/>
       </svg>
+    </div>
+
+    <!-- STEP 1 -->
+
+    <div id="passwordStep" class="step active">
+
+      <h1>Naija Life Admin</h1>
+
+      <p>
+        Enter your administrator panel password.
+      </p>
+
+      <label>ADMIN PANEL PASSWORD</label>
+
+      <input
+        id="adminPassword"
+        class="input"
+        type="password"
+        placeholder="Enter admin password"
+      >
+
+      <button
+        id="passwordBtn"
+        class="primary"
+      >
+        Continue
+      </button>
+
+      <div
+        id="passwordError"
+        class="error"
+      >
+        Incorrect admin password.
+      </div>
 
     </div>
 
-    <h1>Naija Life Admin</h1>
 
-    <p>
-      Enter the administrator password to open
-      the Naija Life management panel.
-    </p>
+    <!-- STEP 2 -->
 
-    <input
-      id="adminPassword"
-      class="password-input"
-      type="password"
-      placeholder="Admin password"
-      autocomplete="current-password"
-    >
+    <div id="firebaseStep" class="step">
 
-    <button
-      id="adminLoginBtn"
-      class="login-button"
-    >
-      Enter Admin Panel
-    </button>
+      <h1>Firebase Admin Login</h1>
 
-    <div id="loginError" class="login-error">
-      Incorrect password.
+      <p>
+        Now sign in with the Firebase Authentication
+        account that has administrator access.
+      </p>
+
+      <label>EMAIL</label>
+
+      <input
+        id="firebaseEmail"
+        class="input"
+        type="email"
+        placeholder="Admin email"
+        autocomplete="email"
+      >
+
+      <label>PASSWORD</label>
+
+      <input
+        id="firebasePassword"
+        class="input"
+        type="password"
+        placeholder="Firebase password"
+        autocomplete="current-password"
+      >
+
+      <button
+        id="firebaseLoginBtn"
+        class="primary"
+      >
+        Sign In to Firebase
+      </button>
+
+      <button
+        id="backBtn"
+        class="back"
+      >
+        Back
+      </button>
+
+      <div
+        id="firebaseError"
+        class="error"
+      ></div>
+
+      <div
+        id="firebaseSuccess"
+        class="success"
+      >
+        Firebase authentication successful.
+      </div>
+
     </div>
 
   </div>
@@ -674,7 +796,9 @@ label{
 </div>
 
 
-<!-- ADMIN APP -->
+<!-- =========================
+     ADMIN APPLICATION
+========================= -->
 
 <div id="adminApp" style="display:none">
 
@@ -683,12 +807,10 @@ label{
     <div class="brand">
 
       <div class="logo">
-
         <svg viewBox="0 0 24 24">
           <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
           <path d="M8.5 12l2.3 2.3 4.7-5"/>
         </svg>
-
       </div>
 
       <div>
@@ -698,83 +820,69 @@ label{
 
     </div>
 
-    <div class="nav-title">Management</div>
+    <div class="nav-title">
+      Management
+    </div>
 
     <nav class="nav">
 
       <button class="active">
-
         <svg viewBox="0 0 24 24">
           <rect x="3" y="3" width="7" height="7"/>
           <rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/>
           <rect x="14" y="14" width="7" height="7"/>
         </svg>
-
         Dashboard
-
       </button>
 
       <button onclick="document.getElementById('playersPanel').scrollIntoView()">
-
         <svg viewBox="0 0 24 24">
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
           <circle cx="9" cy="7" r="4"/>
           <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
         </svg>
-
         Players
-
       </button>
 
       <button>
-
         <svg viewBox="0 0 24 24">
           <rect x="3" y="6" width="18" height="12" rx="2"/>
           <circle cx="12" cy="12" r="3"/>
         </svg>
-
         Economy
-
       </button>
 
       <button>
-
         <svg viewBox="0 0 24 24">
           <path d="M3 3v18h18"/>
           <path d="M7 16l4-5 3 3 5-7"/>
         </svg>
-
         Analytics
-
       </button>
 
     </nav>
 
-    <div class="nav-title">System</div>
+    <div class="nav-title">
+      System
+    </div>
 
     <nav class="nav">
 
       <button>
-
         <svg viewBox="0 0 24 24">
           <path d="M3 3v18h18"/>
           <path d="M7 17l4-5 3 3 5-8"/>
         </svg>
-
         Reports
-
       </button>
 
       <button>
-
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="3"/>
-          <path d="M19 12a7 7 0 0 0-.2-1.6l2-1.2-2-3.4-2.2 1a7 7 0 0 0-2.8-1.6V3h-4v2.2A7 7 0 0 0 9 6.8l-2.2-1-2 3.4 2 1.2A7 7 0 0 0 6.6 12c0 .6.1 1.1.2 1.6l-2 1.2 2 3.4 2.2-1a7 7 0 0 0 2.8 1.6V21h4v-2.2a7 7 0 0 0 2.8-1.6l2.2 1 2-3.4-2-1.2c.1-.5.2-1 .2-1.6z"/>
+          <path d="M19 12a7 7 0 0 0-.2-1.6l2-1.2-2-3.4-2.2 1a7 7 0 0 0-2.8-1.6V3h-4v2.2A7 7 0 0 0 9 6.8l-2.2-1-2 3.4 2 1.2A7 7 0 0 0 6.6 12c0 .6.1 1.1.2 1.6l-2 1.2 2 3.4 2.2-1a7 7 0 0 0 2.8 1.6V21h4v-2.2a7 7 0 0 0 2.8-1.6l2.2 1 2.2-1-2-3.4-2-1.2c.1-.5.2-1 .2-1.6z"/>
         </svg>
-
         Settings
-
       </button>
 
     </nav>
@@ -788,14 +896,16 @@ label{
 
       <div style="display:flex;gap:10px;align-items:center">
 
-        <button class="icon-btn" id="menuBtn" style="display:none">
-
+        <button
+          class="icon-btn"
+          id="menuBtn"
+          style="display:none"
+        >
           <svg viewBox="0 0 24 24">
             <path d="M4 6h16"/>
             <path d="M4 12h16"/>
             <path d="M4 18h16"/>
           </svg>
-
         </button>
 
         <div>
@@ -807,24 +917,27 @@ label{
 
       <div class="top-actions">
 
-        <button class="icon-btn" id="refreshBtn">
-
+        <button
+          class="icon-btn"
+          id="refreshBtn"
+        >
           <svg viewBox="0 0 24 24">
             <path d="M20 11a8 8 0 0 0-15-4"/>
             <path d="M4 4v5h5"/>
             <path d="M4 13a8 8 0 0 0 15 4"/>
             <path d="M20 20v-5h-5"/>
           </svg>
-
         </button>
 
-        <button class="icon-btn" id="logoutBtn">
-
+        <button
+          class="icon-btn"
+          id="logoutBtn"
+        >
           <svg viewBox="0 0 24 24">
-            <rect x="5" y="10" width="14" height="11" rx="2"/>
-            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            <path d="M10 17l5-5-5-5"/>
+            <path d="M15 12H3"/>
+            <path d="M21 19V5a2 2 0 0 0-2-2h-6"/>
           </svg>
-
         </button>
 
       </div>
@@ -858,9 +971,16 @@ label{
             </svg>
           </div>
 
-          <div class="stat-label">TOTAL PLAYERS</div>
+          <div class="stat-label">
+            TOTAL PLAYERS
+          </div>
 
-          <div class="stat-value" id="totalPlayers">—</div>
+          <div
+            class="stat-value"
+            id="totalPlayers"
+          >
+            —
+          </div>
 
         </div>
 
@@ -874,9 +994,16 @@ label{
             </svg>
           </div>
 
-          <div class="stat-label">ACTIVE</div>
+          <div class="stat-label">
+            ACTIVE
+          </div>
 
-          <div class="stat-value" id="activePlayers">—</div>
+          <div
+            class="stat-value"
+            id="activePlayers"
+          >
+            —
+          </div>
 
         </div>
 
@@ -890,9 +1017,16 @@ label{
             </svg>
           </div>
 
-          <div class="stat-label">BANNED</div>
+          <div class="stat-label">
+            BANNED
+          </div>
 
-          <div class="stat-value" id="bannedPlayers">—</div>
+          <div
+            class="stat-value"
+            id="bannedPlayers"
+          >
+            —
+          </div>
 
         </div>
 
@@ -908,16 +1042,26 @@ label{
             </svg>
           </div>
 
-          <div class="stat-label">ARRESTED</div>
+          <div class="stat-label">
+            ARRESTED
+          </div>
 
-          <div class="stat-value" id="arrestedPlayers">—</div>
+          <div
+            class="stat-value"
+            id="arrestedPlayers"
+          >
+            —
+          </div>
 
         </div>
 
       </section>
 
 
-      <section class="panel" id="playersPanel">
+      <section
+        class="panel"
+        id="playersPanel"
+      >
 
         <div class="panel-head">
 
@@ -930,8 +1074,13 @@ label{
             </svg>
 
             <div>
-              <h2>Player Management</h2>
-              <p>Manage players, money, arrests and releases</p>
+              <h2>
+                Player Management
+              </h2>
+
+              <p>
+                Manage players, money, arrests and releases
+              </p>
             </div>
 
           </div>
@@ -945,13 +1094,25 @@ label{
               placeholder="Search players..."
             >
 
-            <select id="filter" class="select">
+            <select
+              id="filter"
+              class="select"
+            >
+              <option value="all">
+                All
+              </option>
 
-              <option value="all">All</option>
-              <option value="active">Active</option>
-              <option value="arrested">Arrested</option>
-              <option value="banned">Banned</option>
+              <option value="active">
+                Active
+              </option>
 
+              <option value="arrested">
+                Arrested
+              </option>
+
+              <option value="banned">
+                Banned
+              </option>
             </select>
 
           </div>
@@ -959,7 +1120,10 @@ label{
         </div>
 
 
-        <div id="players" class="players">
+        <div
+          id="players"
+          class="players"
+        >
 
           <div class="empty">
             Loading players...
@@ -976,30 +1140,42 @@ label{
 </div>
 
 
-<!-- ARREST MODAL -->
+<!-- =========================
+     ARREST MODAL
+========================= -->
 
-<div class="modal" id="arrestModal">
+<div
+  class="modal"
+  id="arrestModal"
+>
 
   <div class="modal-box">
 
     <div class="modal-head">
 
-      <h2>👮🏾 Arrest Player</h2>
+      <h2>
+        👮🏾 Arrest Player
+      </h2>
 
-      <button class="close" id="closeArrest">
-
+      <button
+        class="close"
+        id="closeArrest"
+      >
         <svg viewBox="0 0 24 24">
           <path d="M6 6l12 12"/>
           <path d="M18 6L6 18"/>
         </svg>
-
       </button>
 
     </div>
 
-    <p id="arrestPlayerName">Player</p>
+    <p id="arrestPlayerName">
+      Player
+    </p>
 
-    <label>JAIL TIME — MINUTES</label>
+    <label>
+      Jail Time — Minutes
+    </label>
 
     <input
       class="input"
@@ -1010,7 +1186,9 @@ label{
       value="30"
     >
 
-    <label>ARREST REASON</label>
+    <label>
+      Arrest Reason
+    </label>
 
     <input
       class="input"
@@ -1019,7 +1197,10 @@ label{
       placeholder="Example: Traffic violation"
     >
 
-    <button class="primary warning" id="confirmArrest">
+    <button
+      class="primary warning"
+      id="confirmArrest"
+    >
       Arrest Player
     </button>
 
@@ -1028,30 +1209,42 @@ label{
 </div>
 
 
-<!-- MONEY MODAL -->
+<!-- =========================
+     MONEY MODAL
+========================= -->
 
-<div class="modal" id="moneyModal">
+<div
+  class="modal"
+  id="moneyModal"
+>
 
   <div class="modal-box">
 
     <div class="modal-head">
 
-      <h2>💰 Adjust Money</h2>
+      <h2>
+        💰 Adjust Money
+      </h2>
 
-      <button class="close" id="closeMoney">
-
+      <button
+        class="close"
+        id="closeMoney"
+      >
         <svg viewBox="0 0 24 24">
           <path d="M6 6l12 12"/>
           <path d="M18 6L6 18"/>
         </svg>
-
       </button>
 
     </div>
 
-    <p id="moneyPlayerName">Player</p>
+    <p id="moneyPlayerName">
+      Player
+    </p>
 
-    <label>AMOUNT</label>
+    <label>
+      Amount
+    </label>
 
     <input
       class="input"
@@ -1060,7 +1253,9 @@ label{
       placeholder="Example: 5000"
     >
 
-    <label>REASON</label>
+    <label>
+      Reason
+    </label>
 
     <input
       class="input"
@@ -1069,7 +1264,10 @@ label{
       placeholder="Admin adjustment"
     >
 
-    <button class="primary" id="confirmMoney">
+    <button
+      class="primary"
+      id="confirmMoney"
+    >
       Apply Money
     </button>
 
@@ -1082,14 +1280,14 @@ label{
 
 import {
   initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 import {
   getAuth,
-  onAuthStateChanged
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 import {
   getFirestore,
@@ -1097,131 +1295,69 @@ import {
   getDocs,
   doc,
   getDoc
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 import {
   getFunctions,
   httpsCallable
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
 
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
 
 const firebaseConfig = {
 
   apiKey:
-  "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
+    "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
 
   authDomain:
-  "game-97f37.firebaseapp.com",
+    "game-97f37.firebaseapp.com",
 
   projectId:
-  "game-97f37",
+    "game-97f37",
 
   storageBucket:
-  "game-97f37.firebasestorage.app",
+    "game-97f37.firebasestorage.app",
 
   messagingSenderId:
-  "584626250832",
+    "584626250832",
 
   appId:
-  "1:584626250832:web:57f076e095174ccd74dd55",
+    "1:584626250832:web:57f076e095174ccd74dd55",
 
   databaseURL:
-  "https://game-97f37-default-rtdb.firebaseio.com"
-
+    "https://game-97f37-default-rtdb.firebaseio.com"
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+  getAuth(app);
 
-const db = getFirestore(app);
+const db =
+  getFirestore(app);
 
-const functions = getFunctions(app);
-
-
-/* =========================================
-   ADMIN PASSWORD
-========================================= */
-
-const ADMIN_PASSWORD = "admin123";
+const functions =
+  getFunctions(app);
 
 
-/* =========================================
-   ELEMENTS
-========================================= */
+/* =========================
+   ADMIN PANEL PASSWORD
+========================= */
 
-const passwordScreen =
-document.getElementById("passwordScreen");
+const ADMIN_PASSWORD =
+  "admin123";
 
-const adminApp =
-document.getElementById("adminApp");
 
-const adminPassword =
-document.getElementById("adminPassword");
+/* =========================
+   STATE
+========================= */
 
-const adminLoginBtn =
-document.getElementById("adminLoginBtn");
-
-const loginError =
-document.getElementById("loginError");
-
-const status =
-document.getElementById("status");
-
-const playersEl =
-document.getElementById("players");
-
-const search =
-document.getElementById("search");
-
-const filter =
-document.getElementById("filter");
-
-const totalPlayers =
-document.getElementById("totalPlayers");
-
-const activePlayers =
-document.getElementById("activePlayers");
-
-const bannedPlayers =
-document.getElementById("bannedPlayers");
-
-const arrestedPlayers =
-document.getElementById("arrestedPlayers");
-
-const arrestModal =
-document.getElementById("arrestModal");
-
-const arrestPlayerName =
-document.getElementById("arrestPlayerName");
-
-const jailMinutes =
-document.getElementById("jailMinutes");
-
-const arrestReason =
-document.getElementById("arrestReason");
-
-const confirmArrest =
-document.getElementById("confirmArrest");
-
-const moneyModal =
-document.getElementById("moneyModal");
-
-const moneyPlayerName =
-document.getElementById("moneyPlayerName");
-
-const moneyAmount =
-document.getElementById("moneyAmount");
-
-const moneyReason =
-document.getElementById("moneyReason");
-
-const confirmMoney =
-document.getElementById("confirmMoney");
-
+let firebaseReady = false;
 
 let players = [];
 
@@ -1230,51 +1366,138 @@ let selectedPlayer = null;
 let selectedMoneyPlayer = null;
 
 
-/* =========================================
-   PASSWORD LOCK
-========================================= */
+/* =========================
+   ELEMENTS
+========================= */
 
-function unlockAdmin(){
+const authScreen =
+  document.getElementById("authScreen");
 
-  passwordScreen.style.display = "none";
+const adminApp =
+  document.getElementById("adminApp");
 
-  adminApp.style.display = "block";
+const passwordStep =
+  document.getElementById("passwordStep");
 
-}
+const firebaseStep =
+  document.getElementById("firebaseStep");
+
+const adminPassword =
+  document.getElementById("adminPassword");
+
+const passwordBtn =
+  document.getElementById("passwordBtn");
+
+const passwordError =
+  document.getElementById("passwordError");
+
+const firebaseEmail =
+  document.getElementById("firebaseEmail");
+
+const firebasePassword =
+  document.getElementById("firebasePassword");
+
+const firebaseLoginBtn =
+  document.getElementById("firebaseLoginBtn");
+
+const firebaseError =
+  document.getElementById("firebaseError");
+
+const firebaseSuccess =
+  document.getElementById("firebaseSuccess");
+
+const backBtn =
+  document.getElementById("backBtn");
+
+const status =
+  document.getElementById("status");
+
+const playersEl =
+  document.getElementById("players");
+
+const search =
+  document.getElementById("search");
+
+const filter =
+  document.getElementById("filter");
+
+const totalPlayers =
+  document.getElementById("totalPlayers");
+
+const activePlayers =
+  document.getElementById("activePlayers");
+
+const bannedPlayers =
+  document.getElementById("bannedPlayers");
+
+const arrestedPlayers =
+  document.getElementById("arrestedPlayers");
+
+const arrestModal =
+  document.getElementById("arrestModal");
+
+const arrestPlayerName =
+  document.getElementById("arrestPlayerName");
+
+const jailMinutes =
+  document.getElementById("jailMinutes");
+
+const arrestReason =
+  document.getElementById("arrestReason");
+
+const confirmArrest =
+  document.getElementById("confirmArrest");
+
+const moneyModal =
+  document.getElementById("moneyModal");
+
+const moneyPlayerName =
+  document.getElementById("moneyPlayerName");
+
+const moneyAmount =
+  document.getElementById("moneyAmount");
+
+const moneyReason =
+  document.getElementById("moneyReason");
+
+const confirmMoney =
+  document.getElementById("confirmMoney");
 
 
-function lockAdmin(){
+/* =========================
+   STEP 1
+========================= */
 
-  passwordScreen.style.display = "flex";
-
-  adminApp.style.display = "none";
-
-  adminPassword.value = "";
-
-  loginError.style.display = "none";
-
-}
-
-
-adminLoginBtn.addEventListener(
+passwordBtn.addEventListener(
   "click",
   () => {
 
+    passwordError.style.display =
+      "none";
+
     if(
-      adminPassword.value ===
+      adminPassword.value !==
       ADMIN_PASSWORD
     ){
 
-      unlockAdmin();
+      passwordError.textContent =
+        "Incorrect admin panel password.";
+
+      passwordError.style.display =
+        "block";
 
       return;
     }
 
-    loginError.textContent =
-      "Incorrect password.";
+    passwordStep.classList.remove(
+      "active"
+    );
 
-    loginError.style.display =
-      "block";
+    firebaseStep.classList.add(
+      "active"
+    );
+
+    firebaseEmail.focus();
 
   }
 );
@@ -1282,11 +1505,11 @@ adminLoginBtn.addEventListener(
 
 adminPassword.addEventListener(
   "keydown",
-  event => {
+  e => {
 
-    if(event.key === "Enter"){
+    if(e.key === "Enter"){
 
-      adminLoginBtn.click();
+      passwordBtn.click();
 
     }
 
@@ -1294,9 +1517,158 @@ adminPassword.addEventListener(
 );
 
 
-/* =========================================
-   FIREBASE ADMIN CHECK
-========================================= */
+/* =========================
+   BACK
+========================= */
+
+backBtn.addEventListener(
+  "click",
+  () => {
+
+    firebaseStep.classList.remove(
+      "active"
+    );
+
+    passwordStep.classList.add(
+      "active"
+    );
+
+    firebaseError.style.display =
+      "none";
+
+  }
+);
+
+
+/* =========================
+   FIREBASE LOGIN
+========================= */
+
+firebaseLoginBtn.addEventListener(
+  "click",
+  async () => {
+
+    const email =
+      firebaseEmail.value.trim();
+
+    const password =
+      firebasePassword.value;
+
+
+    firebaseError.style.display =
+      "none";
+
+    firebaseSuccess.style.display =
+      "none";
+
+
+    if(!email || !password){
+
+      firebaseError.textContent =
+        "Enter your Firebase email and password.";
+
+      firebaseError.style.display =
+        "block";
+
+      return;
+
+    }
+
+
+    firebaseLoginBtn.disabled =
+      true;
+
+    firebaseLoginBtn.textContent =
+      "Signing in...";
+
+
+    try{
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+      firebaseSuccess.textContent =
+        "Firebase authentication successful.";
+
+      firebaseSuccess.style.display =
+        "block";
+
+
+    }catch(error){
+
+      console.error(error);
+
+      let message =
+        "Firebase login failed.";
+
+      if(
+        error.code ===
+        "auth/invalid-credential"
+      ){
+
+        message =
+          "Incorrect Firebase email or password.";
+
+      }
+
+      else if(
+        error.code ===
+        "auth/invalid-email"
+      ){
+
+        message =
+          "The email address is invalid.";
+
+      }
+
+      else if(
+        error.code ===
+        "auth/too-many-requests"
+      ){
+
+        message =
+          "Too many attempts. Try again later.";
+
+      }
+
+      else if(
+        error.code ===
+        "auth/user-disabled"
+      ){
+
+        message =
+          "This Firebase account is disabled.";
+
+      }
+
+
+      firebaseError.textContent =
+        message;
+
+      firebaseError.style.display =
+        "block";
+
+    }finally{
+
+      firebaseLoginBtn.disabled =
+        false;
+
+      firebaseLoginBtn.textContent =
+        "Sign In to Firebase";
+
+    }
+
+  }
+);
+
+
+/* =========================
+   AUTH STATE
+========================= */
 
 onAuthStateChanged(
   auth,
@@ -1304,17 +1676,8 @@ onAuthStateChanged(
 
     if(!user){
 
-      status.classList.add("error");
-
-      status.innerHTML = `
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 8v4"/>
-          <path d="M12 16h.01"/>
-        </svg>
-
-        Firebase administrator session is not signed in.
-      `;
+      firebaseReady =
+        false;
 
       return;
     }
@@ -1322,32 +1685,69 @@ onAuthStateChanged(
 
     try{
 
-      const adminSnap =
-      await getDoc(
+      const adminRef =
         doc(
           db,
           "admins",
           user.uid
-        )
-      );
+        );
+
+      const adminSnap =
+        await getDoc(adminRef);
 
 
       if(
-        !adminSnap.exists() ||
-        adminSnap.data().active !== true ||
-        adminSnap.data().role !== "admin"
+        !adminSnap.exists()
       ){
 
-        status.classList.add("error");
+        throw new Error(
+          "No administrator record exists for this Firebase account."
+        );
 
-        status.textContent =
-          "This account is not an active administrator.";
-
-        return;
       }
 
 
-      status.classList.remove("error");
+      const adminData =
+        adminSnap.data();
+
+
+      if(
+        adminData.active !== true
+      ){
+
+        throw new Error(
+          "Admin account is inactive."
+        );
+
+      }
+
+
+      if(
+        adminData.role !== "admin"
+      ){
+
+        throw new Error(
+          "This account does not have the admin role."
+        );
+
+      }
+
+
+      firebaseReady =
+        true;
+
+
+      authScreen.style.display =
+        "none";
+
+      adminApp.style.display =
+        "block";
+
+
+      status.classList.remove(
+        "error"
+      );
+
 
       status.innerHTML = `
         <svg viewBox="0 0 24 24">
@@ -1355,20 +1755,35 @@ onAuthStateChanged(
           <path d="M8 12l2.5 2.5L16 9"/>
         </svg>
 
-        Administrator access ready
+        Administrator authenticated
       `;
 
 
       await loadPlayers();
 
+
     }catch(error){
 
       console.error(error);
 
-      status.classList.add("error");
+      firebaseReady =
+        false;
+
+      status.classList.add(
+        "error"
+      );
 
       status.textContent =
         error.message;
+
+
+      await signOut(auth);
+
+      authScreen.style.display =
+        "flex";
+
+      adminApp.style.display =
+        "none";
 
     }
 
@@ -1376,16 +1791,21 @@ onAuthStateChanged(
 );
 
 
-/* =========================================
+/* =========================
    LOAD PLAYERS
-========================================= */
+========================= */
 
 async function loadPlayers(){
+
+  if(!firebaseReady) return;
+
 
   try{
 
     playersEl.innerHTML =
-      `<div class="empty">Loading players...</div>`;
+      `<div class="empty">
+        Loading players...
+      </div>`;
 
 
     const snap =
@@ -1416,6 +1836,7 @@ async function loadPlayers(){
 
     render();
 
+
   }catch(error){
 
     console.error(error);
@@ -1430,9 +1851,9 @@ async function loadPlayers(){
 }
 
 
-/* =========================================
+/* =========================
    STATS
-========================================= */
+========================= */
 
 function updateStats(){
 
@@ -1472,9 +1893,9 @@ function updateStats(){
 }
 
 
-/* =========================================
+/* =========================
    ESCAPE HTML
-========================================= */
+========================= */
 
 function escapeHtml(value){
 
@@ -1488,77 +1909,92 @@ function escapeHtml(value){
 }
 
 
-/* =========================================
-   RENDER
-========================================= */
+/* =========================
+   RENDER PLAYERS
+========================= */
 
 function render(){
 
   const q =
-    search.value.trim().toLowerCase();
+    search.value
+      .trim()
+      .toLowerCase();
 
   const f =
     filter.value;
 
 
   const list =
-    players.filter(p => {
+    players.filter(
+      p => {
 
-      const text = [
-        p.name,
-        p.email,
-        p.uid,
-        p.city,
-        p.job
-      ]
-      .join(" ")
-      .toLowerCase();
+        const text =
+          [
+            p.name,
+            p.email,
+            p.uid,
+            p.city,
+            p.job
+          ]
+          .join(" ")
+          .toLowerCase();
 
 
-      if(
-        q &&
-        !text.includes(q)
-      ){
-        return false;
+        if(
+          q &&
+          !text.includes(q)
+        ){
+
+          return false;
+
+        }
+
+
+        if(
+          f === "banned" &&
+          p.banned !== true
+        ){
+
+          return false;
+
+        }
+
+
+        if(
+          f === "arrested" &&
+          p.arrested !== true
+        ){
+
+          return false;
+
+        }
+
+
+        if(
+          f === "active" &&
+          (
+            p.banned === true ||
+            p.arrested === true
+          )
+        ){
+
+          return false;
+
+        }
+
+
+        return true;
+
       }
-
-
-      if(
-        f === "banned" &&
-        p.banned !== true
-      ){
-        return false;
-      }
-
-
-      if(
-        f === "arrested" &&
-        p.arrested !== true
-      ){
-        return false;
-      }
-
-
-      if(
-        f === "active" &&
-        (
-          p.banned === true ||
-          p.arrested === true
-        )
-      ){
-        return false;
-      }
-
-
-      return true;
-
-    });
+    );
 
 
   if(!list.length){
 
     playersEl.innerHTML =
-      `<div class="empty">No players found.</div>`;
+      `<div class="empty">
+        No players found.
+      </div>`;
 
     return;
 
@@ -1566,236 +2002,201 @@ function render(){
 
 
   playersEl.innerHTML =
-  list.map(p => {
+    list.map(
+      p => {
 
-    const uid =
-      p.uid || p.id;
+        const uid =
+          p.uid || p.id;
 
-    const banned =
-      p.banned === true;
+        const banned =
+          p.banned === true;
 
-    const arrested =
-      p.arrested === true;
-
-
-    let jailText = "";
+        const arrested =
+          p.arrested === true;
 
 
-    if(arrested && p.jailUntil){
+        let badge;
 
-      let date;
 
-      if(
-        typeof p.jailUntil.toDate ===
-        "function"
-      ){
+        if(banned){
 
-        date =
-          p.jailUntil.toDate();
+          badge =
+            `<span class="badge banned">
+              BANNED
+            </span>`;
 
-      }else{
+        }else if(arrested){
 
-        date =
-          new Date(p.jailUntil);
+          badge =
+            `<span class="badge arrested">
+              ARRESTED
+            </span>`;
+
+        }else{
+
+          badge =
+            `<span class="badge active">
+              ACTIVE
+            </span>`;
+
+        }
+
+
+        let action;
+
+
+        if(arrested){
+
+          action = `
+            <button
+              class="action release"
+              data-action="release"
+              data-id="${escapeHtml(uid)}"
+              title="Release player"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M5 12h14"/>
+                <path d="M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          `;
+
+        }else{
+
+          action = `
+            <button
+              class="action arrest"
+              data-action="arrest"
+              data-id="${escapeHtml(uid)}"
+              data-name="${escapeHtml(
+                p.name || "Player"
+              )}"
+              title="Arrest player"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M7 3h10"/>
+                <path d="M7 21h10"/>
+                <path d="M8 3v5l4 4-4 4v5"/>
+                <path d="M16 3v5l-4 4 4 4v5"/>
+              </svg>
+            </button>
+          `;
+
+        }
+
+
+        return `
+          <div class="player">
+
+            <div class="player-main">
+
+              <div class="avatar">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M4 21a8 8 0 0 1 16 0"/>
+                </svg>
+              </div>
+
+              <div>
+
+                <div class="name">
+                  ${escapeHtml(
+                    p.name ||
+                    "Unknown Player"
+                  )}
+                </div>
+
+                <div class="sub">
+                  ${escapeHtml(
+                    p.email ||
+                    uid
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                City
+              </div>
+
+              <div class="value">
+                ${escapeHtml(
+                  p.city ||
+                  "Unknown"
+                )}
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                Level
+              </div>
+
+              <div class="value">
+                ${Number(
+                  p.level || 1
+                )}
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="label">
+                Status
+              </div>
+
+              <div>
+                ${badge}
+              </div>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                class="action money"
+                data-action="money"
+                data-id="${escapeHtml(uid)}"
+                data-name="${escapeHtml(
+                  p.name || "Player"
+                )}"
+                title="Adjust money"
+              >
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M8 12h8"/>
+                  <path d="M12 8v8"/>
+                </svg>
+              </button>
+
+              ${action}
+
+            </div>
+
+          </div>
+        `;
 
       }
-
-
-      jailText =
-        "Until " +
-        date.toLocaleString();
-
-    }
-
-
-    let statusBadge;
-
-
-    if(banned){
-
-      statusBadge =
-      `<span class="badge banned">BANNED</span>`;
-
-    }else if(arrested){
-
-      statusBadge =
-      `<span class="badge arrested">ARRESTED</span>`;
-
-    }else{
-
-      statusBadge =
-      `<span class="badge active">ACTIVE</span>`;
-
-    }
-
-
-    let mainAction;
-
-
-    if(arrested){
-
-      mainAction = `
-        <button
-          class="action release"
-          title="Release player"
-          data-action="release"
-          data-id="${escapeHtml(uid)}"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14"/>
-            <path d="M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-      `;
-
-    }else{
-
-      mainAction = `
-        <button
-          class="action arrest"
-          title="Arrest player"
-          data-action="arrest"
-          data-id="${escapeHtml(uid)}"
-          data-name="${escapeHtml(
-            p.name || "Player"
-          )}"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M7 3h10"/>
-            <path d="M7 21h10"/>
-            <path d="M8 3v5l4 4-4 4v5"/>
-            <path d="M16 3v5l-4 4 4 4v5"/>
-          </svg>
-        </button>
-      `;
-
-    }
-
-
-    return `
-      <div class="player">
-
-        <div class="player-main">
-
-          <div class="avatar">
-
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 21a8 8 0 0 1 16 0"/>
-            </svg>
-
-          </div>
-
-          <div>
-
-            <div class="name">
-              ${escapeHtml(
-                p.name ||
-                "Unknown Player"
-              )}
-            </div>
-
-            <div class="sub">
-              ${escapeHtml(
-                p.email ||
-                uid
-              )}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="label">City</div>
-
-          <div class="value">
-            ${escapeHtml(
-              p.city ||
-              "Unknown"
-            )}
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="label">Level</div>
-
-          <div class="value">
-            ${Number(p.level || 1)}
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="label">Status</div>
-
-          <div>
-            ${statusBadge}
-          </div>
-
-          ${
-            arrested
-            ?
-            `
-            <div
-              style="
-                font-size:9px;
-                color:#a98548;
-                margin-top:5px;
-              "
-            >
-              ${escapeHtml(jailText)}
-            </div>
-            `
-            :
-            ""
-          }
-
-        </div>
-
-
-        <div class="actions">
-
-          <button
-            class="action money"
-            title="Adjust money"
-            data-action="money"
-            data-id="${escapeHtml(uid)}"
-            data-name="${escapeHtml(
-              p.name || "Player"
-            )}"
-          >
-
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M8 12h8"/>
-              <path d="M12 8v8"/>
-            </svg>
-
-          </button>
-
-          ${mainAction}
-
-        </div>
-
-      </div>
-    `;
-
-  }).join("");
+    )
+    .join("");
 
 }
 
 
-/* =========================================
+/* =========================
    SEARCH
-========================================= */
+========================= */
 
 search.addEventListener(
   "input",
@@ -1808,9 +2209,9 @@ filter.addEventListener(
 );
 
 
-/* =========================================
+/* =========================
    PLAYER ACTIONS
-========================================= */
+========================= */
 
 playersEl.addEventListener(
   "click",
@@ -1829,9 +2230,6 @@ playersEl.addEventListener(
       button.dataset.id;
 
 
-    if(!uid) return;
-
-
     if(action === "arrest"){
 
       selectedPlayer =
@@ -1847,9 +2245,12 @@ playersEl.addEventListener(
       arrestReason.value =
         "";
 
-      arrestModal.classList.add("show");
+      arrestModal.classList.add(
+        "show"
+      );
 
       return;
+
     }
 
 
@@ -1860,17 +2261,19 @@ playersEl.addEventListener(
           "Release this player from jail?"
         )
       ){
+
         return;
+
       }
 
 
       try{
 
         const release =
-        httpsCallable(
-          functions,
-          "releasePlayer"
-        );
+          httpsCallable(
+            functions,
+            "releasePlayer"
+          );
 
 
         await release({
@@ -1885,6 +2288,7 @@ playersEl.addEventListener(
 
         await loadPlayers();
 
+
       }catch(error){
 
         console.error(error);
@@ -1897,6 +2301,7 @@ playersEl.addEventListener(
       }
 
       return;
+
     }
 
 
@@ -1915,7 +2320,9 @@ playersEl.addEventListener(
       moneyReason.value =
         "";
 
-      moneyModal.classList.add("show");
+      moneyModal.classList.add(
+        "show"
+      );
 
     }
 
@@ -1923,9 +2330,9 @@ playersEl.addEventListener(
 );
 
 
-/* =========================================
-   ARREST
-========================================= */
+/* =========================
+   ARREST PLAYER
+========================= */
 
 confirmArrest.addEventListener(
   "click",
@@ -1935,7 +2342,9 @@ confirmArrest.addEventListener(
 
 
     const duration =
-      Number(jailMinutes.value);
+      Number(
+        jailMinutes.value
+      );
 
     const reason =
       arrestReason.value.trim();
@@ -1952,6 +2361,7 @@ confirmArrest.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -1962,6 +2372,7 @@ confirmArrest.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -1975,10 +2386,10 @@ confirmArrest.addEventListener(
 
 
       const arrest =
-      httpsCallable(
-        functions,
-        "arrestPlayer"
-      );
+        httpsCallable(
+          functions,
+          "arrestPlayer"
+        );
 
 
       await arrest({
@@ -1989,7 +2400,8 @@ confirmArrest.addEventListener(
         durationMinutes:
           duration,
 
-        reason
+        reason:
+          reason
 
       });
 
@@ -2004,6 +2416,7 @@ confirmArrest.addEventListener(
 
       await loadPlayers();
 
+
     }catch(error){
 
       console.error(error);
@@ -2012,6 +2425,7 @@ confirmArrest.addEventListener(
         error.message ||
         "Arrest failed."
       );
+
 
     }finally{
 
@@ -2027,41 +2441,22 @@ confirmArrest.addEventListener(
 );
 
 
-/* =========================================
-   CLOSE ARREST
-========================================= */
-
-function closeArrest(){
-
-  arrestModal.classList.remove("show");
-
-  selectedPlayer =
-    null;
-
-}
-
-
-document
-.getElementById("closeArrest")
-.addEventListener(
-  "click",
-  closeArrest
-);
-
-
-/* =========================================
+/* =========================
    MONEY
-========================================= */
+========================= */
 
 confirmMoney.addEventListener(
   "click",
   async () => {
 
-    if(!selectedMoneyPlayer) return;
+    if(!selectedMoneyPlayer)
+      return;
 
 
     const amount =
-      Number(moneyAmount.value);
+      Number(
+        moneyAmount.value
+      );
 
     const reason =
       moneyReason.value.trim();
@@ -2076,6 +2471,7 @@ confirmMoney.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -2089,6 +2485,7 @@ confirmMoney.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -2102,25 +2499,26 @@ confirmMoney.addEventListener(
 
 
       const addMoney =
-      httpsCallable(
-        functions,
-        "addGameMoney"
-      );
+        httpsCallable(
+          functions,
+          "addGameMoney"
+        );
 
 
       const result =
-      await addMoney({
+        await addMoney({
 
-        uid:
-          selectedMoneyPlayer,
+          uid:
+            selectedMoneyPlayer,
 
-        amount,
+          amount:
+            amount,
 
-        reason:
-          reason ||
-          "Admin adjustment"
+          reason:
+            reason ||
+            "Admin adjustment"
 
-      });
+        });
 
 
       closeMoney();
@@ -2136,6 +2534,7 @@ confirmMoney.addEventListener(
 
       await loadPlayers();
 
+
     }catch(error){
 
       console.error(error);
@@ -2144,6 +2543,7 @@ confirmMoney.addEventListener(
         error.message ||
         "Money adjustment failed."
       );
+
 
     }finally{
 
@@ -2159,13 +2559,39 @@ confirmMoney.addEventListener(
 );
 
 
-/* =========================================
+/* =========================
+   CLOSE ARREST
+========================= */
+
+function closeArrest(){
+
+  arrestModal.classList.remove(
+    "show"
+  );
+
+  selectedPlayer =
+    null;
+
+}
+
+
+document
+  .getElementById("closeArrest")
+  .addEventListener(
+    "click",
+    closeArrest
+  );
+
+
+/* =========================
    CLOSE MONEY
-========================================= */
+========================= */
 
 function closeMoney(){
 
-  moneyModal.classList.remove("show");
+  moneyModal.classList.remove(
+    "show"
+  );
 
   selectedMoneyPlayer =
     null;
@@ -2174,70 +2600,106 @@ function closeMoney(){
 
 
 document
-.getElementById("closeMoney")
-.addEventListener(
-  "click",
-  closeMoney
-);
+  .getElementById("closeMoney")
+  .addEventListener(
+    "click",
+    closeMoney
+  );
 
 
-/* =========================================
+/* =========================
    REFRESH
-========================================= */
+========================= */
 
 document
-.getElementById("refreshBtn")
-.addEventListener(
-  "click",
-  loadPlayers
-);
+  .getElementById("refreshBtn")
+  .addEventListener(
+    "click",
+    loadPlayers
+  );
 
 
-/* =========================================
-   LOCK ADMIN PANEL
-========================================= */
+/* =========================
+   LOGOUT / LOCK
+========================= */
 
 document
-.getElementById("logoutBtn")
-.addEventListener(
-  "click",
-  () => {
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-    lockAdmin();
+      /*
+        We intentionally DO NOT sign out
+        of Firebase here.
 
-  }
-);
+        This simply locks the admin UI.
+        That prevents the previous
+        "Login required" problem when
+        reopening the panel.
+      */
+
+      adminApp.style.display =
+        "none";
+
+      authScreen.style.display =
+        "flex";
+
+      firebaseStep.classList.remove(
+        "active"
+      );
+
+      passwordStep.classList.add(
+        "active"
+      );
+
+      adminPassword.value =
+        "";
+
+      firebasePassword.value =
+        "";
+
+      passwordError.style.display =
+        "none";
+
+      firebaseError.style.display =
+        "none";
+
+      firebaseSuccess.style.display =
+        "none";
+
+    }
+  );
 
 
-/* =========================================
+/* =========================
    MOBILE MENU
-========================================= */
+========================= */
 
 document
-.getElementById("menuBtn")
-.addEventListener(
-  "click",
-  () => {
+  .getElementById("menuBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-    document
-    .getElementById("sidebar")
-    .classList.toggle("open");
+      document
+        .getElementById("sidebar")
+        .classList.toggle("open");
 
-  }
-);
+    }
+  );
 
 
-/* =========================================
-   CLOSE MODALS OUTSIDE
-========================================= */
+/* =========================
+   MODAL OUTSIDE CLICK
+========================= */
 
 arrestModal.addEventListener(
   "click",
-  event => {
+  e => {
 
     if(
-      event.target ===
-      arrestModal
+      e.target === arrestModal
     ){
 
       closeArrest();
@@ -2250,11 +2712,10 @@ arrestModal.addEventListener(
 
 moneyModal.addEventListener(
   "click",
-  event => {
+  e => {
 
     if(
-      event.target ===
-      moneyModal
+      e.target === moneyModal
     ){
 
       closeMoney();
