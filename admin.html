@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
 <title>Naija Life — Admin</title>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -18,26 +25,16 @@
   --text:#f4f8f6;
   --muted:#8fa79c;
   --green:#22c77d;
-  --green2:#13a965;
-  --danger:#ef6262;
-  --warning:#e6ad35;
+  --red:#ef6262;
+  --orange:#e6ad35;
   --blue:#4c91ff;
 }
 
-html,body{
+body{
   margin:0;
-  min-height:100%;
-  font-family:Inter,Arial,sans-serif;
+  font-family:Arial,sans-serif;
   background:var(--bg);
-  color:var(--text);
-}
-
-button,input,select{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
+  color:white;
 }
 
 svg{
@@ -52,63 +49,54 @@ svg{
 
 .app{
   min-height:100vh;
-  display:flex;
 }
 
-/* SIDEBAR */
-
 .sidebar{
-  width:245px;
-  background:#081710;
-  border-right:1px solid var(--line);
-  padding:20px 14px;
   position:fixed;
   left:0;
   top:0;
   bottom:0;
-  z-index:30;
+  width:240px;
+  background:#081710;
+  border-right:1px solid var(--line);
+  padding:20px 14px;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:11px;
-  padding:8px 10px 25px;
+  gap:10px;
+  padding:5px 8px 25px;
 }
 
 .logo{
   width:42px;
   height:42px;
   border-radius:13px;
-  background:linear-gradient(135deg,#20c979,#0d6e47);
+  background:#18a968;
   display:grid;
   place-items:center;
-  box-shadow:0 10px 30px rgba(34,199,125,.16);
 }
 
 .logo svg{
-  width:23px;
-  height:23px;
   color:white;
 }
 
-.brand-text strong{
+.brand strong{
   display:block;
-  font-size:16px;
 }
 
-.brand-text span{
-  color:var(--muted);
-  font-size:10px;
+.brand span{
+  color:#6f877d;
+  font-size:9px;
   letter-spacing:1.5px;
 }
 
 .nav-title{
-  color:#587064;
+  color:#536b61;
   font-size:10px;
+  margin:15px 10px 8px;
   text-transform:uppercase;
-  letter-spacing:1.5px;
-  margin:12px 11px 8px;
 }
 
 .nav{
@@ -118,88 +106,48 @@ svg{
 }
 
 .nav button{
-  width:100%;
   border:0;
   background:transparent;
   color:#8ea69a;
-  padding:11px 12px;
-  border-radius:11px;
+  border-radius:10px;
+  padding:11px;
   display:flex;
   align-items:center;
-  gap:11px;
+  gap:10px;
+  width:100%;
   text-align:left;
 }
 
-.nav button:hover,
-.nav button.active{
+.nav button.active,
+.nav button:hover{
   background:#102b20;
   color:#6ff0ae;
 }
 
-.admin-mini{
-  position:absolute;
-  left:14px;
-  right:14px;
-  bottom:18px;
-  padding:12px;
-  border:1px solid var(--line);
-  background:#0b1c15;
-  border-radius:14px;
-}
-
-.admin-mini-row{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.avatar{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:#173a2a;
-  display:grid;
-  place-items:center;
-  color:#69e9a7;
-}
-
-.admin-mini strong{
-  font-size:12px;
-  display:block;
-}
-
-.admin-mini span{
-  font-size:10px;
-  color:var(--muted);
-}
-
-/* MAIN */
-
 .main{
-  margin-left:245px;
-  width:calc(100% - 245px);
+  margin-left:240px;
 }
 
 .topbar{
   height:70px;
-  border-bottom:1px solid var(--line);
-  background:rgba(7,17,13,.92);
-  backdrop-filter:blur(12px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:10;
+  background:rgba(7,17,13,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 25px;
 }
 
-.page-title h1{
+.topbar h1{
   margin:0;
   font-size:20px;
 }
 
-.page-title p{
+.topbar p{
   margin:4px 0 0;
   color:var(--muted);
   font-size:11px;
@@ -207,131 +155,101 @@ svg{
 
 .top-actions{
   display:flex;
-  gap:8px;
+  gap:7px;
 }
 
 .icon-btn{
-  width:40px;
-  height:40px;
+  width:39px;
+  height:39px;
   border:1px solid var(--line);
-  background:#0c1d16;
-  color:#a7bbb1;
-  border-radius:11px;
+  border-radius:10px;
+  background:#0b1c15;
+  color:#91a89e;
   display:grid;
   place-items:center;
 }
 
-.icon-btn:hover{
-  color:#6ff0ae;
-  border-color:#285641;
-}
-
-/* CONTENT */
-
 .content{
-  padding:25px;
-  max-width:1500px;
+  max-width:1450px;
   margin:auto;
+  padding:24px;
 }
 
 .status{
-  padding:11px 14px;
-  border:1px solid #1d4a36;
-  background:#0d291e;
-  color:#74e9ae;
-  border-radius:12px;
   display:flex;
   align-items:center;
-  gap:9px;
+  gap:8px;
+  background:#0d291e;
+  border:1px solid #1d4a36;
+  color:#74e9ae;
+  border-radius:11px;
+  padding:11px;
   font-size:12px;
   margin-bottom:18px;
 }
 
 .status.error{
-  color:#ff9d9d;
-  background:#321717;
-  border-color:#542525;
+  background:#351717;
+  color:#ff9b9b;
+  border-color:#552525;
 }
-
-/* STATS */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:14px;
+  gap:13px;
   margin-bottom:18px;
 }
 
-.stat-card{
+.stat{
   background:var(--panel);
   border:1px solid var(--line);
-  border-radius:16px;
-  padding:17px;
-  position:relative;
-  overflow:hidden;
-}
-
-.stat-card:after{
-  content:"";
-  position:absolute;
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  right:-30px;
-  bottom:-35px;
-  background:rgba(34,199,125,.05);
-}
-
-.stat-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  border-radius:15px;
+  padding:16px;
 }
 
 .stat-icon{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
+  width:37px;
+  height:37px;
+  border-radius:10px;
   background:#123024;
   color:#5de7a2;
+  display:grid;
+  place-items:center;
 }
 
 .stat-label{
-  margin-top:14px;
-  color:var(--muted);
-  font-size:11px;
+  margin-top:12px;
+  color:#789087;
+  font-size:10px;
 }
 
 .stat-value{
   margin-top:4px;
-  font-size:23px;
-  font-weight:700;
+  font-size:22px;
+  font-weight:bold;
 }
-
-/* PANEL */
 
 .panel{
   background:var(--panel);
   border:1px solid var(--line);
-  border-radius:17px;
+  border-radius:16px;
   overflow:hidden;
 }
 
 .panel-head{
-  padding:17px 18px;
+  padding:17px;
   border-bottom:1px solid var(--line);
   display:flex;
   justify-content:space-between;
-  align-items:center;
   gap:15px;
+  align-items:center;
 }
 
 .panel-title{
   display:flex;
-  align-items:center;
   gap:10px;
+  align-items:center;
 }
 
 .panel-title svg{
@@ -339,122 +257,91 @@ svg{
 }
 
 .panel-title h2{
-  font-size:15px;
   margin:0;
+  font-size:15px;
 }
 
 .panel-title p{
   margin:3px 0 0;
-  color:var(--muted);
+  color:#71887e;
   font-size:10px;
 }
 
 .controls{
   display:flex;
   gap:8px;
-  flex-wrap:wrap;
 }
 
 .search{
-  min-width:260px;
-  background:#08150f;
-  border:1px solid var(--line);
-  color:white;
-  padding:10px 12px 10px 38px;
+  width:250px;
+  padding:10px 12px;
   border-radius:10px;
+  border:1px solid var(--line);
+  background:#07150f;
+  color:white;
   outline:none;
-}
-
-.search:focus{
-  border-color:#2a7251;
-}
-
-.search-wrap{
-  position:relative;
-}
-
-.search-wrap svg{
-  position:absolute;
-  left:12px;
-  top:10px;
-  color:#718a7f;
-  width:17px;
-  height:17px;
 }
 
 .select{
-  background:#08150f;
-  color:#bcd0c7;
-  border:1px solid var(--line);
   padding:10px;
   border-radius:10px;
-  outline:none;
+  border:1px solid var(--line);
+  background:#07150f;
+  color:white;
 }
 
-/* PLAYERS */
-
 .players{
-  padding:10px;
+  padding:9px;
 }
 
 .player{
   display:grid;
   grid-template-columns:2fr 1fr 1fr 1fr auto;
+  gap:12px;
   align-items:center;
-  gap:15px;
-  padding:14px;
+  padding:13px;
   border-bottom:1px solid #142b22;
-  transition:.15s;
 }
 
 .player:hover{
   background:#0d2118;
 }
 
-.player:last-child{
-  border-bottom:0;
-}
-
 .player-main{
   display:flex;
   align-items:center;
-  gap:11px;
-  min-width:0;
+  gap:10px;
 }
 
-.player-avatar{
+.avatar{
   width:40px;
   height:40px;
-  flex:none;
-  border-radius:12px;
+  border-radius:11px;
   background:#153a2a;
   color:#68e8a6;
   display:grid;
   place-items:center;
+  flex:none;
 }
 
-.player-name{
+.name{
   font-size:13px;
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  font-weight:bold;
 }
 
-.player-sub{
+.sub{
   color:#718a7f;
-  font-size:10px;
+  font-size:9px;
   margin-top:3px;
 }
 
-.info-label{
+.label{
   color:#668076;
   font-size:9px;
   text-transform:uppercase;
-  letter-spacing:.7px;
 }
 
-.info-value{
+.value{
   margin-top:4px;
   font-size:12px;
 }
@@ -462,70 +349,71 @@ svg{
 .badge{
   display:inline-flex;
   align-items:center;
-  gap:5px;
-  border-radius:20px;
+  gap:4px;
   padding:5px 8px;
+  border-radius:20px;
   font-size:9px;
-  font-weight:700;
+  font-weight:bold;
 }
 
-.badge.active{
-  color:#6be8a7;
+.active{
   background:#113522;
+  color:#6be8a7;
 }
 
-.badge.banned{
-  color:#ff9999;
+.banned{
   background:#401919;
+  color:#ff9999;
+}
+
+.arrested{
+  background:#422c10;
+  color:#ffc95d;
 }
 
 .actions{
   display:flex;
   gap:5px;
+  justify-content:flex-end;
 }
 
 .action{
   width:35px;
   height:35px;
   border:1px solid var(--line);
-  border-radius:9px;
-  background:#0a1912;
+  background:#091811;
   color:#91a89e;
+  border-radius:9px;
   display:grid;
   place-items:center;
 }
 
-.action:hover{
-  color:#fff;
-  border-color:#38654f;
+.action.money:hover{
+  color:#6be8a7;
 }
 
-.action.money:hover{
-  color:#67e6a4;
+.action.arrest:hover{
+  color:#ffc95d;
+}
+
+.action.release:hover{
+  color:#6be8a7;
 }
 
 .action.ban:hover{
-  color:#ff9a9a;
+  color:#ff9999;
 }
 
 .empty{
-  padding:45px 20px;
+  padding:40px;
   text-align:center;
   color:#71887d;
 }
 
-.empty svg{
-  width:40px;
-  height:40px;
-  margin-bottom:10px;
-}
-
-/* MODAL */
-
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.72);
+  background:rgba(0,0,0,.75);
   backdrop-filter:blur(7px);
   display:none;
   align-items:center;
@@ -540,19 +428,17 @@ svg{
 
 .modal-box{
   width:100%;
-  max-width:420px;
+  max-width:410px;
   background:#0c2118;
   border:1px solid #285440;
   border-radius:18px;
   padding:20px;
-  box-shadow:0 25px 80px rgba(0,0,0,.45);
 }
 
 .modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:18px;
 }
 
 .modal-head h2{
@@ -561,73 +447,58 @@ svg{
 }
 
 .close{
-  width:35px;
-  height:35px;
+  width:34px;
+  height:34px;
   border:0;
   border-radius:9px;
   background:#142a21;
   color:#9ab0a6;
-  display:grid;
-  place-items:center;
 }
 
-.form-label{
+.modal p{
+  color:#8fa79c;
+  font-size:12px;
+}
+
+label{
   display:block;
-  color:#91a99e;
+  color:#8fa79c;
   font-size:10px;
-  margin-bottom:6px;
+  margin:12px 0 6px;
 }
 
 .input{
   width:100%;
   padding:12px;
+  border-radius:10px;
   border:1px solid var(--line);
   background:#07140e;
   color:white;
-  border-radius:10px;
   outline:none;
-  margin-bottom:13px;
-}
-
-.input:focus{
-  border-color:#2c7753;
 }
 
 .primary{
   width:100%;
-  padding:12px;
   border:0;
   border-radius:10px;
+  padding:12px;
+  margin-top:15px;
   background:#18ad68;
   color:white;
-  font-weight:700;
+  font-weight:bold;
 }
 
-.primary:hover{
-  background:#20c77d;
-}
-
-.danger-btn{
-  background:#b83b3b;
-  color:white;
-}
-
-.warning-btn{
-  background:#d49b25;
+.warning{
+  background:#c58b1e;
   color:#111;
-}
-
-/* MOBILE */
-
-.mobile-menu{
-  display:none;
 }
 
 @media(max-width:900px){
 
   .sidebar{
     transform:translateX(-100%);
-    transition:.25s;
+    transition:.2s;
+    z-index:50;
   }
 
   .sidebar.open{
@@ -636,11 +507,6 @@ svg{
 
   .main{
     margin-left:0;
-    width:100%;
-  }
-
-  .mobile-menu{
-    display:grid;
   }
 
   .stats{
@@ -649,19 +515,14 @@ svg{
 
   .player{
     grid-template-columns:1fr;
-    gap:10px;
     border:1px solid #163328;
     border-radius:13px;
     margin-bottom:8px;
   }
 
-  .actions{
-    justify-content:flex-end;
-  }
-
   .panel-head{
-    align-items:flex-start;
     flex-direction:column;
+    align-items:stretch;
   }
 
   .controls{
@@ -669,7 +530,6 @@ svg{
   }
 
   .search{
-    min-width:0;
     width:100%;
   }
 
@@ -677,39 +537,30 @@ svg{
 
 @media(max-width:520px){
 
-  .topbar{
-    padding:0 14px;
-  }
-
   .content{
-    padding:14px;
-  }
-
-  .stats{
-    gap:9px;
-  }
-
-  .stat-card{
     padding:13px;
   }
 
-  .stat-value{
-    font-size:19px;
+  .topbar{
+    padding:0 13px;
   }
 
-  .stat-icon{
-    width:32px;
-    height:32px;
+  .stats{
+    gap:8px;
   }
+
+  .stat{
+    padding:12px;
+  }
+
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="app">
-
-<!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
 
@@ -722,14 +573,18 @@ svg{
       </svg>
     </div>
 
-    <div class="brand-text">
+    <div>
       <strong>Naija Life</strong>
       <span>ADMIN CENTER</span>
     </div>
 
   </div>
 
-  <div class="nav-title">Management</div>
+
+  <div class="nav-title">
+    Management
+  </div>
+
 
   <nav class="nav">
 
@@ -743,24 +598,25 @@ svg{
       Dashboard
     </button>
 
+
     <button onclick="document.getElementById('playersPanel').scrollIntoView()">
       <svg viewBox="0 0 24 24">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
         <circle cx="9" cy="7" r="4"/>
         <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
       Players
     </button>
 
+
     <button>
       <svg viewBox="0 0 24 24">
-        <rect x="2" y="5" width="20" height="14" rx="2"/>
-        <path d="M2 10h20"/>
-        <path d="M6 15h4"/>
+        <rect x="3" y="6" width="18" height="12" rx="2"/>
+        <circle cx="12" cy="12" r="3"/>
       </svg>
       Economy
     </button>
+
 
     <button>
       <svg viewBox="0 0 24 24">
@@ -772,350 +628,356 @@ svg{
 
   </nav>
 
-  <div class="nav-title">System</div>
+
+  <div class="nav-title">
+    System
+  </div>
+
 
   <nav class="nav">
 
     <button>
       <svg viewBox="0 0 24 24">
-        <path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6z"/>
-        <path d="M9 20h6"/>
+        <path d="M3 3v18h18"/>
+        <path d="M7 17l4-5 3 3 5-8"/>
       </svg>
       Reports
     </button>
 
+
     <button>
       <svg viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.5 1.5-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20h-2v-.3a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-1.5-1.5.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H5v-2h.3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L8 7.5l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V6h2v.3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.5 1.5-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.3v2h-.3a1.7 1.7 0 0 0-1.3 1z"/>
+        <path d="M19 12a7 7 0 0 0-.2-1.6l2-1.2-2-3.4-2.2 1a7 7 0 0 0-2.8-1.6V3h-4v2.2A7 7 0 0 0 9 6.8l-2.2-1-2 3.4 2 1.2A7 7 0 0 0 6.6 12c0 .6.1 1.1.2 1.6l-2 1.2 2 3.4 2.2-1a7 7 0 0 0 2.8 1.6V21h4v-2.2a7 7 0 0 0 2.8-1.6l2.2 1 2-3.4-2-1.2c.1-.5.2-1 .2-1.6z"/>
       </svg>
       Settings
     </button>
 
   </nav>
 
-  <div class="admin-mini">
+</aside>
 
-    <div class="admin-mini-row">
 
-      <div class="avatar">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="8" r="4"/>
-          <path d="M4 21a8 8 0 0 1 16 0"/>
-        </svg>
-      </div>
+<section class="main">
 
-      <div>
-        <strong id="miniEmail">Admin</strong>
-        <span>Administrator</span>
-      </div>
+<header class="topbar">
+
+  <div style="display:flex;gap:10px;align-items:center;">
+
+    <button
+      class="icon-btn"
+      id="menuBtn"
+      style="display:none;">
+
+      <svg viewBox="0 0 24 24">
+        <path d="M4 6h16"/>
+        <path d="M4 12h16"/>
+        <path d="M4 18h16"/>
+      </svg>
+
+    </button>
+
+    <div>
+
+      <h1>Dashboard</h1>
+
+      <p>
+        Manage the Naija Life world
+      </p>
 
     </div>
 
   </div>
 
-</aside>
 
+  <div class="top-actions">
 
-<!-- MAIN -->
-
-<section class="main">
-
-  <header class="topbar">
-
-    <div style="display:flex;align-items:center;gap:10px;">
-
-      <button
-        class="icon-btn mobile-menu"
-        id="menuBtn">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M4 6h16"/>
-          <path d="M4 12h16"/>
-          <path d="M4 18h16"/>
-        </svg>
-
-      </button>
-
-      <div class="page-title">
-        <h1>Dashboard</h1>
-        <p>Manage the Naija Life world</p>
-      </div>
-
-    </div>
-
-    <div class="top-actions">
-
-      <button class="icon-btn" id="refreshBtn">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M20 11a8 8 0 0 0-14.9-3"/>
-          <path d="M4 4v5h5"/>
-          <path d="M4 13a8 8 0 0 0 14.9 3"/>
-          <path d="M20 20v-5h-5"/>
-        </svg>
-
-      </button>
-
-      <button class="icon-btn" id="logoutBtn">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M10 17l5-5-5-5"/>
-          <path d="M15 12H3"/>
-          <path d="M21 19V5a2 2 0 0 0-2-2h-6"/>
-        </svg>
-
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <main class="content">
-
-    <div id="status" class="status">
+    <button
+      class="icon-btn"
+      id="refreshBtn">
 
       <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M12 8v4"/>
-        <path d="M12 16h.01"/>
+        <path d="M20 11a8 8 0 0 0-15-4"/>
+        <path d="M4 4v5h5"/>
+        <path d="M4 13a8 8 0 0 0 15 4"/>
+        <path d="M20 20v-5h-5"/>
       </svg>
 
-      Checking administrator access...
+    </button>
+
+
+    <button
+      class="icon-btn"
+      id="logoutBtn">
+
+      <svg viewBox="0 0 24 24">
+        <path d="M10 17l5-5-5-5"/>
+        <path d="M15 12H3"/>
+        <path d="M21 19V5a2 2 0 0 0-2-2h-6"/>
+      </svg>
+
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="content">
+
+
+<div id="status" class="status">
+
+  <svg viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 8v4"/>
+    <path d="M12 16h.01"/>
+  </svg>
+
+  Checking administrator access...
+
+</div>
+
+
+<section class="stats">
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+      </svg>
+    </div>
+
+    <div class="stat-label">
+      TOTAL PLAYERS
+    </div>
+
+    <div class="stat-value"
+         id="totalPlayers">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M8 12l2.5 2.5L16 9"/>
+      </svg>
+    </div>
+
+    <div class="stat-label">
+      ACTIVE
+    </div>
+
+    <div class="stat-value"
+         id="activePlayers">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M6 6l12 12"/>
+      </svg>
+    </div>
+
+    <div class="stat-label">
+      BANNED
+    </div>
+
+    <div class="stat-value"
+         id="bannedPlayers">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M8 12h8"/>
+        <path d="M12 8v8"/>
+      </svg>
+    </div>
+
+    <div class="stat-label">
+      ARRESTED
+    </div>
+
+    <div class="stat-value"
+         id="arrestedPlayers">
+      —
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="panel"
+         id="playersPanel">
+
+<div class="panel-head">
+
+  <div class="panel-title">
+
+    <svg viewBox="0 0 24 24">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+    </svg>
+
+    <div>
+
+      <h2>Player Management</h2>
+
+      <p>
+        Arrest, release and manage players
+      </p>
 
     </div>
 
-
-    <!-- STATS -->
-
-    <section class="stats">
-
-      <div class="stat-card">
-
-        <div class="stat-top">
-
-          <div>
-            <div class="stat-label">Total Players</div>
-            <div class="stat-value" id="totalPlayers">—</div>
-          </div>
-
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-
-        </div>
-
-      </div>
+  </div>
 
 
-      <div class="stat-card">
+  <div class="controls">
 
-        <div class="stat-top">
-
-          <div>
-            <div class="stat-label">Active Players</div>
-            <div class="stat-value" id="activePlayers">—</div>
-          </div>
-
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M8 12l2.5 2.5L16 9"/>
-            </svg>
-          </div>
-
-        </div>
-
-      </div>
+    <input
+      id="search"
+      class="search"
+      placeholder="Search players..."
+    >
 
 
-      <div class="stat-card">
+    <select
+      id="filter"
+      class="select">
 
-        <div class="stat-top">
+      <option value="all">
+        All
+      </option>
 
-          <div>
-            <div class="stat-label">Banned Players</div>
-            <div class="stat-value" id="bannedPlayers">—</div>
-          </div>
+      <option value="active">
+        Active
+      </option>
 
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M6 6l12 12"/>
-            </svg>
-          </div>
+      <option value="arrested">
+        Arrested
+      </option>
 
-        </div>
+      <option value="banned">
+        Banned
+      </option>
 
-      </div>
+    </select>
 
+  </div>
 
-      <div class="stat-card">
-
-        <div class="stat-top">
-
-          <div>
-            <div class="stat-label">Game Economy</div>
-            <div class="stat-value" id="totalMoney">₦—</div>
-          </div>
-
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <rect x="3" y="6" width="18" height="12" rx="2"/>
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M7 10h.01"/>
-              <path d="M17 14h.01"/>
-            </svg>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+</div>
 
 
-    <!-- PLAYERS -->
+<div
+  id="players"
+  class="players">
 
-    <section class="panel" id="playersPanel">
+  <div class="empty">
+    Loading players...
+  </div>
 
-      <div class="panel-head">
+</div>
 
-        <div class="panel-title">
+</section>
 
-          <svg viewBox="0 0 24 24">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-          </svg>
-
-          <div>
-            <h2>Players</h2>
-            <p>Manage Naija Life accounts</p>
-          </div>
-
-        </div>
-
-
-        <div class="controls">
-
-          <div class="search-wrap">
-
-            <svg viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="7"/>
-              <path d="M20 20l-4-4"/>
-            </svg>
-
-            <input
-              id="searchInput"
-              class="search"
-              type="search"
-              placeholder="Search players..."
-            >
-
-          </div>
-
-          <select id="filter" class="select">
-
-            <option value="all">All Players</option>
-            <option value="active">Active</option>
-            <option value="banned">Banned</option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-
-      <div class="players" id="players">
-
-        <div class="empty">
-
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 8v4"/>
-            <path d="M12 16h.01"/>
-          </svg>
-
-          <div>Loading players...</div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
+</main>
 
 </section>
 
 </div>
 
 
-<!-- MONEY MODAL -->
+<!-- ARREST MODAL -->
 
-<div class="modal" id="moneyModal">
+<div
+  class="modal"
+  id="arrestModal">
 
-  <div class="modal-box">
+<div class="modal-box">
 
-    <div class="modal-head">
+  <div class="modal-head">
 
-      <h2>Adjust Game Money</h2>
-
-      <button class="close" id="closeModal">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M6 6l12 12"/>
-          <path d="M18 6L6 18"/>
-        </svg>
-
-      </button>
-
-    </div>
-
-    <p id="moneyPlayer"
-       style="color:#8fa79c;font-size:12px;">
-    </p>
-
-    <label class="form-label">
-      AMOUNT
-    </label>
-
-    <input
-      id="moneyAmount"
-      class="input"
-      type="number"
-      placeholder="Example: 5000 or -5000"
-    >
-
-    <label class="form-label">
-      REASON
-    </label>
-
-    <input
-      id="moneyReason"
-      class="input"
-      type="text"
-      maxlength="100"
-      placeholder="Admin adjustment"
-    >
+    <h2>
+      Arrest Player
+    </h2>
 
     <button
-      id="confirmMoney"
-      class="primary">
+      class="close"
+      id="closeArrest">
 
-      Apply Adjustment
+      <svg viewBox="0 0 24 24">
+        <path d="M6 6l12 12"/>
+        <path d="M18 6L6 18"/>
+      </svg>
 
     </button>
 
   </div>
+
+
+  <p id="arrestPlayerName">
+    Player
+  </p>
+
+
+  <label>
+    JAIL TIME — MINUTES
+  </label>
+
+  <input
+    class="input"
+    id="jailMinutes"
+    type="number"
+    min="1"
+    max="1440"
+    value="30"
+  >
+
+
+  <label>
+    ARREST REASON
+  </label>
+
+  <input
+    class="input"
+    id="arrestReason"
+    maxlength="200"
+    placeholder="Example: Traffic violation"
+  >
+
+
+  <button
+    class="primary warning"
+    id="confirmArrest">
+
+    Arrest Player
+
+  </button>
+
+</div>
 
 </div>
 
@@ -1124,13 +986,17 @@ svg{
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
 import {
   getAuth,
   onAuthStateChanged,
   signOut
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
 import {
   getFirestore,
@@ -1138,725 +1004,757 @@ import {
   getDocs,
   doc,
   getDoc
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
 
 import {
   getFunctions,
   httpsCallable
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
 
 
-const firebaseConfig = {
+const firebaseConfig={
 
-  apiKey:"AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
+apiKey:
+"AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
 
-  authDomain:"game-97f37.firebaseapp.com",
+authDomain:
+"game-97f37.firebaseapp.com",
 
-  projectId:"game-97f37",
+projectId:
+"game-97f37",
 
-  storageBucket:"game-97f37.firebasestorage.app",
+storageBucket:
+"game-97f37.firebasestorage.app",
 
-  messagingSenderId:"584626250832",
+messagingSenderId:
+"584626250832",
 
-  appId:"1:584626250832:web:57f076e095174ccd74dd55",
+appId:
+"1:584626250832:web:57f076e095174ccd74dd55",
 
-  databaseURL:
-  "https://game-97f37-default-rtdb.firebaseio.com"
+databaseURL:
+"https://game-97f37-default-rtdb.firebaseio.com"
+
 };
 
 
 const app =
-  initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 const auth =
-  getAuth(app);
+getAuth(app);
 
 const db =
-  getFirestore(app);
+getFirestore(app);
 
 const functions =
-  getFunctions(app);
+getFunctions(app);
 
-
-const status =
-  document.getElementById("status");
 
 const playersEl =
-  document.getElementById("players");
+document.getElementById("players");
 
 const search =
-  document.getElementById("searchInput");
+document.getElementById("search");
 
 const filter =
-  document.getElementById("filter");
+document.getElementById("filter");
 
 const totalPlayers =
-  document.getElementById("totalPlayers");
+document.getElementById("totalPlayers");
 
 const activePlayers =
-  document.getElementById("activePlayers");
+document.getElementById("activePlayers");
 
 const bannedPlayers =
-  document.getElementById("bannedPlayers");
+document.getElementById("bannedPlayers");
 
-const totalMoney =
-  document.getElementById("totalMoney");
+const arrestedPlayers =
+document.getElementById("arrestedPlayers");
 
-const miniEmail =
-  document.getElementById("miniEmail");
+const status =
+document.getElementById("status");
 
-const moneyModal =
-  document.getElementById("moneyModal");
+const arrestModal =
+document.getElementById("arrestModal");
 
-const moneyPlayer =
-  document.getElementById("moneyPlayer");
+const arrestPlayerName =
+document.getElementById("arrestPlayerName");
 
-const moneyAmount =
-  document.getElementById("moneyAmount");
+const jailMinutes =
+document.getElementById("jailMinutes");
 
-const moneyReason =
-  document.getElementById("moneyReason");
+const arrestReason =
+document.getElementById("arrestReason");
 
-const confirmMoney =
-  document.getElementById("confirmMoney");
+const confirmArrest =
+document.getElementById("confirmArrest");
 
-let players = [];
+let players=[];
 
-let selectedPlayer = null;
+let selectedPlayer=null;
 
 
-/* ESCAPE */
+/* =====================================================
+   AUTH
+===================================================== */
 
-function esc(value){
+onAuthStateChanged(
+auth,
+async user=>{
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+if(!user){
+
+status.classList.add("error");
+
+status.innerHTML=
+"Login required.";
+
+return;
 
 }
 
 
-/* AUTH */
+try{
 
-onAuthStateChanged(
-  auth,
-  async user => {
-
-    if(!user){
-
-      status.classList.add("error");
-
-      status.innerHTML = `
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M6 6l12 12"/>
-        </svg>
-        Login required
-      `;
-
-      return;
-    }
-
-
-    try{
-
-      const adminRef =
-        doc(db,"admins",user.uid);
-
-      const adminSnap =
-        await getDoc(adminRef);
-
-
-      if(
-        !adminSnap.exists() ||
-        adminSnap.data().active !== true
-      ){
-
-        throw new Error(
-          "Administrator access denied."
-        );
-
-      }
-
-
-      miniEmail.textContent =
-        user.email || "Admin";
-
-
-      status.innerHTML = `
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M8 12l2.5 2.5L16 9"/>
-        </svg>
-        Administrator access granted
-      `;
-
-
-      await loadPlayers();
-
-    }catch(error){
-
-      status.classList.add("error");
-
-      status.innerHTML = `
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 8v4"/>
-          <path d="M12 16h.01"/>
-        </svg>
-        ${esc(error.message)}
-      `;
-
-    }
-
-  }
+const adminSnap=
+await getDoc(
+doc(db,"admins",user.uid)
 );
 
 
-/* LOAD */
+if(
+!adminSnap.exists() ||
+adminSnap.data().active!==true ||
+adminSnap.data().role!=="admin"
+){
+
+throw new Error(
+"Administrator access denied."
+);
+
+}
+
+
+status.innerHTML=`
+
+<svg viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"/>
+<path d="M8 12l2.5 2.5L16 9"/>
+</svg>
+
+Administrator access granted
+
+`;
+
+
+await loadPlayers();
+
+
+}catch(error){
+
+status.classList.add("error");
+
+status.textContent=
+error.message;
+
+}
+
+});
+
+
+/* =====================================================
+   LOAD PLAYERS
+===================================================== */
 
 async function loadPlayers(){
 
-  playersEl.innerHTML = `
-    <div class="empty">
-      Loading players...
-    </div>
-  `;
+const snap=
+await getDocs(
+collection(db,"players")
+);
+
+players=[];
 
 
-  const snapshot =
-    await getDocs(
-      collection(db,"players")
-    );
+snap.forEach(item=>{
+
+players.push({
+id:item.id,
+...item.data()
+});
+
+});
 
 
-  players = [];
+updateStats();
 
-
-  snapshot.forEach(item => {
-
-    players.push({
-      id:item.id,
-      ...item.data()
-    });
-
-  });
-
-
-  updateStats();
-
-  render();
+render();
 
 }
 
 
-/* STATS */
+/* =====================================================
+   STATS
+===================================================== */
 
 function updateStats(){
 
-  const total =
-    players.length;
+const total=
+players.length;
 
-  const banned =
-    players.filter(
-      p => p.banned === true
-    ).length;
+const banned=
+players.filter(
+p=>p.banned===true
+).length;
 
-  const active =
-    total - banned;
+const arrested=
+players.filter(
+p=>p.arrested===true
+).length;
 
-  const money =
-    players.reduce(
-      (sum,p) =>
-        sum + Number(p.money || 0),
-      0
-    );
+const active=
+total-banned-arrested;
 
 
-  totalPlayers.textContent =
-    total.toLocaleString();
+totalPlayers.textContent=
+total;
 
-  activePlayers.textContent =
-    active.toLocaleString();
+activePlayers.textContent=
+Math.max(active,0);
 
-  bannedPlayers.textContent =
-    banned.toLocaleString();
+bannedPlayers.textContent=
+banned;
 
-  totalMoney.textContent =
-    "₦" + money.toLocaleString();
+arrestedPlayers.textContent=
+arrested;
 
 }
 
 
-/* RENDER */
+/* =====================================================
+   RENDER
+===================================================== */
 
 function render(){
 
-  const q =
-    search.value
-      .trim()
-      .toLowerCase();
+const q=
+search.value
+.trim()
+.toLowerCase();
 
-  const f =
-    filter.value;
+const f=
+filter.value;
 
 
-  const list =
-    players.filter(p => {
+const list=
+players.filter(p=>{
 
-      const text = [
+const text=[
+p.name,
+p.email,
+p.uid,
+p.city,
+p.job
+]
+.join(" ")
+.toLowerCase();
 
-        p.name,
-        p.email,
-        p.uid,
-        p.city,
-        p.job
 
-      ].join(" ").toLowerCase();
+if(
+q &&
+!text.includes(q)
+)return false;
 
 
-      const matchesSearch =
-        text.includes(q);
+if(
+f==="banned" &&
+p.banned!==true
+)return false;
 
 
-      const matchesFilter =
-        f === "all" ||
-        (f === "banned" &&
-          p.banned === true) ||
-        (f === "active" &&
-          p.banned !== true);
+if(
+f==="arrested" &&
+p.arrested!==true
+)return false;
 
 
-      return matchesSearch &&
-             matchesFilter;
+if(
+f==="active" &&
+(
+p.banned===true ||
+p.arrested===true
+)
+)return false;
 
-    });
 
+return true;
 
-  if(!list.length){
+});
 
-    playersEl.innerHTML = `
-      <div class="empty">
 
-        <svg viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="7"/>
-          <path d="M20 20l-4-4"/>
-        </svg>
+if(!list.length){
 
-        <div>No players found</div>
+playersEl.innerHTML=
+`
+<div class="empty">
+No players found.
+</div>
+`;
 
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  playersEl.innerHTML =
-    list.map(player => {
-
-      const banned =
-        player.banned === true;
-
-      return `
-
-      <div class="player">
-
-        <div class="player-main">
-
-          <div class="player-avatar">
-
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 21a8 8 0 0 1 16 0"/>
-            </svg>
-
-          </div>
-
-          <div>
-
-            <div class="player-name">
-              ${esc(player.name || "Unknown")}
-            </div>
-
-            <div class="player-sub">
-              ${esc(player.email || player.uid || "")}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="info-label">
-            Location
-          </div>
-
-          <div class="info-value">
-            ${esc(player.city || "Unknown")}
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="info-label">
-            Level
-          </div>
-
-          <div class="info-value">
-            ${Number(player.level || 1)}
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <div class="info-label">
-            Balance
-          </div>
-
-          <div class="info-value">
-            ₦${Number(player.money || 0).toLocaleString()}
-          </div>
-
-        </div>
-
-
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;">
-
-          <span class="badge ${banned ? "banned":"active"}">
-
-            <svg viewBox="0 0 24 24"
-                 style="width:11px;height:11px;">
-
-              ${
-                banned
-                ?
-                `<circle cx="12" cy="12" r="9"/>
-                 <path d="M6 6l12 12"/>`
-                :
-                `<circle cx="12" cy="12" r="9"/>
-                 <path d="M8 12l2.5 2.5L16 9"/>`
-              }
-
-            </svg>
-
-            ${banned ? "BANNED":"ACTIVE"}
-
-          </span>
-
-
-          <div class="actions">
-
-            <button
-              class="action money"
-              title="Adjust money"
-              data-action="money"
-              data-id="${esc(player.uid || player.id)}"
-              data-name="${esc(player.name || "Player")}">
-
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="6" width="18" height="12" rx="2"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-
-            </button>
-
-
-            <button
-              class="action ban"
-              title="${banned ? "Unban":"Ban"}"
-              data-action="${banned ? "unban":"ban"}"
-              data-id="${esc(player.uid || player.id)}">
-
-              <svg viewBox="0 0 24 24">
-
-                ${
-                  banned
-                  ?
-                  `<circle cx="12" cy="12" r="9"/>
-                   <path d="M8 12l2.5 2.5L16 9"/>`
-                  :
-                  `<circle cx="12" cy="12" r="9"/>
-                   <path d="M6 6l12 12"/>`
-                }
-
-              </svg>
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      `;
-
-    }).join("");
+return;
 
 }
 
 
-/* SEARCH */
+playersEl.innerHTML=
+list.map(p=>{
+
+const banned=
+p.banned===true;
+
+const arrested=
+p.arrested===true;
+
+
+let jailText="";
+
+if(
+arrested &&
+p.jailUntil
+){
+
+const time=
+p.jailUntil.toDate
+? p.jailUntil.toDate()
+: new Date(p.jailUntil);
+
+jailText=
+"Until "+
+time.toLocaleString();
+
+}
+
+
+return `
+
+<div class="player">
+
+<div class="player-main">
+
+<div class="avatar">
+
+<svg viewBox="0 0 24 24">
+<circle cx="12" cy="8" r="4"/>
+<path d="M4 21a8 8 0 0 1 16 0"/>
+</svg>
+
+</div>
+
+<div>
+
+<div class="name">
+${escapeHtml(
+p.name||"Unknown Player"
+)}
+</div>
+
+<div class="sub">
+${escapeHtml(
+p.email||p.uid||""
+)}
+</div>
+
+</div>
+
+</div>
+
+
+<div>
+
+<div class="label">
+City
+</div>
+
+<div class="value">
+${escapeHtml(
+p.city||"Unknown"
+)}
+</div>
+
+</div>
+
+
+<div>
+
+<div class="label">
+Level
+</div>
+
+<div class="value">
+${Number(p.level||1)}
+</div>
+
+</div>
+
+
+<div>
+
+<div class="label">
+Status
+</div>
+
+<div>
+
+${
+banned
+
+?
+
+`<span class="badge banned">
+BANNED
+</span>`
+
+:
+
+arrested
+
+?
+
+`<span class="badge arrested">
+ARRESTED
+</span>`
+
+:
+
+`<span class="badge active">
+ACTIVE
+</span>`
+
+}
+
+</div>
+
+${
+arrested
+?
+`<div
+style="font-size:9px;color:#a98548;margin-top:5px;">
+${escapeHtml(jailText)}
+</div>`
+:""
+}
+
+</div>
+
+
+<div class="actions">
+
+
+${
+arrested
+
+?
+
+`<button
+class="action release"
+title="Release player"
+data-action="release"
+data-id="${escapeHtml(p.uid||p.id)}">
+
+<svg viewBox="0 0 24 24">
+<path d="M5 12h14"/>
+<path d="M12 5l7 7-7 7"/>
+</svg>
+
+</button>`
+
+:
+
+`<button
+class="action arrest"
+title="Arrest player"
+data-action="arrest"
+data-id="${escapeHtml(p.uid||p.id)}"
+data-name="${escapeHtml(p.name||"Player")}">
+
+<svg viewBox="0 0 24 24">
+<path d="M7 3h10"/>
+<path d="M7 21h10"/>
+<path d="M8 3v5l4 4-4 4v5"/>
+<path d="M16 3v5l-4 4 4 4v5"/>
+</svg>
+
+</button>`
+
+}
+
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHtml(value){
+
+return String(value??"")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
 
 search.addEventListener(
-  "input",
-  render
+"input",
+render
 );
 
 filter.addEventListener(
-  "change",
-  render
+"change",
+render
 );
 
 
-/* PLAYER ACTIONS */
+/* =====================================================
+   PLAYER ACTIONS
+===================================================== */
 
 playersEl.addEventListener(
-  "click",
-  async event => {
+"click",
+async event=>{
 
-    const btn =
-      event.target.closest("button");
+const button=
+event.target.closest("button");
 
-    if(!btn) return;
-
-
-    const id =
-      btn.dataset.id;
-
-    const action =
-      btn.dataset.action;
+if(!button)return;
 
 
-    if(action === "money"){
+const action=
+button.dataset.action;
 
-      selectedPlayer = id;
-
-      moneyPlayer.textContent =
-        "Player: " +
-        btn.dataset.name;
-
-      moneyAmount.value = "";
-
-      moneyReason.value = "";
-
-      moneyModal.classList.add("show");
-
-      return;
-
-    }
+const uid=
+button.dataset.id;
 
 
-    if(action === "ban" ||
-       action === "unban"){
-
-      const banned =
-        action === "ban";
+if(!uid)return;
 
 
-      if(!confirm(
-        banned
-        ? "Ban this player?"
-        : "Unban this player?"
-      )) return;
+if(action==="arrest"){
+
+selectedPlayer=uid;
+
+arrestPlayerName.textContent=
+"Player: "+
+button.dataset.name;
+
+jailMinutes.value="30";
+
+arrestReason.value="";
+
+arrestModal.classList.add("show");
+
+return;
+
+}
 
 
-      try{
+if(action==="release"){
 
-        const call =
-          httpsCallable(
-            functions,
-            "setPlayerBan"
-          );
-
-
-        await call({
-          uid:id,
-          banned
-        });
+if(
+!confirm(
+"Release this player from jail?"
+)
+)return;
 
 
-        await loadPlayers();
+try{
 
-      }catch(error){
+const release=
+httpsCallable(
+functions,
+"releasePlayer"
+);
 
-        alert(
-          error.message ||
-          "Action failed."
-        );
+await release({
+uid
+});
 
-      }
+await loadPlayers();
 
-    }
+}catch(error){
 
-  }
+alert(
+error.message||
+"Release failed."
+);
+
+}
+
+}
+
+});
+
+
+/* =====================================================
+   CONFIRM ARREST
+===================================================== */
+
+confirmArrest.addEventListener(
+"click",
+async()=>{
+
+if(!selectedPlayer)return;
+
+
+const duration=
+Number(jailMinutes.value);
+
+const reason=
+arrestReason.value.trim();
+
+
+if(
+!Number.isFinite(duration) ||
+duration<1 ||
+duration>1440
+){
+
+alert(
+"Choose a jail time between 1 and 1440 minutes."
+);
+
+return;
+
+}
+
+
+if(!reason){
+
+alert(
+"Enter an arrest reason."
+);
+
+return;
+
+}
+
+
+try{
+
+confirmArrest.disabled=true;
+
+
+const arrest=
+httpsCallable(
+functions,
+"arrestPlayer"
 );
 
 
-/* MONEY */
+await arrest({
 
-confirmMoney.addEventListener(
-  "click",
-  async () => {
+uid:selectedPlayer,
 
-    const amount =
-      Number(moneyAmount.value);
+durationMinutes:
+duration,
 
-    if(!selectedPlayer ||
-       !Number.isFinite(amount) ||
-       amount === 0){
+reason
 
-      alert("Enter a valid amount.");
-
-      return;
-
-    }
+});
 
 
-    if(Math.abs(amount) > 100000000){
+closeArrest();
 
-      alert(
-        "Maximum adjustment is ₦100,000,000."
-      );
-
-      return;
-
-    }
+await loadPlayers();
 
 
-    try{
+}catch(error){
 
-      confirmMoney.disabled = true;
-
-
-      const call =
-        httpsCallable(
-          functions,
-          "addGameMoney"
-        );
-
-
-      await call({
-
-        uid:selectedPlayer,
-
-        amount,
-
-        reason:
-          moneyReason.value.trim() ||
-          "Admin adjustment"
-
-      });
-
-
-      closeMoney();
-
-      await loadPlayers();
-
-
-    }catch(error){
-
-      alert(
-        error.message ||
-        "Money adjustment failed."
-      );
-
-    }finally{
-
-      confirmMoney.disabled = false;
-
-    }
-
-  }
+alert(
+error.message||
+"Arrest failed."
 );
 
+}finally{
 
-/* MODAL */
+confirmArrest.disabled=false;
 
-function closeMoney(){
+}
 
-  moneyModal.classList.remove(
-    "show"
-  );
+});
 
-  selectedPlayer = null;
+
+/* =====================================================
+   CLOSE ARREST
+===================================================== */
+
+function closeArrest(){
+
+arrestModal.classList.remove(
+"show"
+);
+
+selectedPlayer=null;
 
 }
 
 
 document
-  .getElementById("closeModal")
-  .addEventListener(
-    "click",
-    closeMoney
-  );
-
-
-moneyModal.addEventListener(
-  "click",
-  event => {
-
-    if(event.target === moneyModal){
-
-      closeMoney();
-
-    }
-
-  }
+.getElementById("closeArrest")
+.addEventListener(
+"click",
+closeArrest
 );
 
 
-/* REFRESH */
+/* =====================================================
+   REFRESH
+===================================================== */
 
 document
-  .getElementById("refreshBtn")
-  .addEventListener(
-    "click",
-    loadPlayers
-  );
+.getElementById("refreshBtn")
+.addEventListener(
+"click",
+loadPlayers
+);
 
 
-/* LOGOUT */
-
-document
-  .getElementById("logoutBtn")
-  .addEventListener(
-    "click",
-    async () => {
-
-      await signOut(auth);
-
-      location.reload();
-
-    }
-  );
-
-
-/* MOBILE MENU */
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 document
-  .getElementById("menuBtn")
-  .addEventListener(
-    "click",
-    () => {
+.getElementById("logoutBtn")
+.addEventListener(
+"click",
+async()=>{
 
-      document
-        .getElementById("sidebar")
-        .classList.toggle("open");
+await signOut(auth);
 
-    }
-  );
+location.reload();
+
+});
+
 
 </script>
 
