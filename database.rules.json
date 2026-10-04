@@ -1,0 +1,26 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "presence": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid",
+
+        ".validate": "newData.hasChildren(['uid', 'name', 'online', 'city']) && newData.child('uid').val() === auth.uid"
+      }
+    },
+
+    "worlds": {
+      "$worldId": {
+        "$uid": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === $uid",
+
+          ".validate": "newData.hasChildren(['uid']) && newData.child('uid').val() === auth.uid"
+        }
+      }
+    }
+  }
+}
