@@ -1,2769 +1,1899 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Naija Life</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Naija Life Online</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-html,body{
+*{box-sizing:border-box}
+
+body{
   margin:0;
-  width:100%;
-  height:100%;
+  background:#06110b;
+  color:#f5fff8;
+  font-family:system-ui,-apple-system,sans-serif;
   overflow:hidden;
-  font-family:Inter,Arial,sans-serif;
-  background:#08110d;
-  color:#fff;
 }
+
 button,input,select{
   font:inherit;
 }
+
 button{
   border:0;
-  cursor:pointer;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:800;
 }
-#game{
+
+#auth{
   position:fixed;
   inset:0;
-  overflow:hidden;
-  background:#111;
-}
-canvas{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  touch-action:none;
-}
-.hidden{
-  display:none!important;
-}
-
-/* HUD */
-#hud{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  padding:10px;
-  display:flex;
-  justify-content:space-between;
-  pointer-events:none;
-  z-index:20;
-}
-.hudBox{
-  background:rgba(5,14,11,.78);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:16px;
-  padding:8px 11px;
-  backdrop-filter:blur(10px);
-  box-shadow:0 8px 30px rgba(0,0,0,.2);
-}
-.hudTop{
-  display:flex;
-  gap:7px;
-  align-items:center;
-  font-size:12px;
-}
-.money{
-  color:#69e39b;
-  font-weight:800;
-}
-#clock{
-  font-weight:800;
-}
-#location{
-  opacity:.8;
-  font-size:11px;
-  margin-top:3px;
-}
-
-/* controls */
-#controls{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:15px;
-  z-index:30;
-  pointer-events:none;
-}
-#joystick{
-  position:absolute;
-  left:18px;
-  bottom:8px;
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  pointer-events:auto;
-}
-#stick{
-  position:absolute;
-  width:46px;
-  height:46px;
-  left:32px;
-  top:32px;
-  border-radius:50%;
-  background:rgba(255,255,255,.22);
-}
-.actionRow{
-  position:absolute;
-  right:15px;
-  bottom:8px;
-  display:flex;
-  gap:10px;
-}
-.controlBtn{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  color:#fff;
-  background:rgba(5,14,11,.8);
-  border:1px solid rgba(255,255,255,.14);
-  font-weight:900;
-  pointer-events:auto;
-  backdrop-filter:blur(8px);
-}
-.controlBtn.main{
-  width:70px;
-  height:70px;
-  background:#0a8f54;
-}
-
-/* panels */
-.panel{
-  position:absolute;
-  z-index:100;
-  inset:0;
-  background:rgba(3,8,6,.72);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-.card{
-  width:min(94vw,620px);
-  max-height:92vh;
-  overflow:auto;
-  background:#101b16;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:25px;
-  box-shadow:0 25px 80px rgba(0,0,0,.5);
-  padding:18px;
-}
-.card h1,.card h2,.card h3{
-  margin:0 0 10px;
-}
-.muted{
-  color:#9caea5;
-  font-size:13px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-.tile{
-  background:#17251e;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-  padding:12px;
-}
-.tile strong{
-  display:block;
-  margin-bottom:5px;
-}
-.action{
-  width:100%;
-  padding:12px;
-  border-radius:13px;
-  background:#0a8f54;
-  color:white;
-  font-weight:800;
-  margin-top:8px;
-}
-.action.alt{
-  background:#25352e;
-}
-.action.red{
-  background:#9c302e;
-}
-input,select{
-  width:100%;
-  background:#0b1511;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.13);
-  padding:12px;
-  border-radius:12px;
-  margin:5px 0 10px;
-  outline:none;
-}
-.row{
-  display:flex;
-  gap:8px;
-}
-.row>*{
-  flex:1;
-}
-.close{
-  float:right;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#25352e;
-  color:#fff;
-  font-size:18px;
-}
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  margin-top:10px;
-}
-.listItem{
-  padding:12px;
-  border-radius:14px;
-  background:#17251e;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-.smallBtn{
-  padding:8px 10px;
-  border-radius:10px;
-  background:#0a8f54;
-  color:#fff;
-  font-size:12px;
-  font-weight:800;
-}
-
-/* creator */
-#creator{
-  z-index:500;
-  background:
-    radial-gradient(circle at 50% 10%,rgba(13,143,84,.25),transparent 40%),
-    #07100c;
-}
-.avatarPreview{
-  width:150px;
-  height:180px;
-  margin:5px auto 15px;
-  display:block;
-}
-.swatches{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin:6px 0 12px;
-}
-.swatch{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:2px solid transparent;
-}
-.swatch.selected{
-  border-color:#fff;
-  transform:scale(1.08);
-}
-
-/* phone */
-#phone{
-  z-index:300;
-  background:rgba(0,0,0,.65);
-}
-.phoneShell{
-  width:min(92vw,390px);
-  height:min(90vh,760px);
-  background:#050806;
-  border:5px solid #252b28;
-  border-radius:38px;
-  padding:8px;
-  box-shadow:0 25px 100px rgba(0,0,0,.75);
-  position:relative;
-}
-.phoneScreen{
-  width:100%;
-  height:100%;
-  border-radius:29px;
-  overflow:hidden;
-  background:linear-gradient(160deg,#14251c,#08100c);
-  position:relative;
-}
-.notch{
-  position:absolute;
-  top:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:110px;
-  height:24px;
-  background:#050806;
-  border-radius:0 0 15px 15px;
-  z-index:20;
-}
-.phoneStatus{
-  height:32px;
-  padding:9px 14px 0;
-  display:flex;
-  justify-content:space-between;
-  font-size:11px;
-}
-.phoneContent{
-  position:absolute;
-  inset:32px 0 55px;
-  overflow:auto;
-}
-.phoneBottom{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:55px;
-  background:rgba(3,8,6,.9);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-.phoneBottom button{
-  background:none;
-  color:#9aaba2;
-  font-size:10px;
-}
-.phoneBottom button.active{
-  color:#fff;
-}
-.phonePage{
-  padding:15px;
-}
-.phoneHome{
-  padding:20px 13px;
-}
-.phoneTime{
-  text-align:center;
-  font-size:47px;
-  font-weight:200;
-  margin-top:20px;
-}
-.phoneDate{
-  text-align:center;
-  color:#a9b6af;
-}
-.appGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px 9px;
-  margin-top:25px;
-}
-.appIcon{
-  text-align:center;
-  background:none;
-  color:#fff;
-}
-.appIconBox{
-  width:55px;
-  height:55px;
-  margin:auto;
-  border-radius:17px;
   display:grid;
   place-items:center;
-  background:#20342a;
-  border:1px solid rgba(255,255,255,.1);
-}
-.appIcon svg{
-  width:28px;
-  height:28px;
-}
-.appLabel{
-  font-size:10px;
-  margin-top:5px;
-}
-.phoneTitle{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-.phoneTitle h2{
-  margin:0;
-}
-.backBtn{
-  padding:7px 10px;
-  border-radius:10px;
-  background:#20342a;
-  color:#fff;
-}
-.chat{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-.msg{
-  max-width:80%;
-  padding:9px 11px;
-  border-radius:13px;
-  background:#1a2921;
-  font-size:13px;
-}
-.msg.me{
-  margin-left:auto;
-  background:#087746;
-}
-.chatInput{
-  position:absolute;
-  bottom:58px;
-  left:8px;
-  right:8px;
-  display:flex;
-  gap:5px;
-  background:#07100c;
-  padding:5px;
-}
-.chatInput input{
-  margin:0;
-}
-.dead{
-  position:absolute;
-  inset:0;
-  background:#000;
-  z-index:99;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-.dead h1{
-  font-size:35px;
+  padding:20px;
+  background:
+    radial-gradient(circle at 25% 10%,#185b3d,#06110b 58%);
 }
 
-/* toast */
+.card{
+  width:min(440px,100%);
+  background:#102219;
+  border:1px solid #315540;
+  border-radius:26px;
+  padding:24px;
+  box-shadow:0 25px 90px #0009;
+}
+
+.logo{
+  font-size:31px;
+  font-weight:950;
+}
+
+.muted{
+  color:#a9beb1;
+}
+
+.field{
+  width:100%;
+  padding:14px;
+  margin:7px 0;
+  background:#08150e;
+  color:#fff;
+  border:1px solid #345744;
+  border-radius:13px;
+  outline:none;
+}
+
+.primary{
+  background:#18b968;
+  color:#03150b;
+}
+
+.ghost{
+  background:#1b3025;
+  color:#fff;
+}
+
+.danger{
+  background:#a83242;
+  color:#fff;
+}
+
+#game{
+  display:none;
+  position:fixed;
+  inset:0;
+}
+
+#world{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+#hud{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  pointer-events:none;
+}
+
+.pill{
+  background:#06110de8;
+  border:1px solid #355744;
+  padding:8px 11px;
+  border-radius:14px;
+  font-size:12px;
+}
+
 #toast{
   position:absolute;
   left:50%;
-  bottom:130px;
-  transform:translateX(-50%) translateY(20px);
-  background:#07100c;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:13px;
+  bottom:110px;
+  transform:translateX(-50%);
+  background:#07130df5;
   padding:11px 15px;
-  opacity:0;
-  transition:.25s;
-  z-index:600;
-  pointer-events:none;
-  white-space:nowrap;
-}
-#toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
+  border-radius:14px;
+  display:none;
+  z-index:40;
 }
 
-/* interior */
-#interior{
-  z-index:80;
-  background:#101813;
-}
-.interiorSvg{
-  width:100%;
-  height:100%;
-}
-.interiorActions{
+#controls{
   position:absolute;
-  left:15px;
-  right:15px;
-  bottom:20px;
+  left:14px;
+  right:14px;
+  bottom:15px;
   display:flex;
+  justify-content:space-between;
+  align-items:end;
+}
+
+#stick{
+  width:112px;
+  height:112px;
+  border-radius:50%;
+  background:#06110db5;
+  border:1px solid #668071;
+  position:relative;
+  touch-action:none;
+}
+
+#knob{
+  position:absolute;
+  width:48px;
+  height:48px;
+  left:32px;
+  top:32px;
+  border-radius:50%;
+  background:#e2eee6;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(2,65px);
   gap:8px;
 }
-.interiorActions button{
-  flex:1;
-  padding:13px;
-  border-radius:14px;
-  background:#0a8f54;
+
+.actions button{
+  background:#06110de8;
   color:#fff;
-  font-weight:800;
+  border:1px solid #355744;
 }
 
-/* map */
-.mapPanel{
-  background:#0d1712;
-}
-.cityMap{
-  height:420px;
-  border-radius:20px;
-  overflow:hidden;
-  background:#123022;
-  position:relative;
-}
-.cityRoad{
+#panel{
   position:absolute;
-  background:#4b554f;
-  border-radius:10px;
-}
-.cityPoint{
-  position:absolute;
-  padding:6px 8px;
-  border-radius:8px;
-  background:#0a8f54;
-  font-size:10px;
-}
-
-/* stats */
-.bar{
-  height:8px;
-  background:#24342c;
-  border-radius:20px;
-  overflow:hidden;
-  margin:5px 0 10px;
-}
-.bar i{
-  display:block;
-  height:100%;
-  background:#0a8f54;
+  inset:7% 4%;
+  display:none;
+  background:#0b1711f8;
+  border:1px solid #355744;
+  border-radius:24px;
+  z-index:30;
+  padding:18px;
+  overflow:auto;
 }
 
-/* light mode */
-body.light .card,
-body.light .phoneScreen{
-  background:#f4f7f5;
-  color:#101713;
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  padding:11px 0;
+  border-bottom:1px solid #20392a;
 }
-body.light .tile,
-body.light .listItem{
-  background:#e6ece8;
+
+.item{
+  background:#13271c;
+  padding:12px;
+  border-radius:15px;
+  margin:7px 0;
 }
-body.light input,
-body.light select{
-  background:#fff;
-  color:#111;
-}
-body.light .phoneBottom{
-  background:#e7ece9;
+
+.small{
+  font-size:12px;
 }
 </style>
 </head>
 
 <body>
+
+<!-- AUTH -->
+<div id="auth">
+
+  <div class="card">
+
+    <div class="logo">🇳🇬 Naija Life</div>
+
+    <p class="muted">
+      Online Nigerian life simulator
+    </p>
+
+    <input
+      id="name"
+      class="field"
+      placeholder="Character name"
+    >
+
+    <input
+      id="email"
+      class="field"
+      type="email"
+      placeholder="Email"
+    >
+
+    <input
+      id="password"
+      class="field"
+      type="password"
+      placeholder="Password (6+ characters)"
+    >
+
+    <select id="city" class="field">
+      <option>Lagos</option>
+      <option>Warri</option>
+      <option>Abuja</option>
+      <option>Benin City</option>
+      <option>Port Harcourt</option>
+      <option>Onitsha</option>
+      <option>Enugu</option>
+      <option>Ibadan</option>
+    </select>
+
+    <button
+      id="register"
+      class="primary"
+      style="width:100%"
+    >
+      Create account
+    </button>
+
+    <button
+      id="login"
+      class="ghost"
+      style="width:100%;margin-top:8px"
+    >
+      Login
+    </button>
+
+    <p id="authMsg" class="muted small"></p>
+
+  </div>
+
+</div>
+
+
+<!-- GAME -->
 <div id="game">
 
-<canvas id="world"></canvas>
+  <canvas id="world"></canvas>
 
-<div id="hud">
-  <div class="hudBox">
-    <div class="hudTop">
-      <span>₦</span>
-      <span class="money" id="money">₦0</span>
-      <span>•</span>
-      <span id="level">Lv 1</span>
-    </div>
-    <div id="location">Lagos</div>
-  </div>
+  <div id="hud">
 
-  <div class="hudBox">
-    <div id="clock">--:--</div>
-    <div id="weather">Clear</div>
-  </div>
-</div>
-
-<div id="controls">
-  <div id="joystick">
-    <div id="stick"></div>
-  </div>
-
-  <div class="actionRow">
-    <button class="controlBtn" id="mapBtn">MAP</button>
-    <button class="controlBtn" id="runBtn">RUN</button>
-    <button class="controlBtn main" id="actBtn">ACT</button>
-    <button class="controlBtn" id="phoneBtn">PHONE</button>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<!-- CHARACTER CREATOR -->
-<div class="panel" id="creator">
-  <div class="card">
-    <h1>Naija Life</h1>
-    <p class="muted">Create your character and start your Nigerian life.</p>
-
-    <div id="avatarPreview"></div>
-
-    <label>Name</label>
-    <input id="charName" placeholder="Enter your name">
-
-    <div class="row">
-      <div>
-        <label>City</label>
-        <select id="charCity">
-          <option>Lagos</option>
-          <option>Warri</option>
-          <option>Abuja</option>
-          <option>Benin City</option>
-          <option>Port Harcourt</option>
-          <option>Onitsha</option>
-          <option>Enugu</option>
-          <option>Ibadan</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Gender</label>
-        <select id="charGender">
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-      </div>
+    <div class="pill">
+      <b id="playerName">Player</b>
+      <br>
+      <span id="cityText">Lagos</span>
+      ·
+      <span id="clock">--:--</span>
     </div>
 
-    <label>Skin</label>
-    <div class="swatches" id="skinSwatches"></div>
-
-    <label>Shirt</label>
-    <div class="swatches" id="shirtSwatches"></div>
-
-    <button class="action" id="startGame">START LIFE</button>
-  </div>
-</div>
-
-<!-- GENERIC PANEL -->
-<div class="panel hidden" id="menuPanel">
-  <div class="card">
-    <button class="close" onclick="closePanel('menuPanel')">×</button>
-    <div id="menuContent"></div>
-  </div>
-</div>
-
-<!-- MAP -->
-<div class="panel hidden mapPanel" id="mapPanel">
-  <div class="card">
-    <button class="close" onclick="closePanel('mapPanel')">×</button>
-    <h2>Naija Map</h2>
-    <p class="muted">Travel around Nigeria.</p>
-    <div class="cityMap" id="cityMap"></div>
-    <div class="grid" id="cityButtons"></div>
-  </div>
-</div>
-
-<!-- INTERIOR -->
-<div class="panel hidden" id="interior">
-  <div id="interiorGraphic" style="position:absolute;inset:0"></div>
-  <div class="interiorActions">
-    <button onclick="interiorAction()">USE</button>
-    <button onclick="exitBuilding()">EXIT</button>
-  </div>
-</div>
-
-<!-- PHONE -->
-<div class="panel hidden" id="phone">
-  <div class="phoneShell">
-    <div class="phoneScreen">
-      <div class="notch"></div>
-
-      <div class="phoneStatus">
-        <span id="phoneTime">--:--</span>
-        <span id="phoneBattery">100%</span>
-      </div>
-
-      <div class="phoneContent" id="phoneContent"></div>
-
-      <div class="phoneBottom">
-        <button id="homePhoneBtn" onclick="phoneHome()">⌂<br>Home</button>
-        <button onclick="openPhoneApp('contacts')">♙<br>Contacts</button>
-        <button onclick="openPhoneApp('phone')">☎<br>Phone</button>
-        <button onclick="openPhoneApp('settings')">⚙<br>Settings</button>
-      </div>
-
-      <div class="dead hidden" id="deadPhone">
-        <h1>Battery Empty</h1>
-        <p>Your phone has died.</p>
-        <button class="action" onclick="chargePhone()">CHARGE PHONE</button>
-      </div>
+    <div class="pill">
+      ₦<span id="money">0</span>
+      · Lv <span id="level">1</span>
+      · ❤️ <span id="health">100</span>
     </div>
+
   </div>
+
+
+  <div id="toast"></div>
+
+
+  <div id="controls">
+
+    <div id="stick">
+      <div id="knob"></div>
+    </div>
+
+    <div class="actions">
+
+      <button id="act">
+        ACT
+      </button>
+
+      <button id="phone">
+        PHONE
+      </button>
+
+      <button id="save">
+        SAVE
+      </button>
+
+      <button id="logout">
+        EXIT
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="panel"></div>
+
 </div>
 
-<script>
-/* =========================================================
-   NAIJA LIFE
-   COMPLETE SINGLE-FILE GAME
-========================================================= */
 
-const canvas=document.getElementById("world");
-const ctx=canvas.getContext("2d");
+<script type="module">
 
-let W=innerWidth,H=innerHeight;
-function resize(){
-  W=innerWidth;
-  H=innerHeight;
-  canvas.width=W*devicePixelRatio;
-  canvas.height=H*devicePixelRatio;
-  canvas.style.width=W+"px";
-  canvas.style.height=H+"px";
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+/* =========================
+   FIREBASE
+========================= */
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
+  serverTimestamp,
+  arrayUnion
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  onDisconnect,
+  onValue,
+  serverTimestamp as rtdbTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyBFXbsI4y4f7QepfK3NFrP3LBsIFAWAhEE",
+
+  authDomain:
+    "game-97f37.firebaseapp.com",
+
+  projectId:
+    "game-97f37",
+
+  storageBucket:
+    "game-97f37.firebasestorage.app",
+
+  messagingSenderId:
+    "584626250832",
+
+  appId:
+    "1:584626250832:web:57f076e095174ccd74dd55",
+
+  databaseURL:
+    "https://game-97f37-default-rtdb.firebaseio.com"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const rtdb = getDatabase(app);
+
+
+/* =========================
+   HELPERS
+========================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+function toast(message){
+
+  const element = $("toast");
+
+  element.textContent = message;
+
+  element.style.display = "block";
+
+  clearTimeout(window.__toast);
+
+  window.__toast = setTimeout(() => {
+
+    element.style.display = "none";
+
+  },2600);
+
 }
-addEventListener("resize",resize);
+
+
+/* =========================
+   GAME STATE
+========================= */
+
+let user = null;
+
+let player = null;
+
+let playerPresence = null;
+
+let onlinePlayers = {};
+
+let posX = 600;
+
+let posY = 450;
+
+let joystick = {
+  x:0,
+  y:0
+};
+
+let keys = {};
+
+let lastFrame =
+  performance.now();
+
+
+/* =========================
+   CANVAS
+========================= */
+
+const canvas =
+  $("world");
+
+const ctx =
+  canvas.getContext("2d");
+
+
+let width;
+let height;
+
+
+function resize(){
+
+  width =
+    canvas.width =
+      innerWidth * devicePixelRatio;
+
+  height =
+    canvas.height =
+      innerHeight * devicePixelRatio;
+
+  canvas.style.width =
+    innerWidth + "px";
+
+  canvas.style.height =
+    innerHeight + "px";
+
+  ctx.setTransform(
+    devicePixelRatio,
+    0,
+    0,
+    devicePixelRatio,
+    0,
+    0
+  );
+
+}
+
+
+addEventListener(
+  "resize",
+  resize
+);
+
 resize();
 
-/* ---------- SVG ICON ---------- */
-function icon(type){
-  const icons={
-    chat:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M4 5h16v11H8l-4 4V5z"/><path d="M8 9h8M8 12h5"/>
-    </svg>`,
-    phone:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M6 3l4 3-2 3c1 3 3 5 6 7l3-2 4 4-3 3C10 20 4 14 3 6l3-3z"/>
-    </svg>`,
-    map:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M4 5l6-2 4 2 6-2v16l-6 2-4-2-6 2V5z"/>
-      <path d="M10 3v16M14 5v16"/>
-    </svg>`,
-    bank:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M3 9h18M5 9v8M9 9v8M15 9v8M19 9v8M3 19h18L12 4 3 19z"/>
-    </svg>`,
-    camera:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M4 7h4l2-2h4l2 2h4v12H4z"/>
-      <circle cx="12" cy="13" r="3"/>
-    </svg>`,
-    store:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M4 9l2-5h12l2 5M5 9v10h14V9"/>
-      <path d="M4 9c1 2 3 2 4 0 1 2 3 2 4 0 1 2 3 2 4 0 1 2 3 2 4 0"/>
-    </svg>`,
-    gear:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <circle cx="12" cy="12" r="3"/>
-      <path d="M19 13l2 1-2 4-2-1-2 1v2h-5v-2l-2-1-2 1-2-4 2-1v-2l-2-1 2-4 2 1 2-1V4h5v2l2 1 2-1 2 4-2 1z"/>
-    </svg>`
-  };
-  return icons[type]||icons.store;
-}
 
-/* ---------- GAME DATA ---------- */
+/* =========================
+   REGISTER
+========================= */
 
-const cities={
-  "Lagos":{x:430,y:420,color:"#0a8f54"},
-  "Warri":{x:500,y:720,color:"#1486b8"},
-  "Abuja":{x:1300,y:280,color:"#a46c25"},
-  "Benin City":{x:850,y:590,color:"#8c45a8"},
-  "Port Harcourt":{x:760,y:900,color:"#b84c37"},
-  "Onitsha":{x:640,y:650,color:"#b38b28"},
-  "Enugu":{x:900,y:650,color:"#4f77b5"},
-  "Ibadan":{x:300,y:260,color:"#6a963b"}
-};
+$("register").onclick =
+async function(){
 
-const buildings=[
-  {id:"home",name:"Home",type:"home",x:370,y:390,w:190,h:125},
-  {id:"bank",name:"Naija Bank",type:"bank",x:670,y:320,w:190,h:125},
-  {id:"hospital",name:"Hospital",type:"hospital",x:970,y:320,w:210,h:125},
-  {id:"school",name:"School",type:"school",x:1250,y:420,w:210,h:125},
-  {id:"market",name:"Market",type:"market",x:700,y:650,w:230,h:135},
-  {id:"restaurant",name:"Restaurant",type:"restaurant",x:1000,y:650,w:200,h:125},
-  {id:"police",name:"Police Station",type:"police",x:1280,y:690,w:220,h:130},
-  {id:"church",name:"Church",type:"church",x:380,y:700,w:210,h:130},
-  {id:"shop",name:"Clothing Store",type:"shop",x:1000,y:930,w:210,h:125},
-  {id:"club",name:"Night Club",type:"club",x:1290,y:960,w:220,h:130},
-  {id:"gym",name:"Gym",type:"gym",x:680,y:980,w:190,h:120},
-  {id:"salon",name:"Salon",type:"salon",x:410,y:980,w:190,h:120},
-  {id:"fuel",name:"Fuel Station",type:"fuel",x:1200,y:1180,w:250,h:130},
-  {id:"hotel",name:"Hotel",type:"hotel",x:820,y:1180,w:220,h:130},
-  {id:"work",name:"Office",type:"work",x:460,y:1180,w:220,h:130}
-];
-
-const skins=["#6b3e24","#7f4b2d","#925936","#a96b43","#c5865d","#e0a27b"];
-const shirts=["#087a49","#174ea6","#9b2c2c","#713f12","#5b21b6","#111827","#f59e0b"];
-
-let player={
-  name:"",
-  gender:"Male",
-  city:"Lagos",
-  x:450,
-  y:480,
-  skin:skins[1],
-  shirt:shirts[0],
-  money:25000,
-  level:1,
-  xp:0,
-  energy:90,
-  hunger:80,
-  hygiene:80,
-  happiness:75,
-  fitness:20,
-  reputation:0,
-  wanted:0,
-  health:100,
-  job:null,
-  salary:0,
-  rent:50000,
-  vehicle:null,
-  house:"Starter House"
-};
-
-let world={
-  time:Date.now(),
-  weather:"Clear",
-  traffic:[],
-  cars:[],
-  rain:[],
-  dayFactor:1
-};
-
-let phone={
-  battery:100,
-  installed:[
-    "whatsapp","contacts","phone","maps","bank",
-    "camera","store","settings"
-  ],
-  notifications:3,
-  dark:true,
-  chats:{
-    Tunde:[
-      {me:false,text:"Omo, how far?"}
-    ],
-    Amaka:[
-      {me:false,text:"Are you around today?"}
-    ],
-    Chinedu:[
-      {me:false,text:"Let's meet later."}
-    ]
-  },
-  calls:[]
-};
-
-let npcNames=[
-  "Tunde","Amaka","Chinedu","Aisha","Emeka","Blessing",
-  "David","Favour","Kelechi","Peace","Daniel","Ngozi",
-  "Uche","Esther","Samuel","Ifeoma","Michael","Rita",
-  "Kingsley","Ada"
-];
-
-let npcs=[];
-
-function save(){
-  localStorage.setItem("naijaLifeSave",JSON.stringify({
-    player,phone
-  }));
-}
-
-function load(){
   try{
-    const s=JSON.parse(localStorage.getItem("naijaLifeSave"));
-    if(s){
-      player=s.player||player;
-      phone=s.phone||phone;
-      return true;
-    }
-  }catch(e){}
-  return false;
-}
 
-/* ---------- CHARACTER ---------- */
+    const email =
+      $("email").value.trim();
 
-function personSVG(p,x=0,y=0,scale=1){
- return `
- <svg class="person" viewBox="0 0 100 150"
-      x="${x}" y="${y}" width="${100*scale}" height="${150*scale}">
-   <ellipse cx="50" cy="143" rx="28" ry="5" fill="rgba(0,0,0,.22)"/>
-   <rect x="27" y="82" width="46" height="46" rx="14" fill="${p.shirt}"/>
-   <circle cx="50" cy="50" r="27" fill="${p.skin}"/>
-   <path d="M24 48Q27 16 50 17Q76 17 78 48Q69 31 50 32Q33 31 24 48"
-         fill="#17130f"/>
-   <circle cx="40" cy="51" r="3" fill="#111"/>
-   <circle cx="60" cy="51" r="3" fill="#111"/>
-   <path d="M44 65Q50 69 56 65" fill="none" stroke="#321b14" stroke-width="2"/>
-   <rect x="15" y="87" width="14" height="38" rx="7" fill="${p.skin}"/>
-   <rect x="71" y="87" width="14" height="38" rx="7" fill="${p.skin}"/>
-   <rect x="30" y="124" width="16" height="20" rx="7" fill="#171b1b"/>
-   <rect x="54" y="124" width="16" height="20" rx="7" fill="#171b1b"/>
- </svg>`;
-}
+    const password =
+      $("password").value;
 
-function renderCreator(){
-  document.getElementById("avatarPreview").innerHTML=
-    personSVG({
-      skin:player.skin,
-      shirt:player.shirt
-    },0,0,1.05);
+    const name =
+      $("name").value.trim() ||
+      "Player";
 
-  document.getElementById("skinSwatches").innerHTML=
-    skins.map((c,i)=>`
-      <button class="swatch ${player.skin===c?"selected":""}"
-              style="background:${c}"
-              onclick="chooseSkin('${c}')"></button>
-    `).join("");
+    const city =
+      $("city").value;
 
-  document.getElementById("shirtSwatches").innerHTML=
-    shirts.map((c,i)=>`
-      <button class="swatch ${player.shirt===c?"selected":""}"
-              style="background:${c}"
-              onclick="chooseShirt('${c}')"></button>
-    `).join("");
-}
 
-function chooseSkin(c){
-  player.skin=c;
-  renderCreator();
-}
-function chooseShirt(c){
-  player.shirt=c;
-  renderCreator();
-}
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-/* ---------- NPC ---------- */
 
-function makeNPC(i){
-  const skin=skins[i%skins.length];
-  const shirt=shirts[(i+2)%shirts.length];
-  return {
-    id:i,
-    name:npcNames[i%npcNames.length],
-    x:220+Math.random()*1250,
-    y:220+Math.random()*1050,
-    skin,
-    shirt,
-    speed:.4+Math.random()*.55,
-    targetX:300+Math.random()*1200,
-    targetY:250+Math.random()*1000,
-    job:["Office","Market","Hospital","Shop","Restaurant","Driver"][i%6],
-    homeX:200+Math.random()*1300,
-    homeY:250+Math.random()*1000,
-    state:"walking",
-    friendship:Math.floor(Math.random()*20)
-  };
-}
-
-function createNPCs(){
-  npcs=[];
-  for(let i=0;i<20;i++) npcs.push(makeNPC(i));
-}
-
-function updateNPCs(){
-  const hour=new Date().getHours();
-
-  npcs.forEach(n=>{
-    if(hour>=22 || hour<6){
-      n.targetX=n.homeX;
-      n.targetY=n.homeY;
-      n.state="home";
-    }else{
-      if(Math.hypot(n.x-n.targetX,n.y-n.targetY)<15){
-        n.targetX=220+Math.random()*1300;
-        n.targetY=220+Math.random()*1050;
+    await updateProfile(
+      result.user,
+      {
+        displayName:name
       }
-      n.state="walking";
+    );
+
+
+    await setDoc(
+      doc(
+        db,
+        "players",
+        result.user.uid
+      ),
+      {
+
+        uid:
+          result.user.uid,
+
+        name,
+
+        city,
+
+        money:
+          50000,
+
+        level:
+          1,
+
+        xp:
+          0,
+
+        health:
+          100,
+
+        energy:
+          100,
+
+        hunger:
+          100,
+
+        hygiene:
+          100,
+
+        happiness:
+          100,
+
+        job:
+          "Unemployed",
+
+        friends:
+          [],
+
+        banned:
+          false,
+
+        createdAt:
+          serverTimestamp(),
+
+        updatedAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    toast(
+      "Account created successfully"
+    );
+
+
+  }catch(error){
+
+    $("authMsg").textContent =
+      error.message;
+
+  }
+
+};
+
+
+/* =========================
+   LOGIN
+========================= */
+
+$("login").onclick =
+async function(){
+
+  try{
+
+    await signInWithEmailAndPassword(
+
+      auth,
+
+      $("email").value.trim(),
+
+      $("password").value
+
+    );
+
+  }catch(error){
+
+    $("authMsg").textContent =
+      error.message;
+
+  }
+
+};
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+onAuthStateChanged(
+  auth,
+  async currentUser => {
+
+    user =
+      currentUser;
+
+
+    if(!currentUser){
+
+      $("auth").style.display =
+        "grid";
+
+      $("game").style.display =
+        "none";
+
+      return;
+
     }
 
-    const dx=n.targetX-n.x;
-    const dy=n.targetY-n.y;
-    const d=Math.hypot(dx,dy)||1;
 
-    n.x+=(dx/d)*n.speed;
-    n.y+=(dy/d)*n.speed;
-  });
-}
+    const snapshot =
+      await getDoc(
+        doc(
+          db,
+          "players",
+          currentUser.uid
+        )
+      );
 
-/* ---------- WORLD DRAW ---------- */
 
-function worldTime(){
-  return new Date(
-    new Date().toLocaleString("en-US",{timeZone:"Africa/Lagos"})
+    if(!snapshot.exists()){
+
+      await signOut(auth);
+
+      return;
+
+    }
+
+
+    player =
+      snapshot.data();
+
+
+    if(player.banned === true){
+
+      $("authMsg").textContent =
+        "This account is suspended.";
+
+      await signOut(auth);
+
+      return;
+
+    }
+
+
+    $("auth").style.display =
+      "none";
+
+    $("game").style.display =
+      "block";
+
+
+    $("playerName").textContent =
+      player.name;
+
+    $("cityText").textContent =
+      player.city;
+
+
+    connectPresence();
+
+
+    listenForPlayers();
+
+
+    toast(
+      "Welcome to Naija Life, " +
+      player.name +
+      "!"
+    );
+
+  }
+);
+
+
+/* =========================
+   REALTIME PRESENCE
+========================= */
+
+function connectPresence(){
+
+  playerPresence =
+    ref(
+      rtdb,
+      "presence/" +
+      user.uid
+    );
+
+
+  set(
+    playerPresence,
+    {
+
+      uid:
+        user.uid,
+
+      name:
+        player.name,
+
+      city:
+        player.city,
+
+      x:
+        posX,
+
+      y:
+        posY,
+
+      online:
+        true,
+
+      lastSeen:
+        rtdbTimestamp()
+
+    }
   );
-}
 
-function updateClock(){
-  const d=worldTime();
-  const time=d.toLocaleTimeString("en-NG",{
-    hour:"2-digit",
-    minute:"2-digit",
-    hour12:true
+
+  onDisconnect(
+    playerPresence
+  ).set({
+
+    uid:
+      user.uid,
+
+    name:
+      player.name,
+
+    city:
+      player.city,
+
+    online:
+      false,
+
+    lastSeen:
+      rtdbTimestamp()
+
   });
-  document.getElementById("clock").textContent=time;
-  document.getElementById("phoneTime").textContent=time;
 
-  const h=d.getHours()+d.getMinutes()/60;
-  world.dayFactor=(h>=6&&h<18)?1:0;
-
-  if(h>=19 || h<6) world.weather="Night";
-  else if(world.weather==="Night") world.weather="Clear";
-
-  document.getElementById("weather").textContent=world.weather;
 }
 
-function drawWorld(){
-  ctx.clearRect(0,0,W,H);
 
-  const night=world.dayFactor===0;
+function listenForPlayers(){
 
-  ctx.fillStyle=night?"#07100d":"#91c9b2";
-  ctx.fillRect(0,0,W,H);
+  onValue(
+    ref(rtdb,"presence"),
+    snapshot => {
 
-  /* lagoon */
-  ctx.fillStyle=night?"#0c2630":"#2386a0";
-  ctx.beginPath();
-  ctx.moveTo(0,H*.62);
-  ctx.lineTo(W,H*.45);
-  ctx.lineTo(W,H);
-  ctx.lineTo(0,H);
-  ctx.fill();
+      onlinePlayers =
+        snapshot.val() || {};
 
-  /* mainland */
-  ctx.fillStyle=night?"#111a17":"#7a9b70";
-  ctx.fillRect(0,0,W,H*.66);
+    }
+  );
 
-  /* roads */
-  ctx.fillStyle=night?"#252d2a":"#626863";
+}
 
-  ctx.fillRect(0,H*.29,W,65);
-  ctx.fillRect(0,H*.51,W,70);
-  ctx.fillRect(W*.27,0,70,H*.66);
-  ctx.fillRect(W*.67,0,75,H*.66);
 
-  /* road markings */
-  ctx.strokeStyle=night?"#676f6b":"#d6d2a8";
-  ctx.lineWidth=3;
-  ctx.setLineDash([20,18]);
+/* =========================
+   CLOUD SAVE
+========================= */
 
-  ctx.beginPath();
-  ctx.moveTo(0,H*.32);
-  ctx.lineTo(W,H*.32);
-  ctx.stroke();
+async function saveGame(){
 
-  ctx.beginPath();
-  ctx.moveTo(0,H*.545);
-  ctx.lineTo(W,H*.545);
-  ctx.stroke();
+  if(!user) return;
 
-  ctx.beginPath();
-  ctx.moveTo(W*.305,0);
-  ctx.lineTo(W*.305,H*.66);
-  ctx.stroke();
 
-  ctx.beginPath();
-  ctx.moveTo(W*.705,0);
-  ctx.lineTo(W*.705,H*.66);
-  ctx.stroke();
+  await updateDoc(
 
-  ctx.setLineDash([]);
+    doc(
+      db,
+      "players",
+      user.uid
+    ),
 
-  /* buildings */
-  buildings.forEach(b=>{
-    const sx=(b.x-player.x)+W/2;
-    const sy=(b.y-player.y)+H/2;
+    {
 
-    ctx.fillStyle=night?"#27322d":"#e0d8c7";
-    ctx.fillRect(sx,sy,b.w*.45,b.h*.45);
+      x:
+        posX,
 
-    ctx.fillStyle="#163f2d";
-    ctx.fillRect(sx,sy,b.w*.45,16);
+      y:
+        posY,
 
-    ctx.fillStyle=night?"#a7b9ad":"#ffffff";
-    ctx.font="10px Arial";
-    ctx.textAlign="center";
-    ctx.fillText(b.name,sx+b.w*.225,sy+b.h*.45+13);
+      updatedAt:
+        serverTimestamp()
 
-    /* windows */
-    ctx.fillStyle=night?"#e8b95d":"#8ab8c8";
-    for(let xx=10;xx<b.w*.45-5;xx+=27){
-      for(let yy=28;yy<b.h*.45-8;yy+=27){
-        ctx.fillRect(sx+xx,sy+yy,12,8);
+    }
+
+  );
+
+
+  if(playerPresence){
+
+    await set(
+      playerPresence,
+      {
+
+        uid:
+          user.uid,
+
+        name:
+          player.name,
+
+        city:
+          player.city,
+
+        x:
+          posX,
+
+        y:
+          posY,
+
+        online:
+          true,
+
+        lastSeen:
+          rtdbTimestamp()
+
       }
-    }
-  });
+    );
 
-  /* trees */
-  for(let i=0;i<28;i++){
-    const tx=(i*173%1500-player.x)+W/2;
-    const ty=(i*97%850-player.y)+H/2;
-    if(tx>-30&&tx<W+30&&ty>-30&&ty<H+30){
-      ctx.fillStyle="#174d2e";
-      ctx.beginPath();
-      ctx.arc(tx,ty,14,0,Math.PI*2);
-      ctx.fill();
-      ctx.fillStyle="#6c4422";
-      ctx.fillRect(tx-3,ty+8,6,18);
-    }
   }
 
-  /* NPCs */
-  npcs.forEach(n=>{
-    const sx=n.x-player.x+W/2;
-    const sy=n.y-player.y+H/2;
-    if(sx>-80&&sx<W+80&&sy>-100&&sy<H+100){
-      drawPersonCanvas(n,sx,sy,.42);
-    }
-  });
 
-  /* cars */
-  world.cars.forEach(c=>{
-    c.x+=c.vx;
-    c.y+=c.vy;
-    if(c.x<0)c.x=1600;
-    if(c.x>1600)c.x=0;
+  toast(
+    "Cloud save complete ✓"
+  );
 
-    const sx=c.x-player.x+W/2;
-    const sy=c.y-player.y+H/2;
-    ctx.fillStyle=c.color;
-    ctx.fillRect(sx,sy,45,20);
-    ctx.fillStyle="#9bd4df";
-    ctx.fillRect(sx+8,sy+3,12,8);
-    ctx.fillRect(sx+26,sy+3,12,8);
-  });
-
-  /* player */
-  drawPersonCanvas(player,W/2,H/2,.55);
-
-  /* rain */
-  if(world.weather==="Rain"){
-    ctx.strokeStyle="rgba(180,210,255,.35)";
-    for(let i=0;i<100;i++){
-      const x=Math.random()*W;
-      const y=Math.random()*H;
-      ctx.beginPath();
-      ctx.moveTo(x,y);
-      ctx.lineTo(x-3,y+12);
-      ctx.stroke();
-    }
-  }
-
-  /* night overlay */
-  if(night){
-    ctx.fillStyle="rgba(2,7,15,.55)";
-    ctx.fillRect(0,0,W,H);
-  }
 }
 
-function drawPersonCanvas(p,x,y,s){
-  ctx.save();
-  ctx.translate(x,y);
 
-  ctx.fillStyle="rgba(0,0,0,.25)";
-  ctx.beginPath();
-  ctx.ellipse(0,25,19*s,5*s,0,0,Math.PI*2);
-  ctx.fill();
+$("save").onclick =
+saveGame;
 
-  ctx.fillStyle=p.shirt;
-  ctx.fillRect(-13*s,-10*s,26*s,30*s);
 
-  ctx.fillStyle=p.skin;
-  ctx.beginPath();
-  ctx.arc(0,-24*s,14*s,0,Math.PI*2);
-  ctx.fill();
+/* =========================
+   PHONE
+========================= */
 
-  ctx.fillStyle="#17130f";
-  ctx.beginPath();
-  ctx.arc(0,-29*s,14*s,Math.PI,Math.PI*2);
-  ctx.fill();
+$("phone").onclick =
+openPhone;
 
-  ctx.fillStyle=p.skin;
-  ctx.fillRect(-19*s,-5*s,6*s,27*s);
-  ctx.fillRect(13*s,-5*s,6*s,27*s);
-
-  ctx.fillStyle="#1a1b1b";
-  ctx.fillRect(-10*s,19*s,8*s,17*s);
-  ctx.fillRect(2*s,19*s,8*s,17*s);
-
-  ctx.restore();
-}
-
-/* ---------- GAME LOOP ---------- */
-
-let keys={};
-let joy={x:0,y:0};
-let running=false;
-let last=performance.now();
-
-function loop(now){
-  const dt=Math.min(32,now-last);
-  last=now;
-
-  updatePlayer(dt);
-  updateNPCs();
-  drawWorld();
-
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-function updatePlayer(dt){
-  let speed=1.5*(running?1.8:1);
-
-  player.x+=joy.x*speed;
-  player.y+=joy.y*speed;
-
-  if(keys.ArrowUp||keys.w)player.y-=speed;
-  if(keys.ArrowDown||keys.s)player.y+=speed;
-  if(keys.ArrowLeft||keys.a)player.x-=speed;
-  if(keys.ArrowRight||keys.d)player.x+=speed;
-
-  player.x=Math.max(100,Math.min(1500,player.x));
-  player.y=Math.max(100,Math.min(1350,player.y));
-}
-
-/* ---------- JOYSTICK ---------- */
-
-const joystick=document.getElementById("joystick");
-const stick=document.getElementById("stick");
-
-let joyActive=false;
-
-function joystickMove(e){
-  const r=joystick.getBoundingClientRect();
-  const px=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
-  const py=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
-  let dx=px-55;
-  let dy=py-55;
-  const max=36;
-  const d=Math.hypot(dx,dy)||1;
-  if(d>max){
-    dx=dx/d*max;
-    dy=dy/d*max;
-  }
-  stick.style.left=(55+dx-23)+"px";
-  stick.style.top=(55+dy-23)+"px";
-  joy.x=dx/max;
-  joy.y=dy/max;
-}
-
-function joystickEnd(){
-  joyActive=false;
-  joy.x=0;
-  joy.y=0;
-  stick.style.left="32px";
-  stick.style.top="32px";
-}
-
-joystick.addEventListener("touchstart",e=>{
-  joyActive=true;
-  joystickMove(e);
-},{passive:true});
-joystick.addEventListener("touchmove",e=>{
-  if(joyActive)joystickMove(e);
-},{passive:true});
-joystick.addEventListener("touchend",joystickEnd);
-
-addEventListener("keydown",e=>keys[e.key]=true);
-addEventListener("keyup",e=>keys[e.key]=false);
-
-document.getElementById("runBtn").onclick=()=>{
-  running=!running;
-  document.getElementById("runBtn").textContent=running?"WALK":"RUN";
-};
-
-/* ---------- ACTION ---------- */
-
-document.getElementById("actBtn").onclick=action;
-
-function nearestBuilding(){
-  let best=null;
-  let dist=Infinity;
-
-  buildings.forEach(b=>{
-    const cx=b.x+b.w/2;
-    const cy=b.y+b.h/2;
-    const d=Math.hypot(player.x-cx,player.y-cy);
-    if(d<dist){
-      dist=d;
-      best=b;
-    }
-  });
-
-  return dist<170?best:null;
-}
-
-function nearestNPC(){
-  let best=null,dist=Infinity;
-  npcs.forEach(n=>{
-    const d=Math.hypot(player.x-n.x,player.y-n.y);
-    if(d<dist){
-      dist=d;
-      best=n;
-    }
-  });
-  return dist<100?best:null;
-}
-
-function action(){
-  const b=nearestBuilding();
-  const n=nearestNPC();
-
-  if(b){
-    enterBuilding(b);
-    return;
-  }
-
-  if(n){
-    npcInteraction(n);
-    return;
-  }
-
-  toast("Nothing nearby.");
-}
-
-function npcInteraction(n){
-  openMenu(`
-    <h2>${n.name}</h2>
-    <p class="muted">${n.job} • Friendship ${n.friendship}%</p>
-
-    <div class="grid">
-      <button class="action" onclick="talkNPC(${n.id})">Talk</button>
-      <button class="action" onclick="messageNPC(${n.id})">Message</button>
-      <button class="action" onclick="callNPC(${n.id})">Call</button>
-      <button class="action alt" onclick="befriendNPC(${n.id})">Spend Time</button>
-    </div>
-  `);
-}
-
-function talkNPC(id){
-  const n=npcs.find(x=>x.id===id);
-  if(!n)return;
-  n.friendship=Math.min(100,n.friendship+5);
-  player.happiness=Math.min(100,player.happiness+3);
-  gainXP(5);
-  toast(`${n.name}: "How far?"`);
-  closePanel("menuPanel");
-}
-
-function messageNPC(id){
-  const n=npcs.find(x=>x.id===id);
-  if(!n)return;
-  openPhoneChat(n.name);
-}
-
-function callNPC(id){
-  const n=npcs.find(x=>x.id===id);
-  if(!n)return;
-  phone.battery=Math.max(0,phone.battery-3);
-  phone.calls.unshift({
-    name:n.name,
-    time:new Date().toLocaleTimeString(),
-    type:"outgoing"
-  });
-  save();
-  toast(`Calling ${n.name}...`);
-}
-
-function befriendNPC(id){
-  const n=npcs.find(x=>x.id===id);
-  if(!n)return;
-  n.friendship=Math.min(100,n.friendship+15);
-  player.happiness=Math.min(100,player.happiness+8);
-  gainXP(10);
-  closePanel("menuPanel");
-  toast(`${n.name} enjoyed spending time with you.`);
-}
-
-/* ---------- BUILDINGS ---------- */
-
-let currentBuilding=null;
-
-function enterBuilding(b){
-  currentBuilding=b;
-  document.getElementById("interior").classList.remove("hidden");
-  renderInterior(b);
-}
-
-function renderInterior(b){
-  const colors={
-    home:"#c79a70",
-    bank:"#b8c6d0",
-    hospital:"#e8eeee",
-    school:"#d5c49b",
-    market:"#d1a35f",
-    restaurant:"#9b684e",
-    police:"#68758b",
-    church:"#d5c4a3",
-    shop:"#9f6d91",
-    club:"#39264d",
-    gym:"#617d70",
-    salon:"#8d5c79",
-    fuel:"#77756a",
-    hotel:"#817d9e",
-    work:"#718078"
-  };
-
-  const wall=colors[b.type]||"#9b9b9b";
-
-  document.getElementById("interiorGraphic").innerHTML=`
-    <svg class="interiorSvg" viewBox="0 0 900 600"
-         preserveAspectRatio="xMidYMid slice">
-      <rect width="900" height="600" fill="${wall}"/>
-      <rect x="0" y="420" width="900" height="180" fill="#5a4537"/>
-      <rect x="35" y="35" width="830" height="45" rx="12"
-            fill="rgba(0,0,0,.25)"/>
-      <text x="450" y="65" fill="white"
-            text-anchor="middle" font-size="25"
-            font-family="Arial">${b.name}</text>
-
-      <rect x="100" y="145" width="190" height="100" rx="12"
-            fill="#684f40"/>
-      <rect x="610" y="145" width="190" height="100" rx="12"
-            fill="#684f40"/>
-
-      <circle cx="450" cy="270" r="85"
-              fill="rgba(255,255,255,.12)"/>
-
-      <rect x="340" y="390" width="220" height="60" rx="15"
-            fill="#342b25"/>
-
-      <circle cx="175" cy="345" r="38" fill="#263f31"/>
-      <circle cx="725" cy="345" r="38" fill="#263f31"/>
-
-      <text x="450" y="520" fill="rgba(255,255,255,.8)"
-            text-anchor="middle" font-size="18"
-            font-family="Arial">
-        ${b.type.toUpperCase()}
-      </text>
-    </svg>
-  `;
-}
-
-function interiorAction(){
-  if(!currentBuilding)return;
-
-  const t=currentBuilding.type;
-
-  if(t==="home"){
-    player.energy=Math.min(100,player.energy+25);
-    player.hunger=Math.max(0,player.hunger-5);
-    player.hygiene=Math.max(0,player.hygiene-2);
-    toast("You relaxed at home.");
-  }
-
-  if(t==="bank"){
-    openMenu(`
-      <h2>Naija Bank</h2>
-      <div class="tile">
-        <strong>Balance</strong>
-        <span class="money">₦${player.money.toLocaleString()}</span>
-      </div>
-      <button class="action" onclick="bankDeposit()">Deposit ₦5,000</button>
-      <button class="action alt" onclick="bankWithdraw()">Withdraw ₦2,000</button>
-    `);
-  }
-
-  if(t==="market"){
-    buyFood();
-  }
-
-  if(t==="restaurant"){
-    if(player.money>=3500){
-      player.money-=3500;
-      player.hunger=Math.min(100,player.hunger+30);
-      player.energy=Math.min(100,player.energy+15);
-      gainXP(5);
-      toast("You enjoyed a meal.");
-    }else toast("Not enough money.");
-  }
-
-  if(t==="gym"){
-    if(player.energy>=15){
-      player.energy-=15;
-      player.fitness=Math.min(100,player.fitness+8);
-      gainXP(10);
-      toast("Workout complete.");
-    }else toast("You need more energy.");
-  }
-
-  if(t==="salon"){
-    if(player.money>=5000){
-      player.money-=5000;
-      player.hygiene=Math.min(100,player.hygiene+10);
-      player.happiness=Math.min(100,player.happiness+10);
-      toast("Fresh haircut.");
-    }else toast("Not enough money.");
-  }
-
-  if(t==="club"){
-    if(player.money>=5000){
-      player.money-=5000;
-      player.happiness=Math.min(100,player.happiness+18);
-      player.energy=Math.max(0,player.energy-10);
-      toast("You had a good night.");
-    }else toast("Not enough money.");
-  }
-
-  if(t==="church"){
-    player.happiness=Math.min(100,player.happiness+12);
-    player.reputation+=2;
-    gainXP(8);
-    toast("You attended church.");
-  }
-
-  if(t==="hospital"){
-    if(player.money>=3000){
-      player.money-=3000;
-      player.health=100;
-      toast("Health restored.");
-    }else toast("You need ₦3,000.");
-  }
-
-  if(t==="police"){
-    openPolice();
-  }
-
-  if(t==="work"){
-    openJobs();
-  }
-
-  if(t==="school"){
-    gainXP(12);
-    toast("You attended school.");
-  }
-
-  if(t==="hotel"){
-    if(player.money>=12000){
-      player.money-=12000;
-      player.energy=100;
-      player.hygiene=100;
-      toast("You rested at the hotel.");
-    }else toast("Hotel costs ₦12,000.");
-  }
-
-  if(t==="shop"){
-    openShop();
-  }
-
-  if(t==="fuel"){
-    refuel();
-  }
-}
-
-function exitBuilding(){
-  currentBuilding=null;
-  document.getElementById("interior").classList.add("hidden");
-}
-
-/* ---------- JOBS ---------- */
-
-const jobs=[
-  {name:"Office Worker",salary:45000,xp:20},
-  {name:"Restaurant Worker",salary:35000,xp:16},
-  {name:"Delivery Driver",salary:55000,xp:25},
-  {name:"Security Officer",salary:50000,xp:22},
-  {name:"Teacher",salary:65000,xp:30},
-  {name:"Software Developer",salary:180000,xp:45},
-  {name:"Fashion Seller",salary:70000,xp:30},
-  {name:"Mechanic",salary:60000,xp:28}
-];
-
-function openJobs(){
-  openMenu(`
-    <h2>Jobs</h2>
-    <p class="muted">Choose a career.</p>
-    <div class="list">
-      ${jobs.map((j,i)=>`
-        <div class="listItem">
-          <div>
-            <strong>${j.name}</strong>
-            <div class="muted">₦${j.salary.toLocaleString()} / month</div>
-          </div>
-          <button class="smallBtn" onclick="takeJob(${i})">
-            ${player.job===j.name?"ACTIVE":"TAKE"}
-          </button>
-        </div>
-      `).join("")}
-    </div>
-  `);
-}
-
-function takeJob(i){
-  const j=jobs[i];
-  player.job=j.name;
-  player.salary=j.salary;
-  player.reputation+=2;
-  save();
-  toast(`${j.name} is now your job.`);
-  openJobs();
-}
-
-function workShift(){
-  if(!player.job){
-    toast("Get a job first.");
-    return;
-  }
-
-  const j=jobs.find(x=>x.name===player.job);
-  if(!j)return;
-
-  const pay=Math.floor(j.salary/22);
-  player.money+=pay;
-  player.energy=Math.max(0,player.energy-15);
-  player.hunger=Math.max(0,player.hunger-10);
-  gainXP(j.xp);
-  toast(`Shift complete: +₦${pay.toLocaleString()}`);
-}
-
-/* ---------- ECONOMY ---------- */
-
-function buyFood(){
-  const cost=2500;
-  if(player.money<cost){
-    toast("Not enough money.");
-    return;
-  }
-  player.money-=cost;
-  player.hunger=Math.min(100,player.hunger+35);
-  player.energy=Math.min(100,player.energy+8);
-  toast("Food purchased.");
-}
-
-function bankDeposit(){
-  toast("Your in-game balance is already represented by your game money.");
-}
-
-function bankWithdraw(){
-  toast("You can manage your fictional game balance here.");
-}
-
-function openShop(){
-  openMenu(`
-    <h2>Clothing Store</h2>
-    <div class="grid">
-      <button class="action" onclick="buyClothes(5000)">₦5,000 Outfit</button>
-      <button class="action" onclick="buyClothes(12000)">₦12,000 Outfit</button>
-      <button class="action" onclick="buyClothes(25000)">₦25,000 Premium</button>
-      <button class="action" onclick="buyClothes(50000)">₦50,000 Luxury</button>
-    </div>
-  `);
-}
-
-function buyClothes(cost){
-  if(player.money<cost){
-    toast("Not enough money.");
-    return;
-  }
-  player.money-=cost;
-  player.happiness=Math.min(100,player.happiness+8);
-  gainXP(5);
-  toast("New outfit purchased.");
-}
-
-function refuel(){
-  if(!player.vehicle){
-    toast("You don't own a vehicle.");
-    return;
-  }
-  if(player.money<5000){
-    toast("Not enough money.");
-    return;
-  }
-  player.money-=5000;
-  toast("Vehicle refueled.");
-}
-
-/* ---------- POLICE ---------- */
-
-function openPolice(){
-  openMenu(`
-    <h2>Police Station</h2>
-    <p class="muted">Wanted level: ${player.wanted}/5</p>
-
-    <div class="tile">
-      <strong>Traffic & legal services</strong>
-      <p class="muted">
-        Your wanted level and fines are game mechanics.
-      </p>
-    </div>
-
-    <button class="action" onclick="payFine()">
-      Pay Fine
-    </button>
-
-    <button class="action alt" onclick="reportLostItem()">
-      Report Lost Item
-    </button>
-  `);
-}
-
-function payFine(){
-  if(player.wanted<=0){
-    toast("You have no fine.");
-    return;
-  }
-
-  const fine=player.wanted*5000;
-
-  if(player.money>=fine){
-    player.money-=fine;
-    player.wanted=0;
-    toast("Fine paid.");
-  }else{
-    toast("You cannot afford the fine.");
-  }
-}
-
-function reportLostItem(){
-  toast("Report recorded.");
-}
-
-/* ---------- LEVEL ---------- */
-
-function gainXP(amount){
-  player.xp+=amount;
-
-  const need=player.level*100;
-
-  if(player.xp>=need){
-    player.xp-=need;
-    player.level++;
-    player.money+=10000;
-    player.energy=Math.min(100,player.energy+10);
-    toast(`Level up! You are now level ${player.level}.`);
-  }
-
-  updateHUD();
-  save();
-}
-
-/* ---------- PHONE ---------- */
-
-const appData={
-  whatsapp:{
-    name:"WhatsApp",
-    icon:"chat"
-  },
-  contacts:{
-    name:"Contacts",
-    icon:"phone"
-  },
-  phone:{
-    name:"Phone",
-    icon:"phone"
-  },
-  maps:{
-    name:"Maps",
-    icon:"map"
-  },
-  bank:{
-    name:"NaijaBank",
-    icon:"bank"
-  },
-  camera:{
-    name:"Camera",
-    icon:"camera"
-  },
-  store:{
-    name:"App Store",
-    icon:"store"
-  },
-  settings:{
-    name:"Settings",
-    icon:"gear"
-  },
-  social:{
-    name:"Naija Social",
-    icon:"chat"
-  },
-  music:{
-    name:"Naija Music",
-    icon:"store"
-  },
-  food:{
-    name:"Food Delivery",
-    icon:"store"
-  },
-  ride:{
-    name:"Naija Ride",
-    icon:"map"
-  },
-  news:{
-    name:"Naija News",
-    icon:"store"
-  },
-  jobs:{
-    name:"Job Finder",
-    icon:"store"
-  },
-  gallery:{
-    name:"Gallery",
-    icon:"camera"
-  },
-  calculator:{
-    name:"Calculator",
-    icon:"store"
-  },
-  notes:{
-    name:"Notes",
-    icon:"store"
-  },
-  calendar:{
-    name:"Calendar",
-    icon:"store"
-  }
-};
 
 function openPhone(){
-  document.getElementById("phone").classList.remove("hidden");
-  phoneHome();
-  updatePhone();
-}
 
-document.getElementById("phoneBtn").onclick=openPhone;
+  showPanel(`
 
-function closePhone(){
-  document.getElementById("phone").classList.add("hidden");
-}
+    <h2>📱 Phone</h2>
 
-function phoneHome(){
-  const installed=phone.installed;
+    <div class="item">
 
-  document.getElementById("phoneContent").innerHTML=`
-    <div class="phoneHome">
-      <div class="phoneTime" id="bigPhoneTime">--:--</div>
-      <div class="phoneDate">
-        ${worldTime().toLocaleDateString("en-NG",{
-          weekday:"long",
-          month:"long",
-          day:"numeric"
-        })}
-      </div>
+      <b>WhatsApp-style Chat</b>
 
-      <div class="appGrid">
-        ${installed.map(id=>{
-          const a=appData[id];
-          if(!a)return "";
-          return `
-            <button class="appIcon" onclick="openPhoneApp('${id}')">
-              <div class="appIconBox">${icon(a.icon)}</div>
-              <div class="appLabel">${a.name}</div>
-            </button>
-          `;
-        }).join("")}
-      </div>
-    </div>
-  `;
+      <p class="small">
+        Talk with other Naija Life players.
+      </p>
 
-  updatePhone();
-}
-
-function phoneHeader(title){
-  return `
-    <div class="phoneTitle">
-      <button class="backBtn" onclick="phoneHome()">‹</button>
-      <h2>${title}</h2>
-      <span></span>
-    </div>
-  `;
-}
-
-function openPhoneApp(app){
-  if(!phone.installed.includes(app)){
-    toast("Install this app first.");
-    return;
-  }
-
-  batteryDrain(1);
-
-  const c=document.getElementById("phoneContent");
-
-  if(app==="whatsapp"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("WhatsApp")}
-        <div class="list">
-          ${Object.keys(phone.chats).map(name=>`
-            <div class="listItem"
-                 onclick="openPhoneChat('${name}')">
-              <div>
-                <strong>${name}</strong>
-                <div class="muted">
-                  ${phone.chats[name].at(-1)?.text||"No messages"}
-                </div>
-              </div>
-              <span>›</span>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="contacts"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Contacts")}
-        <div class="list">
-          ${npcs.slice(0,12).map(n=>`
-            <div class="listItem">
-              <div>
-                <strong>${n.name}</strong>
-                <div class="muted">${n.job}</div>
-              </div>
-              <div class="row">
-                <button class="smallBtn"
-                  onclick="openPhoneChat('${n.name}')">MSG</button>
-                <button class="smallBtn"
-                  onclick="callContact('${n.name}')">CALL</button>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="phone"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Phone")}
-        <div class="tile">
-          <strong>Recent Calls</strong>
-          <div class="list">
-            ${phone.calls.slice(0,8).map(x=>`
-              <div class="listItem">
-                <span>${x.name}</span>
-                <span class="muted">${x.time}</span>
-              </div>
-            `).join("")||`<p class="muted">No calls yet.</p>`}
-          </div>
-        </div>
-
-        <div class="grid3" style="margin-top:12px">
-          ${["1","2","3","4","5","6","7","8","9","*","0","#"]
-          .map(x=>`
-            <button class="action alt"
-              onclick="dial('${x}')">${x}</button>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="maps"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Maps")}
-        <div class="cityMap" style="height:350px">
-          ${Object.entries(cities).map(([name,p])=>`
-            <div class="cityPoint"
-                 style="left:${(p.x/1600)*90}%;top:${(p.y/1200)*90}%">
-              ${name}
-            </div>
-          `).join("")}
-        </div>
-        <button class="action" onclick="openMap()">Open Full Map</button>
-      </div>
-    `;
-  }
-
-  if(app==="bank"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("NaijaBank")}
-        <div class="tile">
-          <strong>Available Balance</strong>
-          <h1 class="money">₦${player.money.toLocaleString()}</h1>
-          <p class="muted">Fictional in-game money.</p>
-        </div>
-        <button class="action" onclick="transferMoney()">Transfer</button>
-        <button class="action alt" onclick="toast('Transaction history opened.')">
-          Transactions
-        </button>
-      </div>
-    `;
-  }
-
-  if(app==="camera"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Camera")}
-        <div style="
-          height:390px;
-          border-radius:20px;
-          background:
-          linear-gradient(135deg,#17251e,#344c40);
-          display:grid;
-          place-items:center;
-        ">
-          ${icon("camera")}
-        </div>
-        <button class="action" onclick="takePhoto()">TAKE PHOTO</button>
-      </div>
-    `;
-  }
-
-  if(app==="store"){
-    renderStore();
-  }
-
-  if(app==="settings"){
-    renderSettings();
-  }
-
-  if(app==="social"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Naija Social")}
-        <div class="list">
-          <div class="tile">
-            <strong>Amaka</strong>
-            <p>Beautiful evening in Lagos.</p>
-            <button class="smallBtn"
-              onclick="likePost()">Like</button>
-          </div>
-          <div class="tile">
-            <strong>Tunde</strong>
-            <p>Who is outside tonight?</p>
-            <button class="smallBtn"
-              onclick="likePost()">Like</button>
-          </div>
-          <div class="tile">
-            <strong>Chinedu</strong>
-            <p>Football this weekend?</p>
-            <button class="smallBtn"
-              onclick="likePost()">Like</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="music"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Naija Music")}
-        <div class="list">
-          ${["Afrobeat Mix","Street Vibes","Late Night Lagos",
-             "Warri Energy","Naija Chill"].map((x,i)=>`
-            <div class="listItem">
-              <div>
-                <strong>${x}</strong>
-                <div class="muted">Game radio</div>
-              </div>
-              <button class="smallBtn"
-                onclick="playMusic('${x}')">PLAY</button>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="food"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Food Delivery")}
-        <div class="list">
-          ${[
-            ["Jollof Rice",4500,30],
-            ["Fried Rice",5000,28],
-            ["Shawarma",3500,20],
-            ["Pepper Soup",5500,25]
-          ].map(x=>`
-            <div class="listItem">
-              <div>
-                <strong>${x[0]}</strong>
-                <div class="muted">₦${x[1].toLocaleString()}</div>
-              </div>
-              <button class="smallBtn"
-                onclick="orderFood(${x[1]},${x[2]})">ORDER</button>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="ride"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Naija Ride")}
-        <div class="tile">
-          <strong>Current location</strong>
-          <p>${player.city}</p>
-        </div>
-        <button class="action" onclick="requestRide()">REQUEST RIDE</button>
-      </div>
-    `;
-  }
-
-  if(app==="news"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Naija News")}
-        <div class="list">
-          <div class="tile">
-            <strong>Lagos Traffic</strong>
-            <p class="muted">Traffic is busy around major roads.</p>
-          </div>
-          <div class="tile">
-            <strong>Weather</strong>
-            <p class="muted">Current game weather: ${world.weather}</p>
-          </div>
-          <div class="tile">
-            <strong>Economy</strong>
-            <p class="muted">Local businesses are hiring.</p>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="jobs"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Job Finder")}
-        ${jobs.map((j,i)=>`
-          <div class="listItem">
-            <div>
-              <strong>${j.name}</strong>
-              <div class="muted">₦${j.salary.toLocaleString()}/month</div>
-            </div>
-            <button class="smallBtn"
-              onclick="takeJob(${i})">APPLY</button>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  }
-
-  if(app==="gallery"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Gallery")}
-        <div class="tile">
-          <strong>Game Photos</strong>
-          <p class="muted">Your fictional game photos appear here.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  if(app==="calculator"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Calculator")}
-        <input id="calc" placeholder="Example: 25000+5000">
-        <button class="action" onclick="
-          try{
-            document.getElementById('calc').value=
-            Function('return '+document.getElementById('calc').value)()
-          }catch(e){toast('Invalid calculation')}
-        ">CALCULATE</button>
-      </div>
-    `;
-  }
-
-  if(app==="notes"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Notes")}
-        <textarea id="notesArea"
-          style="width:100%;height:300px;background:#0b1511;color:#fff;border-radius:14px;padding:12px"
-          placeholder="Write something..."></textarea>
-        <button class="action" onclick="saveNote()">SAVE NOTE</button>
-      </div>
-    `;
-  }
-
-  if(app==="calendar"){
-    c.innerHTML=`
-      <div class="phonePage">
-        ${phoneHeader("Calendar")}
-        <div class="tile">
-          <h2>${worldTime().toLocaleDateString("en-NG",{
-            weekday:"long",
-            month:"long",
-            day:"numeric",
-            year:"numeric"
-          })}</h2>
-          <p class="muted">Real Nigeria date.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  updatePhone();
-}
-
-function openPhoneChat(name){
-  if(!phone.chats[name])phone.chats[name]=[];
-
-  const c=document.getElementById("phoneContent");
-
-  c.innerHTML=`
-    <div class="phonePage" style="padding-bottom:70px">
-      ${phoneHeader(name)}
-      <div class="chat" id="chatMessages">
-        ${phone.chats[name].map(m=>`
-          <div class="msg ${m.me?"me":""}">${escapeHTML(m.text)}</div>
-        `).join("")}
-      </div>
-    </div>
-
-    <div class="chatInput">
-      <input id="chatText" placeholder="Message...">
-      <button class="smallBtn" onclick="sendChat('${escapeHTML(name)}')">
-        SEND
+      <button
+        class="primary"
+        onclick="openChat()"
+      >
+        Open Chat
       </button>
+
     </div>
-  `;
 
-  updatePhone();
+
+    <div class="item">
+
+      <b>Friends</b>
+
+      <p class="small">
+        Find other players and add friends.
+      </p>
+
+      <button
+        class="ghost"
+        onclick="openFriends()"
+      >
+        Friends
+      </button>
+
+    </div>
+
+
+    <div class="item">
+
+      <b>NaijaBank</b>
+
+      <p>
+        Game balance:
+        ₦${Number(
+          player.money || 0
+        ).toLocaleString()}
+      </p>
+
+    </div>
+
+
+    <button
+      class="ghost"
+      onclick="closePanel()"
+    >
+      Close
+    </button>
+
+  `);
+
 }
 
-function sendChat(name){
-  const input=document.getElementById("chatText");
-  const text=input?.value.trim();
-  if(!text)return;
 
-  phone.chats[name].push({me:true,text});
-  batteryDrain(1);
+/* =========================
+   FRIENDS
+========================= */
 
-  setTimeout(()=>{
-    const replies=[
-      "Okay, no wahala.",
-      "I hear you.",
-      "That's nice.",
-      "Where are you?",
-      "Let's talk later.",
-      "Omo, serious?",
-      "See you soon."
-    ];
+window.openFriends =
+async function(){
 
-    phone.chats[name].push({
-      me:false,
-      text:replies[Math.floor(Math.random()*replies.length)]
-    });
+  showPanel(
+    "<h2>👥 Players</h2>" +
+    "<div id='playersList'>Loading...</div>" +
+    "<button class='ghost' onclick='closePanel()'>Close</button>"
+  );
 
-    openPhoneChat(name);
-    save();
-  },700);
 
-  openPhoneChat(name);
-}
+  const q =
+    query(
+      collection(db,"players"),
+      limit(30)
+    );
 
-function callContact(name){
-  batteryDrain(3);
-  phone.calls.unshift({
-    name,
-    time:new Date().toLocaleTimeString(),
-    type:"outgoing"
-  });
-  toast(`Calling ${name}...`);
-  save();
-}
 
-function dial(n){
-  batteryDrain(.3);
-  toast(`Dialed ${n}`);
-}
+  onSnapshot(
+    q,
+    snapshot => {
 
-function transferMoney(){
-  toast("Transfers are fictional game transactions.");
-}
+      let html = "";
 
-function takePhoto(){
-  batteryDrain(2);
-  toast("Photo saved to your game gallery.");
-}
+      snapshot.forEach(
+        document => {
 
-function likePost(){
-  batteryDrain(.2);
-  player.happiness=Math.min(100,player.happiness+1);
-  toast("Post liked.");
-}
+          const p =
+            document.data();
 
-function playMusic(song){
-  batteryDrain(2);
-  toast(`Playing ${song}.`);
-}
 
-function orderFood(cost,hunger){
-  if(player.money<cost){
-    toast("Not enough money.");
-    return;
-  }
+          if(
+            document.id ===
+            user.uid
+          )
+            return;
 
-  player.money-=cost;
-  player.hunger=Math.min(100,player.hunger+hunger);
-  player.energy=Math.min(100,player.energy+5);
-  batteryDrain(1);
-  updateHUD();
-  toast("Food delivered.");
-}
 
-function requestRide(){
-  batteryDrain(2);
-  const cost=2500;
+          html += `
 
-  if(player.money<cost){
-    toast("Not enough money.");
-    return;
-  }
+            <div class="item">
 
-  player.money-=cost;
-  player.x+=100;
-  player.y+=100;
-  toast("Your ride arrived.");
-  updateHUD();
-}
+              <b>
+                ${escapeHTML(
+                  p.name || "Player"
+                )}
+              </b>
 
-function saveNote(){
-  const text=document.getElementById("notesArea").value;
-  localStorage.setItem("naijaLifeNote",text);
-  toast("Note saved.");
-}
+              <br>
 
-function renderStore(){
-  const extra=[
-    ["social","Naija Social"],
-    ["music","Naija Music"],
-    ["food","Food Delivery"],
-    ["ride","Naija Ride"],
-    ["news","Naija News"],
-    ["jobs","Job Finder"],
-    ["gallery","Gallery"],
-    ["calculator","Calculator"],
-    ["notes","Notes"],
-    ["calendar","Calendar"]
-  ];
+              <span class="small">
 
-  document.getElementById("phoneContent").innerHTML=`
-    <div class="phonePage">
-      ${phoneHeader("App Store")}
-      <p class="muted">Install apps for your in-game phone.</p>
+                ${escapeHTML(
+                  p.city || "Nigeria"
+                )}
 
-      <div class="list">
-        ${extra.map(a=>{
-          const installed=phone.installed.includes(a[0]);
-          return `
-            <div class="listItem">
-              <div>
-                <strong>${a[1]}</strong>
-                <div class="muted">Game app</div>
-              </div>
-              <button class="smallBtn"
-                onclick="${installed
-                  ?`uninstallApp('${a[0]}')`
-                  :`installApp('${a[0]}')`}">
-                ${installed?"REMOVE":"GET"}
+                · Level
+                ${p.level || 1}
+
+              </span>
+
+              <br><br>
+
+              <button
+                class="primary"
+                onclick="
+                  addFriend('${document.id}')
+                "
+              >
+                Add friend
               </button>
+
             </div>
+
           `;
-        }).join("")}
-      </div>
-    </div>
-  `;
-}
 
-function installApp(id){
-  if(!phone.installed.includes(id)){
-    phone.installed.push(id);
-    batteryDrain(2);
-    save();
-    toast(`${appData[id]?.name||id} installed.`);
-  }
-  renderStore();
-}
+        }
+      );
 
-function uninstallApp(id){
-  phone.installed=phone.installed.filter(x=>x!==id);
-  save();
-  toast("App removed.");
-  renderStore();
-}
 
-function renderSettings(){
-  document.getElementById("phoneContent").innerHTML=`
-    <div class="phonePage">
-      ${phoneHeader("Settings")}
+      $("playersList").innerHTML =
+        html ||
+        "<p>No other players yet.</p>";
 
-      <div class="tile">
-        <strong>Battery</strong>
-        <h2>${Math.round(phone.battery)}%</h2>
-        <div class="bar">
-          <i style="width:${phone.battery}%"></i>
-        </div>
-      </div>
-
-      <button class="action"
-        onclick="chargePhone()">
-        CHARGE PHONE
-      </button>
-
-      <button class="action alt"
-        onclick="toggleTheme()">
-        ${phone.dark?"LIGHT MODE":"DARK MODE"}
-      </button>
-
-      <button class="action alt"
-        onclick="toast('Notifications: ${phone.notifications}')">
-        NOTIFICATIONS
-      </button>
-    </div>
-  `;
-}
-
-function toggleTheme(){
-  phone.dark=!phone.dark;
-  document.body.classList.toggle("light",!phone.dark);
-  save();
-  renderSettings();
-}
-
-function batteryDrain(amount){
-  phone.battery=Math.max(0,phone.battery-amount);
-  updatePhone();
-
-  if(phone.battery<=0){
-    document.getElementById("deadPhone").classList.remove("hidden");
-  }
-
-  save();
-}
-
-function chargePhone(){
-  phone.battery=100;
-  document.getElementById("deadPhone").classList.add("hidden");
-  save();
-  updatePhone();
-  toast("Phone charged to 100%.");
-}
-
-function updatePhone(){
-  document.getElementById("phoneBattery").textContent=
-    Math.round(phone.battery)+"%";
-
-  const big=document.getElementById("bigPhoneTime");
-  if(big){
-    big.textContent=worldTime().toLocaleTimeString("en-NG",{
-      hour:"2-digit",
-      minute:"2-digit",
-      hour12:true
-    });
-  }
-}
-
-/* ---------- MAP ---------- */
-
-document.getElementById("mapBtn").onclick=openMap;
-
-function openMap(){
-  const map=document.getElementById("mapPanel");
-  map.classList.remove("hidden");
-
-  document.getElementById("cityButtons").innerHTML=
-    Object.keys(cities).map(city=>`
-      <button class="action"
-        onclick="travelTo('${city}')">
-        ${city}
-      </button>
-    `).join("");
-
-  document.getElementById("cityMap").innerHTML=
-    Object.entries(cities).map(([name,p])=>`
-      <div class="cityPoint"
-        style="left:${p.x/1600*90}%;top:${p.y/1200*90}%">
-        ${name}
-      </div>
-    `).join("");
-}
-
-function travelTo(city){
-  player.city=city;
-
-  const p=cities[city];
-
-  player.x=p.x;
-  player.y=p.y;
-
-  player.energy=Math.max(0,player.energy-5);
-
-  closePanel("mapPanel");
-  updateHUD();
-
-  toast(`Arrived in ${city}.`);
-  save();
-}
-
-/* ---------- MENU ---------- */
-
-function openMenu(html){
-  document.getElementById("menuContent").innerHTML=html;
-  document.getElementById("menuPanel").classList.remove("hidden");
-}
-
-function closePanel(id){
-  document.getElementById(id).classList.add("hidden");
-}
-
-/* ---------- HUD ---------- */
-
-function updateHUD(){
-  document.getElementById("money").textContent=
-    "₦"+Math.floor(player.money).toLocaleString();
-
-  document.getElementById("level").textContent=
-    "Lv "+player.level;
-
-  document.getElementById("location").textContent=
-    player.city+" • "+(player.job||"Unemployed");
-}
-
-/* ---------- NEEDS ---------- */
-
-let lastNeeds=Date.now();
-
-function updateNeeds(){
-  const now=Date.now();
-
-  if(now-lastNeeds<30000)return;
-  lastNeeds=now;
-
-  player.hunger=Math.max(0,player.hunger-1);
-  player.energy=Math.max(0,player.energy-1);
-  player.hygiene=Math.max(0,player.hygiene-.5);
-
-  if(player.hunger<20){
-    player.health=Math.max(0,player.health-1);
-  }
-
-  if(player.energy<15){
-    player.happiness=Math.max(0,player.happiness-1);
-  }
-
-  save();
-}
-
-/* ---------- WEATHER ---------- */
-
-let weatherTimer=0;
-
-function randomWeather(){
-  const r=Math.random();
-
-  if(r<.08)world.weather="Rain";
-  else if(r<.14)world.weather="Storm";
-  else if(r<.22)world.weather="Cloudy";
-  else world.weather=world.dayFactor?"Clear":"Night";
-}
-
-setInterval(randomWeather,120000);
-
-/* ---------- TRAFFIC ---------- */
-
-function createCars(){
-  world.cars=[];
-
-  for(let i=0;i<18;i++){
-    world.cars.push({
-      x:Math.random()*1500,
-      y:Math.random()<.5?470:530,
-      vx:(Math.random()<.5?-1:1)*(0.5+Math.random()),
-      vy:0,
-      color:["#d93434","#174ea6","#f0a51a","#eeeeee","#222222"][i%5]
-    });
-  }
-}
-
-/* ---------- DAILY ECONOMY ---------- */
-
-let lastDay=worldTime().getDate();
-
-function dailyUpdate(){
-  const d=worldTime();
-
-  if(d.getDate()!==lastDay){
-    lastDay=d.getDate();
-
-    if(player.job){
-      player.money+=player.salary;
-      toast(`Salary received: ₦${player.salary.toLocaleString()}`);
     }
+  );
 
-    if(player.money>=player.rent){
-      player.money-=player.rent;
-    }else{
-      player.happiness=Math.max(0,player.happiness-10);
-    }
-
-    save();
-  }
-}
-
-/* ---------- TOAST ---------- */
-
-let toastTimer;
-
-function toast(text){
-  const t=document.getElementById("toast");
-  t.textContent=text;
-  t.classList.add("show");
-
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>{
-    t.classList.remove("show");
-  },2200);
-}
-
-/* ---------- ESCAPE ---------- */
-
-function escapeHTML(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-/* ---------- START ---------- */
-
-document.getElementById("startGame").onclick=()=>{
-  player.name=document.getElementById("charName").value.trim()||"Player";
-  player.city=document.getElementById("charCity").value;
-  player.gender=document.getElementById("charGender").value;
-
-  const city=cities[player.city]||cities.Lagos;
-  player.x=city.x;
-  player.y=city.y;
-
-  createNPCs();
-  createCars();
-
-  document.getElementById("creator").classList.add("hidden");
-
-  updateHUD();
-  updateClock();
-  save();
-
-  toast(`Welcome to ${player.city}, ${player.name}!`);
 };
 
-renderCreator();
 
-if(load()){
-  createNPCs();
-  createCars();
+window.addFriend =
+async function(uid){
 
-  document.getElementById("creator").classList.add("hidden");
-  updateHUD();
+  await updateDoc(
 
-  if(!phone.dark){
-    document.body.classList.add("light");
-  }
+    doc(
+      db,
+      "players",
+      user.uid
+    ),
+
+    {
+
+      friends:
+        arrayUnion(uid),
+
+      updatedAt:
+        serverTimestamp()
+
+    }
+
+  );
+
+
+  toast(
+    "Friend added ✓"
+  );
+
+};
+
+
+/* =========================
+   CHAT
+========================= */
+
+window.openChat =
+async function(){
+
+  showPanel(`
+
+    <h2>💬 Naija Life Chat</h2>
+
+    <div
+      id="messages"
+      class="list"
+    >
+      Loading...
+    </div>
+
+    <input
+      id="chatMessage"
+      class="field"
+      maxlength="500"
+      placeholder="Type a message..."
+    >
+
+    <button
+      class="primary"
+      onclick="sendChat()"
+    >
+      Send
+    </button>
+
+    <button
+      class="ghost"
+      onclick="closePanel()"
+    >
+      Close
+    </button>
+
+  `);
+
+
+  const q =
+    query(
+      collection(db,"chat"),
+      orderBy(
+        "createdAt",
+        "desc"
+      ),
+      limit(40)
+    );
+
+
+  onSnapshot(
+    q,
+    snapshot => {
+
+      let html = "";
+
+
+      snapshot.docs
+        .reverse()
+        .forEach(
+          document => {
+
+            const message =
+              document.data();
+
+
+            html += `
+
+              <div class="item">
+
+                <b>
+                  ${escapeHTML(
+                    message.name
+                  )}
+                </b>
+
+                <br>
+
+                ${escapeHTML(
+                  message.text || ""
+                )}
+
+              </div>
+
+            `;
+
+          }
+        );
+
+
+      $("messages").innerHTML =
+        html ||
+        "<p>No messages yet.</p>";
+
+    }
+  );
+
+};
+
+
+window.sendChat =
+async function(){
+
+  const input =
+    $("chatMessage");
+
+  const text =
+    input.value.trim();
+
+
+  if(!text)
+    return;
+
+
+  await addDoc(
+
+    collection(
+      db,
+      "chat"
+    ),
+
+    {
+
+      uid:
+        user.uid,
+
+      name:
+        player.name,
+
+      text,
+
+      createdAt:
+        serverTimestamp()
+
+    }
+
+  );
+
+
+  input.value = "";
+
+};
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+
+      })[character]
+    );
+
 }
 
-/* ---------- TIMERS ---------- */
 
-setInterval(()=>{
-  updateClock();
-  updatePhone();
-  updateNeeds();
-  dailyUpdate();
-  updateHUD();
-},1000);
+/* =========================
+   PANELS
+========================= */
 
-setInterval(()=>{
-  /* phone slowly loses battery when it is open */
-  if(!document.getElementById("phone").classList.contains("hidden")){
-    batteryDrain(.15);
+function showPanel(html){
+
+  $("panel").innerHTML =
+    html;
+
+  $("panel").style.display =
+    "block";
+
+}
+
+
+window.closePanel =
+function(){
+
+  $("panel").style.display =
+    "none";
+
+};
+
+
+/* =========================
+   ACT
+========================= */
+
+$("act").onclick =
+function(){
+
+  toast(
+    "Explore the city and interact with buildings and players."
+  );
+
+};
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+$("logout").onclick =
+function(){
+
+  signOut(auth);
+
+};
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+addEventListener(
+  "keydown",
+  event => {
+
+    keys[
+      event.key.toLowerCase()
+    ] = true;
+
   }
-},10000);
+);
 
-/* ---------- SPECIAL BUTTON ---------- */
 
-document.getElementById("phoneBtn").addEventListener("dblclick",()=>{
-  if(document.getElementById("phone").classList.contains("hidden")){
-    openPhone();
-  }else{
-    closePhone();
+addEventListener(
+  "keyup",
+  event => {
+
+    keys[
+      event.key.toLowerCase()
+    ] = false;
+
   }
-});
+);
 
-/* ---------- EXTRA LIFE MENU ---------- */
 
-canvas.addEventListener("dblclick",()=>{
-  openMenu(`
-    <h2>${player.name}'s Life</h2>
+/* =========================
+   MOBILE JOYSTICK
+========================= */
 
-    <div class="grid">
-      <div class="tile">
-        <strong>Money</strong>
-        <span class="money">₦${player.money.toLocaleString()}</span>
-      </div>
+const stick =
+  $("stick");
 
-      <div class="tile">
-        <strong>Level</strong>
-        ${player.level}
-      </div>
+const knob =
+  $("knob");
 
-      <div class="tile">
-        <strong>Health</strong>
-        ${Math.round(player.health)}%
-      </div>
+let dragging =
+  false;
 
-      <div class="tile">
-        <strong>Energy</strong>
-        ${Math.round(player.energy)}%
-      </div>
 
-      <div class="tile">
-        <strong>Hunger</strong>
-        ${Math.round(player.hunger)}%
-      </div>
+stick.addEventListener(
+  "pointerdown",
+  event => {
 
-      <div class="tile">
-        <strong>Hygiene</strong>
-        ${Math.round(player.hygiene)}%
-      </div>
+    dragging = true;
 
-      <div class="tile">
-        <strong>Happiness</strong>
-        ${Math.round(player.happiness)}%
-      </div>
+    stick.setPointerCapture(
+      event.pointerId
+    );
 
-      <div class="tile">
-        <strong>Fitness</strong>
-        ${Math.round(player.fitness)}%
-      </div>
-    </div>
+    moveJoystick(event);
 
-    <h3 style="margin-top:18px">Career</h3>
+  }
+);
 
-    <div class="tile">
-      <strong>${player.job||"Unemployed"}</strong>
-      <p class="muted">
-        Salary: ₦${player.salary.toLocaleString()}
-      </p>
-    </div>
 
-    <button class="action" onclick="workShift()">
-      WORK SHIFT
-    </button>
+stick.addEventListener(
+  "pointermove",
+  event => {
 
-    <button class="action alt" onclick="openJobs()">
-      CAREER
-    </button>
+    if(dragging)
+      moveJoystick(event);
 
-    <button class="action alt" onclick="openMap()">
-      TRAVEL
-    </button>
-  `);
-});
+  }
+);
 
-/* ---------- INITIAL UPDATE ---------- */
 
-updateClock();
-updateHUD();
+stick.addEventListener(
+  "pointerup",
+  resetJoystick
+);
 
-/*
-  The game intentionally uses fictional systems:
-  - NaijaBank is an in-game wallet.
-  - WhatsApp is represented by an in-game messaging system.
-  - App Store installs fictional game apps.
-  - All money, jobs, rides and transactions are game mechanics.
-*/
+
+stick.addEventListener(
+  "pointercancel",
+  resetJoystick
+);
+
+
+function moveJoystick(event){
+
+  const rect =
+    stick.getBoundingClientRect();
+
+
+  let x =
+    event.clientX -
+    (
+      rect.left +
+      rect.width / 2
+    );
+
+
+  let y =
+    event.clientY -
+    (
+      rect.top +
+      rect.height / 2
+    );
+
+
+  const distance =
+    Math.hypot(x,y);
+
+
+  const maximum =
+    42;
+
+
+  if(distance > maximum){
+
+    x =
+      x / distance *
+      maximum;
+
+    y =
+      y / distance *
+      maximum;
+
+  }
+
+
+  knob.style.transform =
+    `translate(${x}px,${y}px)`;
+
+
+  joystick.x =
+    x / maximum;
+
+  joystick.y =
+    y / maximum;
+
+}
+
+
+function resetJoystick(){
+
+  dragging = false;
+
+  joystick.x = 0;
+
+  joystick.y = 0;
+
+  knob.style.transform =
+    "";
+
+}
+
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function gameLoop(){
+
+  requestAnimationFrame(
+    gameLoop
+  );
+
+
+  const now =
+    performance.now();
+
+
+  const delta =
+    Math.min(
+      0.04,
+      (now-lastFrame)/1000
+    );
+
+
+  lastFrame =
+    now;
+
+
+  let x =
+    joystick.x;
+
+  let y =
+    joystick.y;
+
+
+  if(keys["w"])
+    y -= 1;
+
+  if(keys["s"])
+    y += 1;
+
+  if(keys["a"])
+    x -= 1;
+
+  if(keys["d"])
+    x += 1;
+
+
+  const magnitude =
+    Math.hypot(x,y);
+
+
+  if(magnitude > 0){
+
+    x /= magnitude;
+
+    y /= magnitude;
+
+    posX +=
+      x *
+      180 *
+      delta;
+
+    posY +=
+      y *
+      180 *
+      delta;
+
+  }
+
+
+  posX =
+    Math.max(
+      40,
+      Math.min(
+        3560,
+        posX
+      )
+    );
+
+
+  posY =
+    Math.max(
+      40,
+      Math.min(
+        2460,
+        posY
+      )
+    );
+
+
+  drawWorld();
+
+}
+
+
+function drawWorld(){
+
+  const screenW =
+    innerWidth;
+
+  const screenH =
+    innerHeight;
+
+
+  ctx.clearRect(
+    0,
+    0,
+    screenW,
+    screenH
+  );
+
+
+  const cameraX =
+    posX -
+    screenW / 2;
+
+
+  const cameraY =
+    posY -
+    screenH / 2;
+
+
+  /* GRASS */
+
+  ctx.fillStyle =
+    "#79aa70";
+
+  ctx.fillRect(
+    0,
+    0,
+    screenW,
+    screenH
+  );
+
+
+  ctx.save();
+
+  ctx.translate(
+    -cameraX,
+    -cameraY
+  );
+
+
+  /* MAIN ROADS */
+
+  ctx.fillStyle =
+    "#4b4f4a";
+
+  ctx.fillRect(
+    0,
+    700,
+    3600,
+    170
+  );
+
+  ctx.fillRect(
+    1650,
+    0,
+    170,
+    2460
+  );
+
+
+  /* BUILDINGS */
+
+  const buildings = [
+
+    ["BANK",400,380],
+
+    ["HOSPITAL",950,350],
+
+    ["MARKET",1450,420],
+
+    ["RESTAURANT",2150,360],
+
+    ["POLICE",2750,420],
+
+    ["CLUB",500,1100],
+
+    ["CHURCH",1200,1120],
+
+    ["SHOP",2100,1100],
+
+    ["GYM",2800,1100],
+
+    ["HOME",500,1850],
+
+    ["SCHOOL",1500,1850],
+
+    ["WORK",2400,1850]
+
+  ];
+
+
+  for(
+    const [
+      name,
+      x,
+      y
+    ] of buildings
+  ){
+
+    ctx.fillStyle =
+      "#d9b58c";
+
+    ctx.fillRect(
+      x,
+      y,
+      220,
+      150
+    );
+
+
+    ctx.fillStyle =
+      "#153e2c";
+
+    ctx.fillRect(
+      x + 20,
+      y + 35,
+      180,
+      100
+    );
+
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "bold 16px system-ui";
+
+    ctx.fillText(
+      name,
+      x + 45,
+      y + 25
+    );
+
+  }
+
+
+  /* OTHER PLAYERS */
+
+  for(
+    const [
+      id,
+      other
+    ] of Object.entries(
+      onlinePlayers
+    )
+  ){
+
+    if(
+      id === user?.uid ||
+      !other.online ||
+      other.city !== player?.city
+    )
+      continue;
+
+
+    ctx.fillStyle =
+      "#2479ff";
+
+    ctx.beginPath();
+
+    ctx.arc(
+      other.x || 0,
+      other.y || 0,
+      16,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+      "#fff";
+
+    ctx.font =
+      "12px system-ui";
+
+    ctx.fillText(
+      other.name || "Player",
+      (other.x || 0)-25,
+      (other.y || 0)-23
+    );
+
+  }
+
+
+  /* PLAYER */
+
+  ctx.fillStyle =
+    "#f0c7a5";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    posX,
+    posY - 25,
+    13,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  ctx.fillStyle =
+    "#168b55";
+
+  ctx.fillRect(
+    posX - 14,
+    posY - 12,
+    28,
+    34
+  );
+
+
+  ctx.fillStyle =
+    "#07110d";
+
+  ctx.fillRect(
+    posX - 10,
+    posY + 22,
+    7,
+    18
+  );
+
+  ctx.fillRect(
+    posX + 3,
+    posY + 22,
+    7,
+    18
+  );
+
+
+  ctx.restore();
+
+
+  /* HUD */
+
+  $("money").textContent =
+    Number(
+      player?.money || 0
+    ).toLocaleString();
+
+
+  $("level").textContent =
+    player?.level || 1;
+
+
+  $("health").textContent =
+    Math.round(
+      player?.health || 100
+    );
+
+
+  const nigeriaTime =
+    new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        timeZone:
+          "Africa/Lagos",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit",
+
+        hour12:
+          false
+      }
+    ).format(
+      new Date()
+    );
+
+
+  $("clock").textContent =
+    nigeriaTime;
+
+
+  /* SEND POSITION */
+
+  if(
+    playerPresence &&
+    Math.random() < 0.04
+  ){
+
+    set(
+      playerPresence,
+      {
+
+        uid:
+          user.uid,
+
+        name:
+          player.name,
+
+        city:
+          player.city,
+
+        x:
+          posX,
+
+        y:
+          posY,
+
+        online:
+          true,
+
+        lastSeen:
+          rtdbTimestamp()
+
+      }
+    );
+
+  }
+
+}
+
+
+gameLoop();
+
 </script>
 
 </body>
