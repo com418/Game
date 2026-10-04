@@ -2,1040 +2,1821 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Naija Life — City Hustle</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Naija Life</title>
 
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#101512;color:#fff}
-button{font:inherit;border:0;color:#fff;cursor:pointer}
-svg{display:block}
-
-#menu{
- position:fixed;inset:0;z-index:100;
- display:flex;align-items:center;justify-content:center;
- background:radial-gradient(circle at 50% 20%,#176047,#06100c 70%);
- padding:20px
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  font-family:Arial,sans-serif;background:#07120f;color:white
 }
-.menuBox{width:min(440px,100%);text-align:center}
+button,input{font:inherit}
+button{border:0;cursor:pointer}
+
+.screen{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#06120f,#0d2920);
+  z-index:100
+}
+
+.card{
+  width:min(94%,480px);
+  max-height:94vh;
+  overflow:auto;
+  padding:22px;
+  border:1px solid #285342;
+  border-radius:24px;
+  background:rgba(10,25,21,.96);
+  box-shadow:0 20px 60px #0009
+}
+
 .logo{
- width:82px;height:82px;margin:auto;border-radius:24px;
- display:grid;place-items:center;background:#0b7a50;
- box-shadow:0 15px 40px #0008
+  text-align:center;
+  font-size:32px;
+  font-weight:900;
+  color:#5dffae;
+  letter-spacing:1px
 }
-.logo svg{width:56px;height:56px}
-h1{font-size:36px;margin:18px 0 5px}
-.subtitle{color:#b7c8c1;margin-bottom:28px}
-.cityGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.sub{
+  text-align:center;
+  color:#9eb8ad;
+  margin:6px 0 20px
+}
+
+.sectionTitle{
+  font-weight:800;
+  margin:17px 0 9px
+}
+
+.cityGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
 .city{
- padding:20px 12px;border-radius:20px;background:#ffffff10;
- border:1px solid #ffffff20;backdrop-filter:blur(10px)
+  min-height:110px;
+  border:1px solid #315b4b;
+  border-radius:18px;
+  background:#10251f;
+  color:white;
+  padding:12px
 }
-.city:active{transform:scale(.97)}
-.cityIcon{
- width:55px;height:55px;margin:auto;border-radius:18px;
- background:#ffffff12;display:grid;place-items:center
+.city.active{
+  border-color:#5dffae;
+  box-shadow:0 0 0 2px #5dffae33
 }
-.cityIcon svg{width:34px;height:34px}
-.city h2{margin:12px 0 5px;font-size:20px}
-.city p{margin:0;color:#aebcb7;font-size:12px}
-#startBtn{
- width:100%;margin-top:18px;padding:16px;border-radius:16px;
- background:#10a66b;font-size:16px;opacity:.45;pointer-events:none
+.city svg{width:54px;height:54px}
+.city b{display:block;margin-top:5px}
+
+.primary{
+  width:100%;
+  margin-top:18px;
+  padding:15px;
+  border-radius:15px;
+  background:#11a967;
+  color:white;
+  font-weight:900
+}
+.primary:active{transform:scale(.98)}
+
+.secondary{
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  background:#172f27;
+  color:white;
+  margin-top:8px
 }
 
-#game{display:none;position:fixed;inset:0;overflow:hidden;background:#76a86c}
+/* CREATOR */
+.creatorCard{
+  width:min(95%,520px);
+  max-height:96vh;
+  overflow:auto;
+  padding:18px
+}
+
+.preview{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:245px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 50% 20%,#2c5546,#0d211b 65%);
+  border:1px solid #315a4b;
+  position:relative
+}
+
+.preview svg{width:180px;height:225px}
+
+.namePreview{
+  position:absolute;
+  bottom:12px;
+  background:#07120fcc;
+  border:1px solid #4b7565;
+  border-radius:20px;
+  padding:6px 14px;
+  font-weight:800
+}
+
+.nameInput{
+  width:100%;
+  padding:14px;
+  border-radius:13px;
+  border:1px solid #355c4d;
+  background:#091913;
+  color:white;
+  outline:none
+}
+
+.options{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:3px
+}
+
+.option{
+  flex:0 0 auto;
+  min-width:64px;
+  padding:9px;
+  border:1px solid #315547;
+  border-radius:13px;
+  background:#10251f;
+  color:white
+}
+.option.active{
+  border-color:#5dffae;
+  box-shadow:0 0 0 2px #5dffae44
+}
+.option svg{width:35px;height:35px}
+.option small{display:block;margin-top:4px}
+
+/* GAME */
+#game{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#75a977;
+  overflow:hidden
+}
+
 #world{
- position:absolute;width:3000px;height:2200px;left:0;top:0;
- transform-origin:0 0;background:#76a86c
+  position:absolute;
+  width:3000px;
+  height:2200px;
+  left:0;top:0;
+  background:
+    linear-gradient(#0000 0 100%),
+    #68a46d
 }
 
-.road{position:absolute;background:#34383b}
-.horizontal{height:120px;width:3000px}
-.vertical{width:120px;height:2200px}
-.roadLineH{position:absolute;height:5px;width:3000px;background:#e8d66a}
-.roadLineV{position:absolute;width:5px;height:2200px;background:#e8d66a}
+.road{
+  position:absolute;
+  background:#3b4142
+}
+.road.h{
+  left:0;width:3000px;height:130px
+}
+.road.v{
+  top:0;width:130px;height:2200px
+}
+.line{
+  position:absolute;
+  background:#e9d56b;
+  opacity:.8
+}
+.line.h{
+  left:0;width:3000px;height:4px
+}
+.line.v{
+  top:0;width:4px;height:2200px
+}
 
 .building{
- position:absolute;border-radius:12px;border:4px solid #ffffff18;
- box-shadow:0 10px 20px #0003;display:flex;align-items:center;
- justify-content:center;text-align:center;font-weight:800;
- color:#ffffffdd;font-size:13px
+  position:absolute;
+  width:220px;height:145px;
+  border-radius:15px;
+  overflow:hidden;
+  filter:drop-shadow(0 8px 8px #0005)
 }
-.house{background:#bd6b4d}
-.shop{background:#286f91}
-.office{background:#5c5b87}
-.market{background:#8b633e}
-.hotel{background:#76518d}
-.job{background:#177d60}
+.building svg{width:100%;height:100%}
 
 #player{
- position:absolute;width:62px;height:82px;z-index:25;
- transform:translate(-50%,-50%)
+  position:absolute;
+  width:78px;height:115px;
+  transform:translate(-50%,-50%);
+  z-index:20;
+  pointer-events:none
 }
-#player svg{width:100%;height:100%;filter:drop-shadow(0 8px 5px #0005)}
 
 .npc{
- position:absolute;width:50px;height:68px;z-index:15;
- transform:translate(-50%,-50%);
- transition:left .35s linear,top .35s linear
+  position:absolute;
+  width:72px;height:110px;
+  transform:translate(-50%,-50%);
+  z-index:15;
+  pointer-events:none
 }
-.npc svg{width:100%;height:100%;filter:drop-shadow(0 6px 4px #0004)}
+
+.npc svg,#player svg{width:100%;height:100%}
+
+.npcShadow,.playerShadow{
+  position:absolute;
+  left:50%;bottom:2px;
+  transform:translateX(-50%);
+  width:46px;height:12px;
+  border-radius:50%;
+  background:#0004;
+  filter:blur(2px)
+}
+
+#clock{
+  position:fixed;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:50;
+  padding:9px 15px;
+  border:1px solid #ffffff35;
+  border-radius:20px;
+  background:#07120fd9;
+  font-weight:900;
+  white-space:nowrap
+}
 
 #hud{
- position:fixed;top:0;left:0;right:0;z-index:40;
- padding:10px;pointer-events:none
+  position:fixed;
+  top:12px;left:12px;
+  z-index:50;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  max-width:calc(100% - 110px)
 }
-.hudTop{display:flex;justify-content:space-between;gap:6px}
-.hudCard{
- min-width:70px;background:#07110ddd;border:1px solid #ffffff18;
- border-radius:13px;padding:7px 10px;backdrop-filter:blur(10px);
- font-size:10px
-}
-.hudCard strong{display:block;font-size:13px;margin-top:2px}
-#cityName{color:#64e6ad}
-#xpBox{position:fixed;top:65px;left:10px;width:180px}
-.xpOuter{height:7px;background:#ffffff25;border-radius:99px;overflow:hidden}
-#xpBar{height:100%;width:0;background:#63e6ac}
 
-.controlsTop{
- position:fixed;top:78px;right:10px;z-index:50;
- display:flex;gap:7px
+.stat{
+  padding:8px 10px;
+  border-radius:12px;
+  background:#07120fd9;
+  border:1px solid #ffffff20;
+  font-size:12px
 }
-.smallBtn{
- width:42px;height:42px;border-radius:13px;background:#07110ddd;
- border:1px solid #ffffff20;display:grid;place-items:center
+
+#profileBtn{
+  position:fixed;
+  right:12px;top:12px;
+  z-index:55;
+  width:44px;height:44px;
+  border-radius:50%;
+  background:#07120fd9;
+  border:1px solid #ffffff25;
+  color:white
 }
-.smallBtn svg{width:21px;height:21px}
+
+#profileBtn svg{width:23px}
+
+#mission{
+  position:fixed;
+  left:50%;bottom:120px;
+  transform:translateX(-50%);
+  z-index:45;
+  width:min(88%,360px);
+  padding:12px 15px;
+  background:#07120fe8;
+  border:1px solid #ffffff20;
+  border-radius:16px;
+  text-align:center;
+  font-size:13px
+}
+
+#controls{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  pointer-events:none
+}
 
 #joystick{
- position:fixed;bottom:24px;left:24px;width:145px;height:145px;
- border-radius:50%;background:#07110d88;border:2px solid #ffffff22;
- z-index:60;touch-action:none
+  position:absolute;
+  left:22px;bottom:24px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:#ffffff18;
+  border:2px solid #ffffff28;
+  pointer-events:auto
 }
 #stick{
- position:absolute;width:65px;height:65px;left:40px;top:40px;
- border-radius:50%;background:#10a66b;box-shadow:0 8px 20px #0006
+  position:absolute;
+  width:54px;height:54px;
+  left:31px;top:31px;
+  border-radius:50%;
+  background:#ffffff45;
+  border:2px solid #ffffff55
 }
 
-.actionButtons{
- position:fixed;bottom:26px;right:24px;z-index:60;
- display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;
- width:180px
+.actions{
+  position:absolute;
+  right:20px;bottom:24px;
+  display:grid;
+  grid-template-columns:58px 58px;
+  gap:9px;
+  pointer-events:auto
 }
+
 .action{
- width:56px;height:56px;border-radius:50%;
- background:#07110ddd;border:1px solid #ffffff25;
- display:grid;place-items:center
+  width:58px;height:58px;
+  border-radius:18px;
+  background:#07120fd9;
+  border:1px solid #ffffff28;
+  color:white
 }
 .action svg{width:25px;height:25px}
 
-#notice{
- position:fixed;left:50%;top:128px;transform:translateX(-50%);
- z-index:90;background:#07110eef;padding:11px 17px;
- border-radius:13px;opacity:0;transition:.25s;pointer-events:none;
- font-size:13px;white-space:nowrap
+#interact{
+  position:fixed;
+  right:20px;
+  bottom:170px;
+  z-index:45;
+  display:none;
+  padding:12px 17px;
+  border-radius:15px;
+  background:#11a967;
+  color:white;
+  font-weight:900
 }
-#notice.show{opacity:1}
 
-#panel{
- position:fixed;left:50%;bottom:0;transform:translate(-50%,110%);
- width:min(440px,94%);z-index:85;
- background:#08120fef;border:1px solid #ffffff1f;
- border-radius:22px 22px 0 0;padding:18px;
- box-shadow:0 -15px 40px #0006;
- transition:.25s
+#shade{
+  position:fixed;
+  inset:0;
+  z-index:30;
+  pointer-events:none;
+  background:#06102a;
+  opacity:0;
+  transition:opacity 1s
 }
-#panel.open{transform:translate(-50%,0)}
-.panelTitle{font-size:19px;font-weight:800;margin-bottom:5px}
-.panelText{font-size:12px;color:#b8c7c2;line-height:1.5}
-.panelButtons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
-.panelBtn{padding:13px;border-radius:12px;background:#10a66b}
-.panelBtn.alt{background:#ffffff12}
-.closePanel{position:absolute;right:14px;top:12px;background:none}
 
-#mission{
- position:fixed;top:112px;left:10px;z-index:40;
- width:205px;background:#07110ddd;border:1px solid #ffffff18;
- border-radius:13px;padding:10px;backdrop-filter:blur(10px)
+#toast{
+  position:fixed;
+  left:50%;
+  top:80px;
+  transform:translateX(-50%) translateY(-15px);
+  z-index:90;
+  opacity:0;
+  padding:10px 15px;
+  border-radius:14px;
+  background:#07120fee;
+  border:1px solid #ffffff22;
+  transition:.25s;
+  pointer-events:none
 }
-.mTitle{font-size:11px;color:#64e6ad;font-weight:800}
-#mText{font-size:12px;margin-top:4px}
-#missionReward{font-size:10px;color:#aebcb7;margin-top:5px}
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0)
+}
 
-@media(max-width:500px){
- .hudCard{padding:7px 7px;min-width:61px}
- #mission{top:128px;width:190px}
+@media(max-height:650px){
+  .preview{min-height:180px}
+  .preview svg{height:165px}
+  .mission{bottom:105px}
 }
 </style>
 </head>
 
 <body>
 
-<section id="menu">
-<div class="menuBox">
+<!-- CITY SELECT -->
+<section id="menu" class="screen">
+  <div class="card">
+    <div class="logo">NAIJA LIFE</div>
+    <div class="sub">Your city. Your story. Your life.</div>
 
- <div class="logo">
-  <svg viewBox="0 0 64 64" fill="none">
-   <path d="M9 29L32 10l23 19v25H9V29Z" stroke="white" stroke-width="4"/>
-   <path d="M25 54V37h14v17" stroke="white" stroke-width="4"/>
-   <path d="M18 30h28" stroke="#7ff0bd" stroke-width="4"/>
-  </svg>
- </div>
+    <div class="sectionTitle">Choose your city</div>
 
- <h1>NAIJA LIFE</h1>
- <div class="subtitle">CITY HUSTLE • STEP 2</div>
+    <div class="cityGrid">
 
- <div class="cityGrid">
+      <button class="city active" data-city="Lagos">
+        <svg viewBox="0 0 80 80" fill="none">
+          <rect x="12" y="30" width="18" height="38" rx="2" fill="#39c987"/>
+          <rect x="34" y="18" width="18" height="50" rx="2" fill="#67e5aa"/>
+          <rect x="56" y="37" width="13" height="31" rx="2" fill="#219765"/>
+          <path d="M8 70h64" stroke="#fff" stroke-width="4"/>
+          <path d="M17 39h8M39 27h8M60 46h5" stroke="#092018" stroke-width="3"/>
+        </svg>
+        <b>Lagos</b>
+        <small>City of hustle</small>
+      </button>
 
-  <button class="city" data-city="Lagos">
-   <div class="cityIcon">
-    <svg viewBox="0 0 48 48" fill="none">
-     <path d="M6 40h36M10 40V19h8v21M20 40V9h8v31M30 40V15h8v25"
-      stroke="white" stroke-width="3"/>
-     <path d="M12 25h4M22 16h4M32 22h4"
-      stroke="#7ff0bd" stroke-width="3"/>
-    </svg>
-   </div>
-   <h2>Lagos</h2>
-   <p>Business • Traffic • Big City</p>
-  </button>
+      <button class="city" data-city="Warri">
+        <svg viewBox="0 0 80 80" fill="none">
+          <path d="M10 58h60" stroke="#fff" stroke-width="5"/>
+          <path d="M16 58V30h48v28" fill="#2eae78"/>
+          <path d="M23 30V20h34v10" fill="#55d99b"/>
+          <path d="M29 40h8v18h-8zM43 40h8v18h-8z" fill="#092018"/>
+          <path d="M10 65h60" stroke="#e8d56b" stroke-width="3"/>
+        </svg>
+        <b>Warri</b>
+        <small>South-South life</small>
+      </button>
 
-  <button class="city" data-city="Warri">
-   <div class="cityIcon">
-    <svg viewBox="0 0 48 48" fill="none">
-     <path d="M6 39h36" stroke="white" stroke-width="3"/>
-     <path d="M9 35l7-13 7 13M25 35l6-18 8 18"
-      stroke="white" stroke-width="3"/>
-     <path d="M5 41c5-4 10 4 15 0s10 4 15 0 7 1 8 0"
-      stroke="#7ff0bd" stroke-width="3"/>
-    </svg>
-   </div>
-   <h2>Warri</h2>
-   <p>Markets • Streets • Local Life</p>
-  </button>
+    </div>
 
- </div>
-
- <button id="startBtn">ENTER CITY</button>
-</div>
+    <button id="chooseBtn" class="primary">CREATE CHARACTER</button>
+  </div>
 </section>
 
 
-<section id="game">
+<!-- CHARACTER CREATOR -->
+<section id="creator" class="screen" style="display:none">
+  <div class="card creatorCard">
 
-<div id="world">
+    <div class="logo" style="font-size:25px">CREATE YOUR CHARACTER</div>
+    <div class="sub">Make your character look the way you want.</div>
 
- <div class="road horizontal" style="top:520px"></div>
- <div class="road horizontal" style="top:1180px"></div>
- <div class="road horizontal" style="top:1760px"></div>
+    <div class="preview">
+      <svg id="previewSvg" viewBox="0 0 180 225" fill="none">
 
- <div class="road vertical" style="left:700px"></div>
- <div class="road vertical" style="left:1450px"></div>
- <div class="road vertical" style="left:2250px"></div>
+        <!-- name plate -->
+        <rect x="35" y="8" width="110" height="25"
+              rx="12" fill="#07120f" opacity=".9"/>
+        <text id="previewSvgName"
+              x="90" y="25"
+              text-anchor="middle"
+              font-size="10"
+              fill="white"
+              font-weight="bold">Player</text>
 
- <div class="roadLineH" style="top:577px"></div>
- <div class="roadLineH" style="top:1237px"></div>
- <div class="roadLineH" style="top:1817px"></div>
+        <!-- hair back -->
+        <path id="previewHairBack"
+              d="M55 72c0-34 70-38 70 4v18H55V72Z"
+              fill="#17120f"/>
 
- <div class="roadLineV" style="left:757px"></div>
- <div class="roadLineV" style="left:1507px"></div>
- <div class="roadLineV" style="left:2307px"></div>
+        <!-- neck -->
+        <path d="M77 91h26v23H77z" fill="var(--skin)"/>
 
- <div class="building house" style="left:180px;top:180px;width:250px;height:220px">HOUSE</div>
- <div class="building shop" style="left:850px;top:170px;width:270px;height:230px">SUPERMARKET</div>
- <div class="building office" style="left:1570px;top:180px;width:270px;height:230px">OFFICE</div>
- <div class="building market" style="left:2350px;top:180px;width:300px;height:230px">MARKET</div>
+        <!-- face -->
+        <ellipse cx="90" cy="73" rx="35" ry="39"
+                 fill="var(--skin)"/>
 
- <div class="building hotel" style="left:180px;top:720px;width:280px;height:260px">HOTEL</div>
- <div class="building shop" style="left:880px;top:740px;width:270px;height:230px">RESTAURANT</div>
- <div class="building office" style="left:1570px;top:720px;width:300px;height:260px">BANK</div>
- <div class="building house" style="left:2360px;top:720px;width:270px;height:250px">APARTMENTS</div>
+        <!-- ears -->
+        <circle cx="55" cy="75" r="7" fill="var(--skin)"/>
+        <circle cx="125" cy="75" r="7" fill="var(--skin)"/>
 
- <div class="building market" style="left:190px;top:1350px;width:280px;height:250px">MARKET</div>
- <div class="building shop" style="left:880px;top:1350px;width:280px;height:250px">SHOP</div>
- <div class="building job" style="left:1570px;top:1340px;width:300px;height:260px">DELIVERY JOB</div>
- <div class="building hotel" style="left:2370px;top:1340px;width:270px;height:250px">HOTEL</div>
+        <!-- hair front -->
+        <path id="previewHair"
+              d="M56 69c4-31 62-40 69-2-13-10-43-12-69 2Z"
+              fill="#17120f"/>
 
- <!-- NPC 1 -->
- <div class="npc" id="npc1" style="left:620px;top:400px">
-  <svg viewBox="0 0 50 68" fill="none">
-   <circle cx="25" cy="14" r="9" fill="#8B5A3C"/>
-   <path d="M16 14c2-9 16-11 18 0-6-4-12-4-18 0Z" fill="#15110F"/>
-   <path d="M13 28c4-6 20-6 24 0l4 23H9l4-23Z" fill="#285C91"/>
-   <path d="M18 51v14M32 51v14" stroke="#20252A" stroke-width="7" stroke-linecap="round"/>
-  </svg>
- </div>
+        <!-- eyes -->
+        <circle cx="77" cy="75" r="3" fill="#111"/>
+        <circle cx="103" cy="75" r="3" fill="#111"/>
 
- <!-- NPC 2 -->
- <div class="npc" id="npc2" style="left:1250px;top:900px">
-  <svg viewBox="0 0 50 68" fill="none">
-   <circle cx="25" cy="14" r="9" fill="#6D432C"/>
-   <path d="M15 14c1-10 18-12 20 0-5-4-14-5-20 0Z" fill="#191311"/>
-   <path d="M13 28c4-6 20-6 24 0l4 23H9l4-23Z" fill="#9A5B30"/>
-   <path d="M18 51v14M32 51v14" stroke="#252525" stroke-width="7" stroke-linecap="round"/>
-  </svg>
- </div>
+        <!-- nose -->
+        <path d="M90 76l-4 13h8"
+              stroke="#603c2b" stroke-width="3"
+              stroke-linecap="round"/>
 
- <!-- NPC 3 -->
- <div class="npc" id="npc3" style="left:2050px;top:1250px">
-  <svg viewBox="0 0 50 68" fill="none">
-   <circle cx="25" cy="14" r="9" fill="#925C3D"/>
-   <path d="M15 13c3-9 18-9 20 1-6-3-13-3-20-1Z" fill="#211612"/>
-   <path d="M13 28c4-6 20-6 24 0l4 23H9l4-23Z" fill="#704D91"/>
-   <path d="M18 51v14M32 51v14" stroke="#222" stroke-width="7" stroke-linecap="round"/>
-  </svg>
- </div>
+        <!-- mouth -->
+        <path d="M81 96q9 7 18 0"
+              stroke="#6d2727" stroke-width="3"
+              stroke-linecap="round"/>
 
- <!-- PLAYER -->
- <div id="player">
-  <svg viewBox="0 0 64 82" fill="none">
-   <circle cx="32" cy="18" r="11" fill="#8B5A3C"/>
-   <path d="M21 18c1-11 21-15 23 0-5-5-14-5-23 0Z" fill="#17120F"/>
-   <path d="M18 31c4-6 24-6 28 0l5 27H13l5-27Z" fill="#0B7A50"/>
-   <path d="M32 32v25" stroke="#7FF0BD" stroke-width="2"/>
-   <path d="M18 34l-8 20M46 34l8 20" stroke="#8B5A3C" stroke-width="6" stroke-linecap="round"/>
-   <path d="M24 58v17M40 58v17" stroke="#20252A" stroke-width="8" stroke-linecap="round"/>
-   <path d="M19 76h10M35 76h10" stroke="#111" stroke-width="5" stroke-linecap="round"/>
-  </svg>
- </div>
+        <!-- body -->
+        <path id="previewShirt"
+              d="M48 116q42-22 84 0l18 68H30l18-68Z"
+              fill="#0b7a50"/>
 
- <!-- vehicle -->
- <div id="car" style="position:absolute;left:1050px;top:580px;width:95px;height:50px;z-index:12">
-  <svg viewBox="0 0 95 50" fill="none">
-   <rect x="8" y="18" width="79" height="22" rx="7" fill="#C9A227"/>
-   <path d="M22 18l9-12h31l11 12" fill="#A47F18"/>
-   <path d="M32 10h26l7 8H25l7-8Z" fill="#80A9B8"/>
-   <circle cx="25" cy="42" r="7" fill="#171717"/>
-   <circle cx="70" cy="42" r="7" fill="#171717"/>
-   <circle cx="25" cy="42" r="3" fill="#777"/>
-   <circle cx="70" cy="42" r="3" fill="#777"/>
-  </svg>
- </div>
+        <!-- shirt detail -->
+        <path d="M90 116v68"
+              stroke="#ffffff35" stroke-width="3"/>
 
-</div>
+        <!-- arms -->
+        <path d="M49 122l-20 53"
+              stroke="var(--skin)" stroke-width="16"
+              stroke-linecap="round"/>
+        <path d="M131 122l20 53"
+              stroke="var(--skin)" stroke-width="16"
+              stroke-linecap="round"/>
 
+        <!-- pants -->
+        <path id="previewPants"
+              d="M57 184h66l8 35H98l-8-26-8 26H49l8-35Z"
+              fill="#20252a"/>
 
-<div id="hud">
- <div class="hudTop">
-  <div class="hudCard">CITY<strong id="cityName">LAGOS</strong></div>
-  <div class="hudCard">MONEY<strong id="money">₦5,000</strong></div>
-  <div class="hudCard">ENERGY<strong id="energy">100%</strong></div>
-  <div class="hudCard">LEVEL<strong id="level">1</strong></div>
- </div>
-</div>
+        <!-- shoes -->
+        <path d="M48 217h42v8H44q-2-5 4-8Z"
+              fill="#111"/>
+        <path d="M90 217h42q6 3 4 8H90v-8Z"
+              fill="#111"/>
+      </svg>
 
-<div id="xpBox">
- <div style="font-size:10px;margin-bottom:4px">XP <span id="xpText">0 / 100</span></div>
- <div class="xpOuter"><div id="xpBar"></div></div>
-</div>
+      <div id="previewName" class="namePreview">Player</div>
+    </div>
 
-<div id="mission">
- <div class="mTitle">CURRENT MISSION</div>
- <div id="mText">Find a job and earn money.</div>
- <div id="missionReward">Reward: ₦1,000 + 25 XP</div>
-</div>
+    <div class="sectionTitle">Your name</div>
+    <input id="charName" class="nameInput"
+           maxlength="16"
+           placeholder="Enter your name"
+           value="Player">
 
-<div class="controlsTop">
- <button class="smallBtn" id="nightBtn">
-  <svg viewBox="0 0 24 24" fill="none">
-   <path d="M20 15.5A8.5 8.5 0 0 1 8.5 4A8.5 8.5 0 1 0 20 15.5Z"
-    stroke="white" stroke-width="2"/>
-  </svg>
- </button>
+    <div class="sectionTitle">Skin tone</div>
+    <div id="skinOptions" class="options">
 
- <button class="smallBtn" id="saveBtn">
-  <svg viewBox="0 0 24 24" fill="none">
-   <path d="M5 4h11l3 3v13H5V4Z" stroke="white" stroke-width="2"/>
-   <path d="M8 4v6h8V4M8 20v-6h8v6"
-    stroke="#7ff0bd" stroke-width="2"/>
-  </svg>
- </button>
-</div>
+      <button class="option active" data-type="skin" data-value="#6b422d">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#6b422d"/></svg>
+        <small>Deep</small>
+      </button>
 
-<div id="joystick"><div id="stick"></div></div>
+      <button class="option" data-type="skin" data-value="#8b5a3c">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#8b5a3c"/></svg>
+        <small>Brown</small>
+      </button>
 
-<div class="actionButtons">
+      <button class="option" data-type="skin" data-value="#a86f4c">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#a86f4c"/></svg>
+        <small>Warm</small>
+      </button>
 
- <button class="action" id="interactBtn">
-  <svg viewBox="0 0 24 24" fill="none">
-   <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/>
-   <path d="M12 10v6M12 7h.01"
-    stroke="#7ff0bd" stroke-width="3" stroke-linecap="round"/>
-  </svg>
- </button>
+      <button class="option" data-type="skin" data-value="#c58a62">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#c58a62"/></svg>
+        <small>Light</small>
+      </button>
 
- <button class="action" id="jobBtn">
-  <svg viewBox="0 0 24 24" fill="none">
-   <rect x="4" y="7" width="16" height="13" rx="2"
-    stroke="white" stroke-width="2"/>
-   <path d="M9 7V5h6v2M8 12h8"
-    stroke="#7ff0bd" stroke-width="2"/>
-  </svg>
- </button>
+    </div>
 
- <button class="action" id="foodBtn">
-  <svg viewBox="0 0 24 24" fill="none">
-   <path d="M6 4v7M9 4v7M6 8h3M7.5 11v9"
-    stroke="white" stroke-width="2" stroke-linecap="round"/>
-   <path d="M16 4v16M16 4c3 2 3 7 0 9"
-    stroke="#7ff0bd" stroke-width="2" stroke-linecap="round"/>
-  </svg>
- </button>
+    <div class="sectionTitle">Hair</div>
+    <div id="hairOptions" class="options">
 
-</div>
+      <button class="option active" data-type="hair" data-value="short">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="23" r="12" fill="#17120f"/>
+          <path d="M10 22q10-20 20 0" fill="#17120f"/>
+        </svg>
+        <small>Short</small>
+      </button>
 
+      <button class="option" data-type="hair" data-value="fade">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="23" r="12" fill="#17120f"/>
+          <path d="M11 19q9-15 18 0" fill="#17120f"/>
+        </svg>
+        <small>Fade</small>
+      </button>
+
+      <button class="option" data-type="hair" data-value="afro">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="15" fill="#17120f"/>
+        </svg>
+        <small>Afro</small>
+      </button>
+
+      <button class="option" data-type="hair" data-value="buzz">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="22" r="12" fill="#17120f"/>
+          <path d="M11 18q9-9 18 0" fill="#17120f"/>
+        </svg>
+        <small>Buzz</small>
+      </button>
+
+    </div>
+
+    <div class="sectionTitle">Shirt</div>
+    <div id="shirtOptions" class="options">
+
+      <button class="option active" data-type="shirt" data-value="#0b7a50">
+        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#0b7a50"/></svg>
+        <small>Green</small>
+      </button>
+
+      <button class="option" data-type="shirt" data-value="#1659a8">
+        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#1659a8"/></svg>
+        <small>Blue</small>
+      </button>
+
+      <button class="option" data-type="shirt" data-value="#a62635">
+        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#a62635"/></svg>
+        <small>Red</small>
+      </button>
+
+      <button class="option" data-type="shirt" data-value="#e7e7e7">
+        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#e7e7e7"/></svg>
+        <small>White</small>
+      </button>
+
+      <button class="option" data-type="shirt" data-value="#171717">
+        <svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="25" rx="6" fill="#171717"/></svg>
+        <small>Black</small>
+      </button>
+
+    </div>
+
+    <div class="sectionTitle">Trousers</div>
+    <div id="pantsOptions" class="options">
+
+      <button class="option active" data-type="pants" data-value="#20252a">
+        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#20252a"/></svg>
+        <small>Dark</small>
+      </button>
+
+      <button class="option" data-type="pants" data-value="#183d70">
+        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#183d70"/></svg>
+        <small>Denim</small>
+      </button>
+
+      <button class="option" data-type="pants" data-value="#6d4c31">
+        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#6d4c31"/></svg>
+        <small>Brown</small>
+      </button>
+
+      <button class="option" data-type="pants" data-value="#e2e0d8">
+        <svg viewBox="0 0 40 40"><rect x="9" y="7" width="22" height="27" rx="4" fill="#e2e0d8"/></svg>
+        <small>Light</small>
+      </button>
+
+    </div>
+
+    <button id="enterCity" class="primary">ENTER CITY</button>
+    <button id="backCity" class="secondary">BACK TO CITY</button>
+
+  </div>
 </section>
 
 
-<div id="notice"></div>
+<!-- GAME -->
+<div id="game">
 
+  <div id="world">
 
-<div id="panel">
+    <!-- ROADS -->
+    <div class="road h" style="top:700px"></div>
+    <div class="road h" style="top:1400px"></div>
+    <div class="road v" style="left:700px"></div>
+    <div class="road v" style="left:1400px"></div>
+    <div class="road v" style="left:2150px"></div>
 
- <button class="closePanel" id="closePanel">
-  <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-   <path d="M6 6l12 12M18 6L6 18"
-    stroke="white" stroke-width="2" stroke-linecap="round"/>
-  </svg>
- </button>
+    <div class="line h" style="top:763px"></div>
+    <div class="line h" style="top:1463px"></div>
+    <div class="line v" style="left:763px"></div>
+    <div class="line v" style="left:1463px"></div>
+    <div class="line v" style="left:2213px"></div>
 
- <div class="panelTitle" id="panelTitle">City</div>
- <div class="panelText" id="panelText"></div>
+    <!-- BUILDING 1 -->
+    <div class="building" style="left:300px;top:380px">
+      <svg viewBox="0 0 220 145">
+        <rect width="220" height="145" rx="15" fill="#bd734d"/>
+        <rect y="0" width="220" height="34" fill="#8f4f39"/>
+        <path d="M0 34h220" stroke="#f2c15d" stroke-width="5"/>
+        <rect x="25" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
+        <rect x="89" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
+        <rect x="153" y="58" width="42" height="58" rx="4" fill="#142d2b"/>
+        <text x="110" y="25" text-anchor="middle" fill="white"
+              font-size="15" font-weight="bold">BANK</text>
+      </svg>
+    </div>
 
- <div class="panelButtons">
-  <button class="panelBtn" id="panelMain">Interact</button>
-  <button class="panelBtn alt" id="panelAlt">Close</button>
- </div>
+    <!-- SHOP -->
+    <div class="building" style="left:1000px;top:350px">
+      <svg viewBox="0 0 220 145">
+        <rect width="220" height="145" rx="15" fill="#d6a43b"/>
+        <path d="M0 45h220" stroke="#fff" stroke-width="18"/>
+        <path d="M20 36v25M55 36v25M90 36v25M125 36v25M160 36v25M195 36v25"
+              stroke="#b63838" stroke-width="15"/>
+        <rect x="68" y="73" width="84" height="58" fill="#172c28"/>
+        <text x="110" y="28" text-anchor="middle" fill="#18231f"
+              font-size="14" font-weight="bold">MARKET</text>
+      </svg>
+    </div>
 
+    <!-- RESTAURANT -->
+    <div class="building" style="left:1750px;top:390px">
+      <svg viewBox="0 0 220 145">
+        <rect width="220" height="145" rx="15" fill="#9d3e48"/>
+        <path d="M0 35h220" stroke="#f1c14e" stroke-width="8"/>
+        <circle cx="110" cy="80" r="29" fill="#172b27"/>
+        <path d="M93 80h34M110 63v34" stroke="#f1c14e" stroke-width="5"/>
+        <text x="110" y="128" text-anchor="middle" fill="white"
+              font-size="14" font-weight="bold">RESTAURANT</text>
+      </svg>
+    </div>
+
+    <!-- HOUSE -->
+    <div class="building" style="left:250px;top:1030px">
+      <svg viewBox="0 0 220 145">
+        <path d="M15 68L110 10l95 58v62H15V68Z" fill="#b77d52"/>
+        <path d="M10 68L110 5l100 63" stroke="#512f27" stroke-width="12"/>
+        <rect x="88" y="84" width="44" height="46" fill="#38261f"/>
+        <rect x="35" y="83" width="34" height="28" fill="#183d3a"/>
+        <rect x="151" y="83" width="34" height="28" fill="#183d3a"/>
+      </svg>
+    </div>
+
+    <!-- OFFICE -->
+    <div class="building" style="left:1550px;top:1000px">
+      <svg viewBox="0 0 220 145">
+        <rect width="220" height="145" rx="12" fill="#607c83"/>
+        <rect x="18" y="18" width="184" height="110" fill="#273d43"/>
+        <path d="M35 34h150M35 59h150M35 84h150M35 109h150"
+              stroke="#8ed8d0" stroke-width="8"/>
+        <path d="M65 18v110M110 18v110M155 18v110"
+              stroke="#8ed8d0" stroke-width="8"/>
+      </svg>
+    </div>
+
+    <!-- PLAYER -->
+    <div id="player">
+      <div class="playerShadow"></div>
+      <svg id="playerSvg" viewBox="0 0 90 125" fill="none">
+
+        <rect x="18" y="0" width="54" height="20"
+              rx="10" fill="#07120f" opacity=".9"/>
+        <text id="playerNameSvg" x="45" y="14"
+              text-anchor="middle"
+              fill="white" font-size="8"
+              font-weight="bold">Player</text>
+
+        <path id="pHairBack"
+              d="M22 51c0-30 46-34 46 3v18H22V51Z"
+              fill="#17120f"/>
+
+        <path id="pNeck" d="M35 68h20v18H35z" fill="#8b5a3c"/>
+
+        <ellipse id="pFace"
+                 cx="45" cy="54" rx="23" ry="27"
+                 fill="#8b5a3c"/>
+
+        <circle cx="23" cy="56" r="5" fill="#8b5a3c"/>
+        <circle cx="67" cy="56" r="5" fill="#8b5a3c"/>
+
+        <path id="pHair"
+              d="M23 50c4-24 39-31 46-2-10-8-30-9-46 2Z"
+              fill="#17120f"/>
+
+        <circle cx="36" cy="55" r="2.5" fill="#111"/>
+        <circle cx="54" cy="55" r="2.5" fill="#111"/>
+
+        <path d="M45 57l-3 9h6"
+              stroke="#603c2b" stroke-width="2"
+              stroke-linecap="round"/>
+
+        <path d="M38 72q7 5 14 0"
+              stroke="#722b2b" stroke-width="2.5"
+              stroke-linecap="round"/>
+
+        <path id="pShirt"
+              d="M17 83q28-17 56 0l10 40H7l10-40Z"
+              fill="#0b7a50"/>
+
+        <path d="M17 88L6 113"
+              stroke="#8b5a3c" stroke-width="11"
+              stroke-linecap="round"/>
+        <path d="M73 88l11 25"
+              stroke="#8b5a3c" stroke-width="11"
+              stroke-linecap="round"/>
+
+        <path id="pPants"
+              d="M25 123h40l6 2-5 0-7-2-5-1-5 1-7 2H20l5-2Z"
+              fill="#20252a"/>
+
+        <path d="M31 121v4M59 121v4"
+              stroke="#20252a" stroke-width="8"
+              stroke-linecap="round"/>
+
+      </svg>
+    </div>
+
+    <!-- NPC 1 -->
+    <div class="npc" id="npc1">
+      <div class="npcShadow"></div>
+      <svg viewBox="0 0 90 125" fill="none">
+        <ellipse cx="45" cy="52" rx="22" ry="27" fill="#70442f"/>
+        <path d="M23 49q2-29 22-29t23 29c-14-11-31-11-45 0Z"
+              fill="#141414"/>
+        <circle cx="37" cy="54" r="2.5" fill="#111"/>
+        <circle cx="53" cy="54" r="2.5" fill="#111"/>
+        <path d="M39 70q6 4 12 0" stroke="#612727" stroke-width="2.5"/>
+        <path d="M19 81q26-16 52 0l10 42H9l10-42Z" fill="#e0a629"/>
+        <path d="M19 88L7 114" stroke="#70442f" stroke-width="11" stroke-linecap="round"/>
+        <path d="M71 88l12 26" stroke="#70442f" stroke-width="11" stroke-linecap="round"/>
+        <path d="M28 121v4M62 121v4" stroke="#263c6b" stroke-width="9"/>
+      </svg>
+    </div>
+
+    <!-- NPC 2 -->
+    <div class="npc" id="npc2">
+      <div class="npcShadow"></div>
+      <svg viewBox="0 0 90 125" fill="none">
+        <path d="M20 51q0-32 25-32t25 32v20H20V51Z" fill="#17120f"/>
+        <ellipse cx="45" cy="54" rx="21" ry="26" fill="#9a6545"/>
+        <path d="M23 47q22-13 44 0v8H23v-8Z" fill="#17120f"/>
+        <circle cx="37" cy="55" r="2.5" fill="#111"/>
+        <circle cx="53" cy="55" r="2.5" fill="#111"/>
+        <path d="M38 70q7 5 14 0" stroke="#702f2f" stroke-width="2"/>
+        <path d="M18 82q27-18 54 0l9 41H9l9-41Z" fill="#8c3e68"/>
+        <path d="M18 89L7 113" stroke="#9a6545" stroke-width="11" stroke-linecap="round"/>
+        <path d="M72 89l11 24" stroke="#9a6545" stroke-width="11" stroke-linecap="round"/>
+        <path d="M29 122v3M61 122v3" stroke="#151515" stroke-width="9"/>
+      </svg>
+    </div>
+
+    <!-- NPC 3 -->
+    <div class="npc" id="npc3">
+      <div class="npcShadow"></div>
+      <svg viewBox="0 0 90 125" fill="none">
+        <circle cx="45" cy="51" r="30" fill="#17120f"/>
+        <ellipse cx="45" cy="57" rx="21" ry="25" fill="#b47751"/>
+        <path d="M27 47q18-10 36 0" fill="#17120f"/>
+        <circle cx="37" cy="57" r="2.5" fill="#111"/>
+        <circle cx="53" cy="57" r="2.5" fill="#111"/>
+        <path d="M39 71q6 4 12 0" stroke="#733232" stroke-width="2"/>
+        <path d="M19 83q26-17 52 0l10 40H9l10-40Z" fill="#3f69a6"/>
+        <path d="M19 90L7 114" stroke="#b47751" stroke-width="11" stroke-linecap="round"/>
+        <path d="M71 90l12 24" stroke="#b47751" stroke-width="11" stroke-linecap="round"/>
+        <path d="M29 122v3M61 122v3" stroke="#222" stroke-width="9"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <div id="shade"></div>
+
+  <div id="clock">--:-- --</div>
+
+  <div id="hud">
+    <div class="stat" id="cityHud">Lagos</div>
+    <div class="stat" id="nameHud">Player</div>
+    <div class="stat" id="moneyHud">₦5,000</div>
+    <div class="stat" id="energyHud">Energy 100</div>
+    <div class="stat" id="levelHud">LV 1</div>
+  </div>
+
+  <button id="profileBtn" title="Character">
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2"/>
+      <path d="M4 21c1-5 4-7 8-7s7 2 8 7"
+            stroke="white" stroke-width="2"
+            stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div id="mission">
+    Find a job and earn money.
+  </div>
+
+  <button id="interact">INTERACT</button>
+
+  <div id="controls">
+
+    <div id="joystick">
+      <div id="stick"></div>
+    </div>
+
+    <div class="actions">
+
+      <button class="action" id="foodBtn" title="Food">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 4v7M8 4v7M5 8h3M6.5 11v9"
+                stroke="white" stroke-width="2"
+                stroke-linecap="round"/>
+          <path d="M15 4v16M15 4q5 4 0 9"
+                stroke="white" stroke-width="2"
+                stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <button class="action" id="saveBtn" title="Save">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 4h12l3 3v13H5z"
+                stroke="white" stroke-width="2"/>
+          <path d="M8 4v6h8V4M8 20v-6h8v6"
+                stroke="white" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <button class="action" id="carBtn" title="Transport">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 16l2-7h10l2 7"
+                stroke="white" stroke-width="2"/>
+          <path d="M4 16h16v4H4z"
+                stroke="white" stroke-width="2"/>
+          <circle cx="8" cy="20" r="1.5" fill="white"/>
+          <circle cx="16" cy="20" r="1.5" fill="white"/>
+        </svg>
+      </button>
+
+      <button class="action" id="jobBtn" title="Job">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="7" width="16" height="13" rx="2"
+                stroke="white" stroke-width="2"/>
+          <path d="M9 7V5h6v2M8 12h8"
+                stroke="white" stroke-width="2"
+                stroke-linecap="round"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <div id="toast"></div>
 </div>
 
 
 <script>
-/* =========================
-   STATE
-========================= */
+/* ================================
+   NAIJA LIFE GAME
+   ================================ */
 
-const menu=document.getElementById("menu");
-const game=document.getElementById("game");
-const world=document.getElementById("world");
-const player=document.getElementById("player");
-const startBtn=document.getElementById("startBtn");
-const cityName=document.getElementById("cityName");
-const notice=document.getElementById("notice");
+const menu = document.getElementById("menu");
+const creator = document.getElementById("creator");
+const game = document.getElementById("game");
+const world = document.getElementById("world");
 
-let selectedCity=null;
+let selectedCity = "Lagos";
+let editingCharacter = false;
 
-let state={
- city:"Lagos",
- x:500,
- y:450,
- money:5000,
- energy:100,
- level:1,
- xp:0,
- night:false,
- missionDone:false,
- transport:false
+const defaultCharacter = {
+  name:"Player",
+  skin:"#8b5a3c",
+  hair:"#17120f",
+  hairStyle:"short",
+  shirt:"#0b7a50",
+  pants:"#20252a"
 };
 
+const defaultState = {
+  city:"Lagos",
+  x:500,
+  y:450,
+  money:5000,
+  energy:100,
+  level:1,
+  xp:0,
+  transport:false,
+  missionDone:false,
+  character:{...defaultCharacter}
+};
 
-/* =========================
-   CITY
-========================= */
+let saved = null;
+
+try{
+  saved = JSON.parse(localStorage.getItem("naijaLifeSave"));
+}catch(e){}
+
+let state = {
+  ...defaultState,
+  ...(saved || {}),
+  character:{
+    ...defaultCharacter,
+    ...(saved?.character || {})
+  }
+};
+
+selectedCity = state.city;
+
+
+/* ================================
+   CITY SELECT
+   ================================ */
 
 document.querySelectorAll(".city").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  selectedCity=btn.dataset.city;
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".city")
+      .forEach(x=>x.classList.remove("active"));
 
-  document.querySelectorAll(".city").forEach(c=>{
-   c.style.borderColor="#ffffff20";
+    btn.classList.add("active");
+    selectedCity = btn.dataset.city;
   });
-
-  btn.style.borderColor="#10a66b";
-
-  startBtn.style.opacity="1";
-  startBtn.style.pointerEvents="auto";
- });
 });
 
-startBtn.addEventListener("click",()=>{
- const saved=localStorage.getItem("naijaLifeSave");
-
- if(saved){
-  try{
-   const old=JSON.parse(saved);
-   state={...state,...old};
-  }catch(e){}
- }
-
- state.city=selectedCity||"Lagos";
-
- cityName.textContent=state.city.toUpperCase();
-
- menu.style.display="none";
- game.style.display="block";
-
- applyNight();
- updateHUD();
- updateCamera();
-
- showNotice("Welcome to "+state.city);
-
- startNPCs();
-});
-
-
-/* =========================
-   MOVEMENT
-========================= */
-
-let keys={
- up:false,down:false,left:false,right:false
+document.getElementById("chooseBtn").onclick=()=>{
+  openCreator(false);
 };
 
-let joystickX=0;
-let joystickY=0;
-let speed=3.5;
 
-function movePlayer(){
+/* ================================
+   CHARACTER CREATOR
+   ================================ */
 
- let dx=0,dy=0;
+const charName = document.getElementById("charName");
 
- if(keys.up)dy-=1;
- if(keys.down)dy+=1;
- if(keys.left)dx-=1;
- if(keys.right)dx+=1;
+function loadCreatorValues(){
 
- dx+=joystickX;
- dy+=joystickY;
+  charName.value = state.character.name || "Player";
 
- if(dx||dy){
+  document.querySelectorAll(".option").forEach(b=>{
+    const type = b.dataset.type;
+    const value = b.dataset.value;
 
-  const len=Math.sqrt(dx*dx+dy*dy);
+    if(!type)return;
 
-  if(len>1){
-   dx/=len;
-   dy/=len;
+    let current =
+      type==="skin" ? state.character.skin :
+      type==="hair" ? state.character.hairStyle :
+      type==="shirt" ? state.character.shirt :
+      type==="pants" ? state.character.pants : "";
+
+    b.classList.toggle("active", value===current);
+  });
+
+  updatePreview();
+}
+
+function openCreator(fromGame){
+
+  editingCharacter = fromGame;
+
+  loadCreatorValues();
+
+  creator.style.display="flex";
+
+  if(fromGame){
+    game.style.display="block";
+  }else{
+    menu.style.display="none";
+  }
+}
+
+function closeCreator(){
+
+  creator.style.display="none";
+
+  if(editingCharacter){
+    game.style.display="block";
+  }else{
+    menu.style.display="flex";
+  }
+}
+
+document.getElementById("backCity").onclick=closeCreator;
+
+
+document.querySelectorAll(".option").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+
+    const type = btn.dataset.type;
+    const value = btn.dataset.value;
+
+    document
+      .querySelectorAll('.option[data-type="'+type+'"]')
+      .forEach(x=>x.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    if(type==="skin") state.character.skin=value;
+    if(type==="hair") state.character.hairStyle=value;
+    if(type==="shirt") state.character.shirt=value;
+    if(type==="pants") state.character.pants=value;
+
+    updatePreview();
+  });
+});
+
+
+charName.addEventListener("input",()=>{
+  state.character.name =
+    charName.value.trim().slice(0,16) || "Player";
+
+  updatePreview();
+});
+
+
+function hairPath(style){
+
+  if(style==="afro"){
+    return "M20 52c-4-29 10-48 25-48s29 19 25 48c-14-11-36-11-50 0Z";
   }
 
-  const actualSpeed=state.transport?6:3.5;
-
-  state.x+=dx*actualSpeed;
-  state.y+=dy*actualSpeed;
-
-  state.x=Math.max(35,Math.min(2965,state.x));
-  state.y=Math.max(45,Math.min(2155,state.y));
-
-  if(!state.transport){
-   state.energy=Math.max(0,state.energy-.004);
+  if(style==="fade"){
+    return "M23 50c3-23 39-30 46-2-10-7-31-9-46 2Z";
   }
 
+  if(style==="buzz"){
+    return "M25 49c3-17 37-22 40-1-11-5-29-6-40 1Z";
+  }
+
+  return "M23 50c4-24 39-31 46-2-10-8-30-9-46 2Z";
+}
+
+
+function updatePreview(){
+
+  const c = state.character;
+
+  document.documentElement.style.setProperty("--skin",c.skin);
+
+  document.getElementById("previewSvgName").textContent =
+    c.name || "Player";
+
+  document.getElementById("previewName").textContent =
+    c.name || "Player";
+
+  document.getElementById("previewHair").setAttribute(
+    "d",
+    hairPath(c.hairStyle)
+  );
+
+  document.getElementById("previewHair").setAttribute(
+    "fill",c.hair
+  );
+
+  document.getElementById("previewHairBack").setAttribute(
+    "fill",c.hair
+  );
+
+  document.getElementById("previewShirt").setAttribute(
+    "fill",c.shirt
+  );
+
+  document.getElementById("previewPants").setAttribute(
+    "fill",c.pants
+  );
+}
+
+
+document.getElementById("enterCity").onclick=()=>{
+
+  state.character.name =
+    charName.value.trim().slice(0,16) || "Player";
+
+  const oldCity = state.city;
+
+  state.city = selectedCity;
+
+  if(oldCity !== selectedCity){
+    state.x=500;
+    state.y=450;
+    state.transport=false;
+  }
+
+  saveGame();
+  startGame();
+};
+
+
+/* ================================
+   PLAYER
+   ================================ */
+
+function updatePlayer(){
+
+  const p = document.getElementById("player");
+
+  p.style.left = state.x+"px";
+  p.style.top = state.y+"px";
+
+  const c = state.character;
+
+  document.getElementById("pFace")
+    .setAttribute("fill",c.skin);
+
+  document.getElementById("pNeck")
+    .setAttribute("fill",c.skin);
+
+  document.getElementById("pHair")
+    .setAttribute("fill",c.hair);
+
+  document.getElementById("pHairBack")
+    .setAttribute("fill",c.hair);
+
+  document.getElementById("pShirt")
+    .setAttribute("fill",c.shirt);
+
+  document.getElementById("pPants")
+    .setAttribute("fill",c.pants);
+
+  document.getElementById("playerNameSvg").textContent =
+    c.name;
+
+  document.getElementById("nameHud").textContent =
+    c.name;
+}
+
+
+/* ================================
+   GAME START
+   ================================ */
+
+function startGame(){
+
+  menu.style.display="none";
+  creator.style.display="none";
+  game.style.display="block";
+
+  updatePlayer();
   updateHUD();
-  updateCamera();
- }
+  updateClock();
 
- requestAnimationFrame(movePlayer);
+  if(!npcStarted){
+    startNPCs();
+    npcStarted=true;
+  }
+
+  centerCamera();
 }
 
-movePlayer();
 
-
-/* =========================
-   KEYBOARD
-========================= */
-
-document.addEventListener("keydown",e=>{
- if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=true;
- if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=true;
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true;
-});
-
-document.addEventListener("keyup",e=>{
- if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.up=false;
- if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.down=false;
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false;
-});
-
-
-/* =========================
-   JOYSTICK
-========================= */
-
-const joystick=document.getElementById("joystick");
-const stick=document.getElementById("stick");
-
-let joystickActive=false;
-
-function joystickMove(x,y){
-
- const rect=joystick.getBoundingClientRect();
-
- let px=x-(rect.left+rect.width/2);
- let py=y-(rect.top+rect.height/2);
-
- const max=40;
- const distance=Math.sqrt(px*px+py*py);
-
- if(distance>max){
-  px=px/distance*max;
-  py=py/distance*max;
- }
-
- stick.style.transform=`translate(${px}px,${py}px)`;
-
- joystickX=px/max;
- joystickY=py/max;
-}
-
-function joystickReset(){
-
- joystickActive=false;
- stick.style.transform="translate(0,0)";
- joystickX=0;
- joystickY=0;
-}
-
-joystick.addEventListener("pointerdown",e=>{
- joystickActive=true;
- joystick.setPointerCapture(e.pointerId);
- joystickMove(e.clientX,e.clientY);
-});
-
-joystick.addEventListener("pointermove",e=>{
- if(joystickActive)joystickMove(e.clientX,e.clientY);
-});
-
-joystick.addEventListener("pointerup",joystickReset);
-joystick.addEventListener("pointercancel",joystickReset);
-
-
-/* =========================
-   CAMERA
-========================= */
-
-function updateCamera(){
-
- const sw=innerWidth;
- const sh=innerHeight;
-
- let cx=state.x-sw/2;
- let cy=state.y-sh/2;
-
- cx=Math.max(0,Math.min(3000-sw,cx));
- cy=Math.max(0,Math.min(2200-sh,cy));
-
- world.style.transform=
-  `translate(${-cx}px,${-cy}px)`;
-
- player.style.left=state.x+"px";
- player.style.top=state.y+"px";
-}
-
-addEventListener("resize",updateCamera);
-
-
-/* =========================
-   XP
-========================= */
-
-function addXP(amount){
-
- state.xp+=amount;
-
- while(state.xp>=100){
-  state.xp-=100;
-  state.level++;
-  showNotice("Level "+state.level+" reached!");
- }
-
- updateHUD();
-}
+/* ================================
+   HUD
+   ================================ */
 
 function updateHUD(){
 
- cityName.textContent=state.city.toUpperCase();
+  document.getElementById("cityHud").textContent =
+    state.city;
 
- document.getElementById("money").textContent=
-  "₦"+Math.floor(state.money).toLocaleString();
+  document.getElementById("moneyHud").textContent =
+    "₦"+state.money.toLocaleString();
 
- document.getElementById("energy").textContent=
-  Math.floor(state.energy)+"%";
+  document.getElementById("energyHud").textContent =
+    "Energy "+Math.round(state.energy);
 
- document.getElementById("level").textContent=
-  state.level;
+  document.getElementById("levelHud").textContent =
+    "LV "+state.level;
 
- document.getElementById("xpText").textContent=
-  state.xp+" / 100";
-
- document.getElementById("xpBar").style.width=
-  state.xp+"%";
+  document.getElementById("mission").textContent =
+    state.missionDone
+    ? "Mission complete. Keep exploring the city."
+    : "Find a job and earn money.";
 }
 
 
-/* =========================
-   PANEL
-========================= */
+/* ================================
+   REAL NIGERIAN TIME
+   ================================ */
 
-const panel=document.getElementById("panel");
-const panelTitle=document.getElementById("panelTitle");
-const panelText=document.getElementById("panelText");
-const panelMain=document.getElementById("panelMain");
+function getNigeriaTime(){
 
-function openPanel(title,text,mainText,callback){
-
- panelTitle.textContent=title;
- panelText.textContent=text;
- panelMain.textContent=mainText;
-
- panel.classList.add("open");
-
- panelMain.onclick=()=>{
-  callback?.();
- };
+  return new Date(
+    new Date().toLocaleString("en-US",{
+      timeZone:"Africa/Lagos"
+    })
+  );
 }
 
-function closePanel(){
- panel.classList.remove("open");
+function updateClock(){
+
+  const now = getNigeriaTime();
+
+  let h = now.getHours();
+  const m = now.getMinutes();
+
+  const ampm = h >= 12 ? "PM" : "AM";
+
+  let displayHour = h % 12;
+  if(displayHour===0)displayHour=12;
+
+  const mm = String(m).padStart(2,"0");
+
+  document.getElementById("clock").textContent =
+    displayHour+":"+mm+" "+ampm+" • Nigeria";
+
+  updateLighting(h);
 }
 
-document.getElementById("closePanel").onclick=closePanel;
-document.getElementById("panelAlt").onclick=closePanel;
 
+/* ================================
+   DAY / NIGHT
+   ================================ */
 
-/* =========================
-   INTERACTION
-========================= */
+function updateLighting(hour){
 
-document.getElementById("interactBtn").onclick=()=>{
+  let darkness=0;
 
- const target=findNearestBuilding();
-
- if(!target){
-  showNotice("Move closer to a building.");
-  return;
- }
-
- const name=target.textContent.trim();
-
- if(name==="BANK"){
-  openPanel(
-   "Bank",
-   "Manage your in-game money and prepare for future upgrades.",
-   "Check Balance",
-   ()=>{
-    showNotice("Balance: ₦"+state.money.toLocaleString());
-   }
-  );
-  return;
- }
-
- if(name==="SUPERMARKET"||name==="SHOP"){
-  openPanel(
-   "Shop",
-   "Buy food to restore energy.",
-   "Buy Food — ₦200",
-   ()=>{
-    if(state.money<200){
-     showNotice("Not enough money.");
-     return;
-    }
-
-    state.money-=200;
-    state.energy=Math.min(100,state.energy+25);
-
-    updateHUD();
-    addXP(5);
-
-    showNotice("Food purchased.");
-    closePanel();
-   }
-  );
-  return;
- }
-
- if(name==="RESTAURANT"){
-  openPanel(
-   "Restaurant",
-   "Take a meal and restore some energy.",
-   "Eat — ₦300",
-   ()=>{
-    if(state.money<300){
-     showNotice("Not enough money.");
-     return;
-    }
-
-    state.money-=300;
-    state.energy=Math.min(100,state.energy+40);
-
-    updateHUD();
-    addXP(8);
-
-    showNotice("Energy restored.");
-    closePanel();
-   }
-  );
-  return;
- }
-
- if(name==="DELIVERY JOB"){
-  startJob();
-  return;
- }
-
- openPanel(
-  name,
-  "This location is part of the city. More features will be added in the next update.",
-  "Explore",
-  ()=>{
-   showNotice("Location discovered.");
-   addXP(3);
-   closePanel();
+  if(hour>=6 && hour<17){
+    darkness=0;
+  }else if(hour>=17 && hour<19){
+    darkness=(hour-17)/2*.55;
+  }else if(hour>=19 || hour<5){
+    darkness=.72;
+  }else if(hour>=5 && hour<6){
+    darkness=.72-(hour-5)*.72;
   }
- );
+
+  document.getElementById("shade").style.opacity =
+    darkness;
+
+  /* Make the world slightly darker at night */
+  world.style.filter =
+    darkness>.5 ? "brightness(.72)" :
+    darkness>.2 ? "brightness(.88)" :
+    "brightness(1)";
+}
+
+
+/* Update every second so the game clock follows real life. */
+setInterval(updateClock,1000);
+
+
+/* ================================
+   CAMERA
+   ================================ */
+
+function centerCamera(){
+
+  const maxX =
+    world.offsetWidth-window.innerWidth;
+
+  const maxY =
+    world.offsetHeight-window.innerHeight;
+
+  const cx =
+    Math.max(0,
+      Math.min(maxX,state.x-window.innerWidth/2)
+    );
+
+  const cy =
+    Math.max(0,
+      Math.min(maxY,state.y-window.innerHeight/2)
+    );
+
+  world.style.transform =
+    "translate("+(-cx)+"px,"+(-cy)+"px)";
+}
+
+
+/* ================================
+   MOVEMENT
+   ================================ */
+
+let keys={
+  up:false,
+  down:false,
+  left:false,
+  right:false
 };
 
+function movePlayer(){
 
-/* =========================
-   FIND NEAREST BUILDING
-========================= */
+  let dx=0,dy=0;
 
-function findNearestBuilding(){
+  if(keys.up)dy-=1;
+  if(keys.down)dy+=1;
+  if(keys.left)dx-=1;
+  if(keys.right)dx+=1;
 
- const buildings=[...document.querySelectorAll(".building")];
+  if(dx!==0 || dy!==0){
 
- let closest=null;
- let best=Infinity;
+    const len=Math.hypot(dx,dy);
 
- buildings.forEach(b=>{
+    dx/=len;
+    dy/=len;
 
-  const x=parseFloat(b.style.left)+
-   parseFloat(b.style.width)/2;
+    const speed=state.transport ? 6 : 3;
 
-  const y=parseFloat(b.style.top)+
-   parseFloat(b.style.height)/2;
+    state.x+=dx*speed;
+    state.y+=dy*speed;
 
-  const d=Math.hypot(state.x-x,state.y-y);
+    state.x=Math.max(70,Math.min(2930,state.x));
+    state.y=Math.max(70,Math.min(2130,state.y));
 
-  if(d<best){
-   best=d;
-   closest=b;
+    state.energy=Math.max(
+      0,
+      state.energy-.006
+    );
+
+    updatePlayer();
+    centerCamera();
+    checkInteraction();
   }
- });
 
- return best<230?closest:null;
+  requestAnimationFrame(movePlayer);
 }
 
-
-/* =========================
-   JOB SYSTEM
-========================= */
-
-function startJob(){
-
- openPanel(
-  "Delivery Job",
-  "Complete a delivery around the city. Your reward is paid in game currency.",
-  "Start Job",
-  ()=>{
-
-   if(state.energy<20){
-    showNotice("You need at least 20% energy.");
-    return;
-   }
-
-   closePanel();
-
-   state.energy-=20;
-
-   showNotice("Delivery started!");
-
-   document.getElementById("mText").textContent=
-    "Complete the delivery.";
-
-   setTimeout(()=>{
-
-    state.money+=1000;
-    addXP(25);
-
-    state.missionDone=true;
-
-    document.getElementById("mText").textContent=
-     "Mission completed! Find another job.";
-
-    document.getElementById("missionReward").textContent=
-     "Reward received: ₦1,000 + 25 XP";
-
-    showNotice("Job completed +₦1,000");
-
-    updateHUD();
-
-   },5000);
-  }
-);
+requestAnimationFrame(movePlayer);
 
 
-/* job button */
-document.getElementById("jobBtn").onclick=()=>{
+/* ================================
+   KEYBOARD
+   ================================ */
 
- const target=findNearestBuilding();
+document.addEventListener("keydown",e=>{
 
- if(target && target.textContent.trim()==="DELIVERY JOB"){
-  startJob();
- }else{
-  showNotice("Find the Delivery Job building.");
- }
-};
+  if(e.key==="ArrowUp" || e.key==="w")
+    keys.up=true;
 
+  if(e.key==="ArrowDown" || e.key==="s")
+    keys.down=true;
 
-/* =========================
-   FOOD BUTTON
-========================= */
+  if(e.key==="ArrowLeft" || e.key==="a")
+    keys.left=true;
 
-document.getElementById("foodBtn").onclick=()=>{
+  if(e.key==="ArrowRight" || e.key==="d")
+    keys.right=true;
+});
 
- if(state.energy>=100){
-  showNotice("Your energy is already full.");
-  return;
- }
+document.addEventListener("keyup",e=>{
 
- if(state.money<200){
-  showNotice("You need ₦200 for food.");
-  return;
- }
+  if(e.key==="ArrowUp" || e.key==="w")
+    keys.up=false;
 
- state.money-=200;
- state.energy=Math.min(100,state.energy+25);
+  if(e.key==="ArrowDown" || e.key==="s")
+    keys.down=false;
 
- addXP(5);
- updateHUD();
+  if(e.key==="ArrowLeft" || e.key==="a")
+    keys.left=false;
 
- showNotice("Food purchased.");
-};
-
-
-/* =========================
-   TRANSPORT
-========================= */
-
-const car=document.getElementById("car");
-
-car.addEventListener("click",()=>{
-
- const distance=Math.hypot(
-  state.x-1097,
-  state.y-605
- );
-
- if(distance>180){
-  showNotice("Move closer to the vehicle.");
-  return;
- }
-
- state.transport=!state.transport;
-
- if(state.transport){
-  showNotice("Vehicle mode ON.");
-  car.style.filter="brightness(1.25)";
- }else{
-  showNotice("Vehicle mode OFF.");
-  car.style.filter="none";
- }
+  if(e.key==="ArrowRight" || e.key==="d")
+    keys.right=false;
 });
 
 
-/* =========================
-   NPC MOVEMENT
-========================= */
+/* ================================
+   MOBILE JOYSTICK
+   ================================ */
+
+const joystick =
+  document.getElementById("joystick");
+
+const stick =
+  document.getElementById("stick");
+
+let joyActive=false;
+
+function joystickMove(clientX,clientY){
+
+  const r=joystick.getBoundingClientRect();
+
+  let dx=clientX-(r.left+r.width/2);
+  let dy=clientY-(r.top+r.height/2);
+
+  const max=35;
+
+  const dist=Math.hypot(dx,dy);
+
+  if(dist>max){
+    dx=dx/dist*max;
+    dy=dy/dist*max;
+  }
+
+  stick.style.transform =
+    "translate("+dx+"px,"+dy+"px)";
+
+  keys.up=dy<-8;
+  keys.down=dy>8;
+  keys.left=dx<-8;
+  keys.right=dx>8;
+}
+
+joystick.addEventListener("touchstart",e=>{
+  joyActive=true;
+  const t=e.touches[0];
+  joystickMove(t.clientX,t.clientY);
+},{passive:true});
+
+joystick.addEventListener("touchmove",e=>{
+  if(!joyActive)return;
+  const t=e.touches[0];
+  joystickMove(t.clientX,t.clientY);
+},{passive:true});
+
+joystick.addEventListener("touchend",()=>{
+  joyActive=false;
+  keys.up=keys.down=keys.left=keys.right=false;
+  stick.style.transform="translate(0,0)";
+});
+
+
+/* ================================
+   NPC SYSTEM
+   ================================ */
+
+let npcStarted=false;
 
 const npcs=[
- {el:document.getElementById("npc1"),x:620,y:400},
- {el:document.getElementById("npc2"),x:1250,y:900},
- {el:document.getElementById("npc3"),x:2050,y:1250}
+  {
+    el:document.getElementById("npc1"),
+    x:850,y:500,
+    tx:850,ty:500,
+    speed:1.3
+  },
+  {
+    el:document.getElementById("npc2"),
+    x:1200,y:900,
+    tx:1200,ty:900,
+    speed:1.05
+  },
+  {
+    el:document.getElementById("npc3"),
+    x:1900,y:800,
+    tx:1900,ty:800,
+    speed:1.2
+  }
 ];
+
+function chooseNPCDestination(n){
+
+  /* NPCs choose random destinations around the city. */
+  n.tx=150+Math.random()*2700;
+  n.ty=150+Math.random()*1900;
+}
+
+function updateNPC(n){
+
+  const dx=n.tx-n.x;
+  const dy=n.ty-n.y;
+  const dist=Math.hypot(dx,dy);
+
+  if(dist<8){
+    chooseNPCDestination(n);
+    return;
+  }
+
+  n.x+=(dx/dist)*n.speed;
+  n.y+=(dy/dist)*n.speed;
+
+  n.el.style.left=n.x+"px";
+  n.el.style.top=n.y+"px";
+
+  /* Simple walking animation */
+  const walk=
+    Math.sin(Date.now()/100 + n.x)*2;
+
+  n.el.style.transform=
+    "translate(-50%,-50%) rotate("+walk+"deg)";
+}
 
 function startNPCs(){
 
- npcs.forEach(npc=>{
-  setInterval(()=>{
+  npcs.forEach(chooseNPCDestination);
 
-   npc.x+=
-    (Math.random()-.5)*100;
+  function loop(){
 
-   npc.y+=
-    (Math.random()-.5)*100;
+    npcs.forEach(updateNPC);
 
-   npc.x=Math.max(80,Math.min(2920,npc.x));
-   npc.y=Math.max(80,Math.min(2120,npc.y));
+    requestAnimationFrame(loop);
+  }
 
-   npc.el.style.left=npc.x+"px";
-   npc.el.style.top=npc.y+"px";
-
-  },2500+Math.random()*1500);
- });
+  requestAnimationFrame(loop);
 }
 
 
-/* =========================
-   NIGHT
-========================= */
+/* ================================
+   INTERACTIONS
+   ================================ */
 
-document.getElementById("nightBtn").onclick=()=>{
+function distance(a,b){
 
- state.night=!state.night;
+  return Math.hypot(
+    a.x-b.x,
+    a.y-b.y
+  );
+}
 
- applyNight();
+function checkInteraction(){
 
- showNotice(state.night?"Night mode":"Day mode");
+  const buildings=[
+    {x:410,y:450,type:"bank"},
+    {x:1110,y:420,type:"shop"},
+    {x:1860,y:460,type:"restaurant"},
+    {x:360,y:1100,type:"house"},
+    {x:1660,y:1070,type:"office"}
+  ];
+
+  let nearest=null;
+  let closest=999999;
+
+  buildings.forEach(b=>{
+
+    const d=distance(state,b);
+
+    if(d<closest){
+      closest=d;
+      nearest=b;
+    }
+  });
+
+  const btn=document.getElementById("interact");
+
+  if(nearest && closest<220){
+
+    btn.style.display="block";
+
+    btn.textContent =
+      nearest.type==="bank" ? "BANK" :
+      nearest.type==="shop" ? "SHOP" :
+      nearest.type==="restaurant" ? "EAT" :
+      nearest.type==="office" ? "WORK" :
+      "ENTER";
+
+    btn.dataset.type=nearest.type;
+
+  }else{
+
+    btn.style.display="none";
+  }
+}
+
+
+document.getElementById("interact").onclick=()=>{
+
+  const type=
+    document.getElementById("interact").dataset.type;
+
+  if(type==="shop"){
+
+    if(state.money>=200){
+
+      state.money-=200;
+      state.energy=Math.min(100,state.energy+25);
+      state.xp+=5;
+
+      toast("You bought food. Energy restored.");
+    }else{
+      toast("You need ₦200.");
+    }
+  }
+
+  if(type==="restaurant"){
+
+    if(state.money>=500){
+
+      state.money-=500;
+      state.energy=Math.min(100,state.energy+50);
+      state.xp+=10;
+
+      toast("You enjoyed a meal.");
+    }else{
+      toast("You need ₦500.");
+    }
+  }
+
+  if(type==="office"){
+    startJob();
+  }
+
+  if(type==="bank"){
+    toast("Welcome to the city bank.");
+  }
+
+  levelCheck();
+  updateHUD();
+  saveGame();
 };
 
-function applyNight(){
 
- world.style.filter=
-  state.night
-   ?"brightness(.55) saturate(.8)"
-   :"none";
+/* ================================
+   JOB SYSTEM
+   ================================ */
+
+function startJob(){
+
+  if(state.energy<15){
+    toast("You are too tired. Get some food.");
+    return;
+  }
+
+  if(state.jobRunning){
+    toast("You already have a job.");
+    return;
+  }
+
+  state.jobRunning=true;
+  state.energy-=15;
+
+  toast("Delivery job started...");
+
+  setTimeout(()=>{
+
+    state.money+=1000;
+    state.xp+=25;
+    state.jobRunning=false;
+    state.missionDone=true;
+
+    levelCheck();
+    updateHUD();
+    saveGame();
+
+    toast("Job complete! +₦1,000");
+  },5000);
 }
 
 
-/* =========================
-   SAVE
-========================= */
+document.getElementById("jobBtn").onclick=()=>{
+  startJob();
+};
 
-document.getElementById("saveBtn").onclick=saveGame;
+
+/* ================================
+   FOOD
+   ================================ */
+
+document.getElementById("foodBtn").onclick=()=>{
+
+  if(state.money<200){
+    toast("You need ₦200 for food.");
+    return;
+  }
+
+  state.money-=200;
+
+  state.energy=
+    Math.min(100,state.energy+25);
+
+  state.xp+=5;
+
+  levelCheck();
+  updateHUD();
+  saveGame();
+
+  toast("Food bought. +25 Energy");
+};
+
+
+/* ================================
+   TRANSPORT
+   ================================ */
+
+document.getElementById("carBtn").onclick=()=>{
+
+  state.transport=!state.transport;
+
+  toast(
+    state.transport
+    ? "You are now using transport."
+    : "You left the vehicle."
+  );
+
+  saveGame();
+};
+
+
+/* ================================
+   LEVEL SYSTEM
+   ================================ */
+
+function levelCheck(){
+
+  while(state.xp>=100){
+
+    state.xp-=100;
+    state.level++;
+
+    toast("LEVEL UP! You are now level "+state.level);
+  }
+}
+
+
+/* ================================
+   SAVE
+   ================================ */
 
 function saveGame(){
 
- localStorage.setItem(
-  "naijaLifeSave",
-  JSON.stringify(state)
- );
-
- showNotice("Game saved.");
+  localStorage.setItem(
+    "naijaLifeSave",
+    JSON.stringify(state)
+  );
 }
 
-setInterval(saveGame,10000);
+document.getElementById("saveBtn").onclick=()=>{
+  saveGame();
+  toast("Game saved.");
+};
 
 
-/* =========================
-   NOTICE
-========================= */
+/* ================================
+   CHARACTER EDIT
+   ================================ */
 
-let noticeTimer;
+document.getElementById("profileBtn").onclick=()=>{
 
-function showNotice(message){
+  editingCharacter=true;
+  openCreator(true);
+};
 
- notice.textContent=message;
- notice.classList.add("show");
 
- clearTimeout(noticeTimer);
+/* ================================
+   TOAST
+   ================================ */
 
- noticeTimer=setTimeout(()=>{
-  notice.classList.remove("show");
- },2200);
+let toastTimer;
+
+function toast(message){
+
+  const t=document.getElementById("toast");
+
+  t.textContent=message;
+  t.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    t.classList.remove("show");
+  },2200);
 }
+
+
+/* ================================
+   INITIAL SETUP
+   ================================ */
+
+loadCreatorValues();
+updateClock();
+updateHUD();
 </script>
 
 </body>
